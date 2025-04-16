@@ -8,7 +8,7 @@ let
   current_folder = ./.;
   icon = fetchurl {
     url = "file://${current_folder}/foxflake-default-icon.svg";
-    sha256 = "fd6753b4ff5e8de04bfd4972347fa8a6d649f641450f32b34e53b3adce9dbbbf";
+    sha256 = "1ea334c97c077c5ed112a15d1bafdbb61f96ba5fa32843f46b33171cc1b05172";
   };
 in
 
