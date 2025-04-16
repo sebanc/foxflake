@@ -68,20 +68,18 @@ with lib;
         description = "Update system flatpaks";
         after = [ "network-online.target" ];
         wants = [ "network-online.target" ];
-        path = [ pkgs.flatpak ];
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = "flatpak update --assumeyes --noninteractive";
+          ExecStart = "${pkgs.flatpak}/bin/flatpak update --assumeyes --noninteractive";
         };
         wantedBy = [ "multi-user.target" ];
         startAt = "daily";
       };
       user.services.user-flatpak-updates = {
         description = "Update user flatpaks";
-        path = [ pkgs.flatpak ];
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = "flatpak update --assumeyes --noninteractive --system";
+          ExecStart = "${pkgs.flatpak}/bin/flatpak update --assumeyes --noninteractive --system";
         };
         wantedBy = [ "default.target" ];
         startAt = "daily";
