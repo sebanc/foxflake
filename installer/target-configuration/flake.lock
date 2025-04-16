@@ -1,5 +1,28 @@
 {
   "nodes": {
+    "foxflake": {
+      "inputs": {
+        "home-manager": "home-manager",
+        "nix-flatpak": "nix-flatpak",
+        "nixpkgs": "nixpkgs",
+        "nixpkgs-unstable": "nixpkgs-unstable",
+        "plasma-manager": "plasma-manager"
+      },
+      "locked": {
+        "lastModified": 1744831380,
+        "narHash": "sha256-gUHwD0H2hKakFdjOJYUte2Z/ZUrbEserMSJxi3MwGKk=",
+        "owner": "sebanc",
+        "repo": "foxflake",
+        "rev": "f18a9eaeb24f3cf199634f4c3c9dd57a88f4978c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sebanc",
+        "ref": "stable",
+        "repo": "foxflake",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -19,29 +42,6 @@
         "owner": "nix-community",
         "ref": "release-24.11",
         "repo": "home-manager",
-        "type": "github"
-      }
-    },
-    "foxflake": {
-      "inputs": {
-        "home-manager": "home-manager",
-        "nix-flatpak": "nix-flatpak",
-        "nixpkgs": "nixpkgs",
-        "nixpkgs-unstable": "nixpkgs-unstable",
-        "plasma-manager": "plasma-manager"
-      },
-      "locked": {
-        "lastModified": 1744783414,
-        "narHash": "sha256-NdyC/BFohn0SwfHP5t3JJa+FrVXM12G3rLiXpLQDvhY=",
-        "owner": "sebanc",
-        "repo": "FoxFlake",
-        "rev": "959e572feff49cc21a0e1865ac3ef9c68775c13b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "sebanc",
-        "ref": "stable",
-        "repo": "FoxFlake",
         "type": "github"
       }
     },
