@@ -1,0 +1,26 @@
+name: "Update flakes locks"
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+jobs:
+  update-flake-locks:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: Checkout branch
+      uses: actions/checkout@v4
+      with:
+        ref: stable
+    - name: Install nix
+      uses: cachix/install-nix-action@v31
+    - name: Update flakes locks
+      run: |
+        nix flake update --flake ./installer/target-configuration
+        nix flake update --flake ./installer
+        nix flake update --flake .
+    - name: Commit changes
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: Update flakes locks
