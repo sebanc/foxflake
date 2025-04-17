@@ -1,3 +1,8 @@
+<!-- Shields/Logos -->
+[![License][license-shield]][license-url]
+[![Issues][issues-shield]][issues-url]
+[![Discord][discord-shield]][discord-url]
+
 <h1 align="center">FoxFlake</h1>
 
 ## About this project
@@ -25,11 +30,18 @@ The 3 bundles of applications included in FoxFlake are all optional and respecti
 
 ## Complementary instructions:
 
-### Changing desktop environment or application bundles
+### Installing the nvidia driver
+
+If you have a nvidia card supported by the latest nvidia open source driver, select the 2nd bootloader option (nvidia_driver) when booting the installer iso and the latest nvidia-open driver will be installed automatically.  
+After install, you can add the line `foxflake.nvidia.enable = true;` to /etc/nixos/configuration.nix to enable the nvidia-open driver.  
+
+For older nvidia card, you will need to follow the [NixOS nvidia instructions][NixOS-nvidia].  
+
+### Changing desktop environment or application bundles after installation
 
 The "FoxFlake Environment Selection" application allows you to review at any point in time the desktop environment and bundles choices you made.  
 
-### Setting up android apps.
+### Setting up android apps
 
 It is highly recommended to use the "FoxFlake Waydroid setup" for the first time setup of Waydroid as it will detect your computer graphics and apply corresponding options.  
 Once Waydroid is setup, you can use the "Waydroid helper" application to add complementary features (ARM translation tools, Tweaks...).  
@@ -40,5 +52,25 @@ Home manager is installed by default, to initialize home manager for your user y
 You can then apply your user home manager configuration updates with the command: `nix run home-manager switch`.  
 
 ## Thanks goes to:
-- NixOS and community modules (home-manager, plasma-manager and nix-flatpak) maintainers.  
-- The Gaming Linux France community for the inspiration coming from their gaming oriented GLF OS.  
+- [NixOS][NixOS] and community modules (home-manager, plasma-manager and nix-flatpak) maintainers.  
+- The Gaming Linux France community for the inspiration coming from their [gaming oriented GLF OS][GLF-OS].  
+
+
+<!-- Reference Links -->
+<!-- Badges -->
+[license-shield]: https://img.shields.io/github/license/sebanc/foxflake?label=License&logo=Github&style=flat-square
+[license-url]: ./LICENSE
+[issues-shield]: https://img.shields.io/github/issues/sebanc/foxflake?label=Issues&logo=Github&style=flat-square
+[issues-url]: https://github.com/sebanc/foxflake/issues
+[discord-shield]: https://img.shields.io/badge/Discord-Join-7289da?style=flat-square&logo=discord&logoColor=%23FFFFFF
+[discord-url]: https://discord.gg/x2EgK2M
+
+<!-- Internal Links -->
+
+
+<!-- Outbound Links -->
+[NixOS]: https://nixos.org/
+[NixOS-nvidia]: https://nixos.wiki/wiki/Nvidia
+[GLF-OS]: https://github.com/Gaming-Linux-FR/GLF-OS
+
+
