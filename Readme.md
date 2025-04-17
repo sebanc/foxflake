@@ -9,7 +9,7 @@ FoxFlake is a customized version of the NixOS Linux distribution (Flake) that ai
 - Complement your system with Linux applications of your choice for productivity, gaming, media creation...  
 
 The use of NixOS as a base guarantees the overall system stability and provides incredible rollback capabilities through the generations system. FoxFlake adds:  
-- Its own configurations declared in this repository that allows delegated management of maintenance tasks (NixOS options changes, package name changes...). All NixOS configurations are still available for users who want to customize their systems and superseed any FoxFlake default configuration.  
+- Its own configurations declared in this repository that allows delegated management of maintenance tasks (NixOS options changes, package name changes...). All NixOS configurations are still available for users who want to customize their systems and supersede any FoxFlake default configuration.  
 - The use of NixOS stable channel as a rolling release (the switch from one stable version to the next is automated).  
 - Unattended daily updates of your system (for both NixOS system packages and system / user flatpaks).  
 - NixOS community maintained modules home-manager, plasma-manager and nix-flatpak modules are included for those interested in having a fully declarative configuration from system to user profiles.  

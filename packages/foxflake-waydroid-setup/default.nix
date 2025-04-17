@@ -8,7 +8,7 @@ pkgs.stdenv.mkDerivation rec {
 set +o nounset
 set -e
 
-if ! ${pkgs.curl}/bin/curl -L https://github.com/sebanc/FoxFlake > /dev/null 2>&1; then read -rp "Internet connection not available, please make sure you are connected to the internet."; exit 1; fi
+if ! ${pkgs.curl}/bin/curl -L https://github.com/sebanc/foxflake > /dev/null 2>&1; then read -rp "Internet connection not available, please make sure you are connected to the internet."; exit 1; fi
 
 if [ ''${#} -eq 0 ]; then
 	interface=1

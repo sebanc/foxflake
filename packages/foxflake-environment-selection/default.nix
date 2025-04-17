@@ -8,7 +8,7 @@ pkgs.stdenv.mkDerivation rec {
 set +o nounset
 set -e
 
-if ! ${pkgs.curl}/bin/curl -L https://github.com/sebanc/FoxFlake > /dev/null 2>&1; then read -rp "Internet connection not available, please make sure you are connected to the internet."; exit 1; fi
+if ! ${pkgs.curl}/bin/curl -L https://github.com/sebanc/foxflake > /dev/null 2>&1; then read -rp "Internet connection not available, please make sure you are connected to the internet."; exit 1; fi
 
 if [ ''${#} -eq 0 ]; then
 	interface=1
@@ -108,7 +108,7 @@ else
 		${pkgs.gnused}/bin/sed "s@foxflake.environment.type.*;@foxflake.environment.type ''${current_environment};@g" /etc/nixos/configuration.nix; \
 		${pkgs.gnused}/bin/sed "s@foxflake.system.bundles.*;@foxflake.system.bundles ''${current_bundles};@g" /etc/nixos/configuration.nix; \
 		${pkgs.gnused}/bin/sed "s@foxflake.system.waydroid.*;@foxflake.system.waydroid ''${current_waydroid};@g" /etc/nixos/configuration.nix; \
-		read -rp "Error: FoxFlake update failed."; \
+		echo ""; read -rp "Error: FoxFlake update failed."; \
 		exit 1; \
 	}
 
@@ -116,7 +116,7 @@ else
 		for gtkconfig in /home/*/.gtkrc* /home/*/.config/gtkrc* /home/*/.config/gtk-* /home/*/.config/dconf; do ${pkgs.coreutils}/bin/rm -rf "''${gtkconfig}"; done
 	fi
 
-	read -rp "The system has been updated. Changes will be applied on the next boot."
+	echo ""; read -rp "The system has been updated. Changes will be applied on the next boot."
 
 fi
       '';
