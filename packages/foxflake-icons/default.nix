@@ -5,12 +5,13 @@
 }:
 
 let
+  current_folder = ./.;
   icon_light = fetchurl {
-    url = "file://../../assets/icons/foxflake-icon-light.svg";
+    url = "file://${current_folder}/../../assets/icons/foxflake-icon-light.svg";
     sha256 = "1ea334c97c077c5ed112a15d1bafdbb61f96ba5fa32843f46b33171cc1b05172";
   };
   icon_dark = fetchurl {
-    url = "file://../../assets/icons/foxflake-icon-dark.svg";
+    url = "file://${current_folder}/../../assets/icons/foxflake-icon-dark.svg";
     sha256 = "064e105f73b195982671920b0866f4ef1e3a73fdf02b152eb69625c4098f184c";
   };
 in
