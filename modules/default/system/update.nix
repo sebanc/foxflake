@@ -33,6 +33,7 @@ with lib;
         serviceConfig = {
           Type = "oneshot";
           ExecStart = ''
+            #!${pkgs.bash}/bin/bash
             if ${pkgs.curl}/bin/curl -L https://github.com/sebanc/foxflake > /dev/null 2>&1; then
             	${pkgs.flatpak}/bin/flatpak update --assumeyes --noninteractive --system
             fi
@@ -46,6 +47,7 @@ with lib;
         serviceConfig = {
           Type = "oneshot";
           ExecStart = ''
+            #!${pkgs.bash}/bin/bash
             if ${pkgs.curl}/bin/curl -L https://github.com/sebanc/foxflake > /dev/null 2>&1; then
             	${pkgs.flatpak}/bin/flatpak update --assumeyes --noninteractive
             fi
