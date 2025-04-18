@@ -59,6 +59,7 @@ else
 	elif { [ -d /sys/class/drm/renderD128 ] && { [ "$(${pkgs.coreutils}/bin/realpath /sys/class/drm/renderD128/device/driver)" == "/sys/bus/pci/drivers/nvidia" ] || [ "$(${pkgs.coreutils}/bin/realpath /sys/class/drm/renderD128/device/driver)" == "/sys/bus/pci/drivers/nouveau" ]; }; } || ${pkgs.gnugrep}/bin/grep -q 'qemu' /etc/nixos/hardware-configuration.nix; then
 		echo -e "ro.hardware.gralloc=default\nro.hardware.egl=swiftshader" >> /var/lib/waydroid/waydroid.cfg
 	fi
+	echo -e "persist.waydroid.multi_windows=true" >> /var/lib/waydroid/waydroid.cfg
 
 	${pkgs.unstable.waydroid}/bin/waydroid upgrade -o
 
@@ -70,10 +71,10 @@ fi
     desktopEntry = pkgs.makeDesktopItem {
       name = name;
       desktopName = "FoxFlake Waydroid setup";
-      icon = "foxflake-default-icon";
+      icon = "foxflake-icon-dark";
       exec = "${script}/bin/${name}";
       terminal = true;
-      categories = ["System"];
+      categories = ["Utilities"];
     };
   in ''
     mkdir -p $out/bin

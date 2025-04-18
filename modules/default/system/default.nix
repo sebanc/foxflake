@@ -3,7 +3,6 @@
   imports = [
     ./boot.nix
     ./customization.nix
-    ./fstrim.nix
     ./internationalisation.nix
     ./packages.nix
     ./system.nix

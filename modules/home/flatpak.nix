@@ -4,6 +4,7 @@ with lib;
 {
 
   config = mkIf osConfig.services.flatpak.enable {
+
     services.flatpak = {
       remotes = mkDefault [
         {
@@ -21,6 +22,7 @@ with lib;
         onCalendar = mkDefault "daily";
       };
     };
+
   };
 
 }

@@ -99,31 +99,36 @@ let
     homeConfigurations = foldr (a: b: a // b) { } (map mkHome (attrNames config.foxflake.users));
 in
 {
-  options.users.users = lib.mkOption {
-    type = with lib.types; attrsOf (submodule userOpts);
-  };
+  options = {
 
-  options.foxflake.users = mkOption {
-    type = with types; attrsOf (submodule foxflakeuserOpts);
-    default = { };
-    example = {
-      alice = {
-        description = "Alice Q. User";
-        extraGroups = [ "wheel" ];
-        packages = "with pkgs; [ firefox ]";
-        flatpaks = "[ { appId = \"org.mozilla.firefox\"; origin = \"flathub\"; } ]";
-      };
+    users.users = lib.mkOption {
+      type = with lib.types; attrsOf (submodule userOpts);
     };
-    description = ''
-      Additional user accounts to be created automatically by the system.
-      This can also be used to set options for root.
-    '';
+
+    foxflake.users = mkOption {
+      type = with types; attrsOf (submodule foxflakeuserOpts);
+      default = { };
+      example = {
+        alice = {
+          description = "Alice Q. User";
+          extraGroups = [ "wheel" ];
+          packages = "with pkgs; [ firefox ]";
+          flatpaks = "[ { appId = \"org.mozilla.firefox\"; origin = \"flathub\"; } ]";
+        };
+      };
+      description = ''
+        Additional user accounts to be created automatically by the system.
+        This can also be used to set options for root.
+      '';
+    };
+
   };
 
-  config =
-  {
+  config = {
+
     users.users = config.foxflake.users;
     home-manager.users = homeConfigurations;
+
   };
 
 }

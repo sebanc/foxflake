@@ -3,13 +3,7 @@ with lib;
 
 {
 
-  options.foxflake.graphics.enable = mkOption {
-    description = "Enable FoxFlake graphics configurations";
-    type = types.bool;
-    default = true;
-  };
-
-  config = mkIf config.foxflake.graphics.enable {
+  config = {
 
     hardware.graphics = {
       enable = mkDefault true;
@@ -31,6 +25,7 @@ with lib;
         libva
       ];
     };
+
   };
 
 }

@@ -7,6 +7,7 @@
 with lib;
 
 {
+
   options.foxflake.printing.enable = mkOption {
     description = "Enable FoxFlake printing configurations.";
     type = types.bool;
@@ -19,5 +20,7 @@ with lib;
     services.avahi.enable = mkDefault true;
     services.avahi.nssmdns4 = mkDefault true;
     services.printing.enable = mkDefault true;
+
   };
+
 }

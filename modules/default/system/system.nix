@@ -8,17 +8,9 @@ with lib;
 
 {
 
-  options.foxflake.system.enable = mkOption {
-    description = "Enable FoxFlake systems configurations";
-    type = types.bool;
-    default = true;
-  };
-
-  config = mkIf config.foxflake.system.enable {
+  config = {
 
     documentation.nixos.enable = mkDefault false;
-
-    zramSwap.enable = mkDefault true;
 
     nix = {
       gc = {
@@ -31,6 +23,13 @@ with lib;
         cores = mkDefault 4;
       };
     };
+
+    services.fstrim = {
+      enable = mkDefault true;
+      interval = mkDefault "daily";
+    };
+
+    zramSwap.enable = mkDefault true;
 
   };
 

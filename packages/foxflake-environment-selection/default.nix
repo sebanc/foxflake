@@ -124,10 +124,10 @@ fi
     desktopEntry = pkgs.makeDesktopItem {
       name = name;
       desktopName = "FoxFlake Environment Selection";
-      icon = "foxflake-default-icon";
+      icon = "foxflake-icon-dark";
       exec = "${script}/bin/${name}";
       terminal = true;
-      categories = ["System"];
+      categories = ["Utilities"];
     };
   in ''
     mkdir -p $out/bin

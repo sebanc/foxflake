@@ -42,7 +42,7 @@ windowExpanding:    normal
 # This setting is ignored if "fullscreen" is selected for
 # *windowExpanding*, above. If not set, use constants defined
 # in CalamaresUtilsGui, 800x520.
-windowSize: 800px,520px
+windowSize: 800px,600px
 
 # Placement of Calamares window. Either "center" or "free".
 # Whether "center" actually works does depend on the window
@@ -157,10 +157,10 @@ strings:
 # These filenames can also use substitutions from os-release (see above).
 images:
     # productBanner:       "banner.png"
-    productIcon:         "nix-snowflake.svg"
+    productIcon:         "foxflake-logo-light.png"
     productLogo:         "white.png"
     # productWallpaper:    "wallpaper.png"
-    productWelcome:      "nix-snowflake.svg"
+    productWelcome:      "foxflake-logo-light.png"
 
 # Colors for text and background components.
 #

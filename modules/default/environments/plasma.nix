@@ -9,7 +9,6 @@ with lib;
 {
 
   config = mkIf (config.foxflake.environment.enable && config.foxflake.environment.type == "plasma") {
-
     services = {
       displayManager = {
         defaultSession = mkDefault "plasma";
@@ -40,7 +39,7 @@ with lib;
 
         (pkgs.writeTextDir "share/sddm/themes/breeze/theme.conf.user" ''
           [General]
-          background=${config.foxflake.customization.wallpaper}
+          background="${config.foxflake.customization.environment.wallpaper}"
         '')
       ];
     };

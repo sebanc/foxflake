@@ -37,9 +37,16 @@ with lib;
     };
   };
 
-  config.time.timeZone = mkDefault config.foxflake.internationalisation.timezone;
-  config.i18n.defaultLocale = mkDefault config.foxflake.internationalisation.defaultLocale;
-  config.i18n.extraLocaleSettings = mkDefault config.foxflake.internationalisation.extraLocaleSettings;
-  config.console.keyMap = mkDefault config.foxflake.internationalisation.keyboard.consoleKeymap;
+  config = {
+
+    time.timeZone = mkDefault config.foxflake.internationalisation.timezone;
+
+    i18n.defaultLocale = mkDefault config.foxflake.internationalisation.defaultLocale;
+
+    i18n.extraLocaleSettings = mkDefault config.foxflake.internationalisation.extraLocaleSettings;
+
+    console.keyMap = mkDefault config.foxflake.internationalisation.keyboard.consoleKeymap;
+
+  };
   
 }

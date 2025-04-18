@@ -7,6 +7,7 @@
 with lib;
 
 {
+
   options.foxflake.autoUpgrade = mkOption {
     description = "Enable FoxFlake automatic updates.";
     type = types.bool;
@@ -23,6 +24,38 @@ with lib;
       flake = "/etc/nixos#foxflake";
       flags = [ "--update-input" "foxflake" "--commit-lock-file" ];
     };
+
+    systemd = {
+      services.system-flatpak-updates = {
+        description = "Update system flatpaks";
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = ''
+            if ${pkgs.curl}/bin/curl -L https://github.com/sebanc/foxflake > /dev/null 2>&1; then
+            	${pkgs.flatpak}/bin/flatpak update --assumeyes --noninteractive --system
+            fi
+          '';
+        };
+        wantedBy = [ "multi-user.target" ];
+        startAt = "daily";
+      };
+      user.services.user-flatpak-updates = {
+        description = "Update user flatpaks";
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = ''
+            if ${pkgs.curl}/bin/curl -L https://github.com/sebanc/foxflake > /dev/null 2>&1; then
+            	${pkgs.flatpak}/bin/flatpak update --assumeyes --noninteractive
+            fi
+          '';
+        };
+        wantedBy = [ "default.target" ];
+        startAt = "daily";
+      };
+    };
+
   };
 
 }

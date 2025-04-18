@@ -2,14 +2,17 @@
 with lib;
 
 {
+
   config = mkIf (osConfig.foxflake.environment.type == "plasma") {
 
     programs.plasma = {
       enable = mkDefault true;
-      kscreenlocker.appearance.wallpaper = mkDefault "${osConfig.foxflake.customization.wallpaper}";
+      kscreenlocker.appearance.wallpaper = mkDefault "${osConfig.foxflake.customization.environment.wallpaper}";
       workspace = {
-        iconTheme = mkDefault "Tela-circle";
-        wallpaper = mkDefault "${osConfig.foxflake.customization.wallpaper}";
+        cursorType.theme = mkDefault "${osConfig.foxflake.customization.environment.cursor-theme}";
+        iconTheme = mkDefault "${osConfig.foxflake.customization.environment.icon-theme}";
+        windowDecorations.theme = "${osConfig.foxflake.customization.environment.theme}";
+        wallpaper = mkDefault "${osConfig.foxflake.customization.environment.wallpaper}";
       };
       panels = mkDefault [
         {
@@ -18,7 +21,7 @@ with lib;
               name = "org.kde.plasma.kickoff";
               config = {
                 General = {
-                  icon = "foxflake-default-icon";
+                  icon = "${osConfig.foxflake.customization.environment.launcher-icon}";
                 };
               };
             }
@@ -45,6 +48,7 @@ with lib;
         }
       ];
     };
+
   };
 
 }

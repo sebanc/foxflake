@@ -6,29 +6,9 @@
 }:
 with lib;
 
-let
-  foxflake-icons = pkgs.callPackage ../../../packages/foxflake-icons {};
-in
 {
 
   options.foxflake.customization = {
-    enable = mkOption {
-      description = "Enable FoxFlake design customizations";
-      type = types.bool;
-      default = if (config.foxflake.environment.enable) then
-        true
-      else
-        false;
-    };
-    wallpaper = mkOption {
-      type = with types; str;
-      default = "${pkgs.nixos-artwork.wallpapers.simple-blue.gnomeFilePath}";
-      example = "/etc/wallpapers/mywallpaper.png";
-      description = ''
-        The wallpaper to use by default for , ensure that is
-        sourced in a folder within /etc directory.
-      '';
-    };
     grub = {
       splashImage = mkOption {
         type = types.nullOr types.path;
@@ -54,9 +34,58 @@ in
         '';
       };
     };
+    environment = {
+      wallpaper = mkOption {
+        type = with types; nullOr str;
+        default = "${pkgs.nixos-artwork.wallpapers.simple-blue.gnomeFilePath}";
+        example = "/etc/wallpapers/mywallpaper.png";
+        description = ''
+          The wallpaper to use by default, ensure that is
+          sourced in a folder within /etc directory.
+        '';
+      };
+      theme = mkOption {
+        type = with types; nullOr str;
+        default = if config.foxflake.environment.type == "gnome" then
+          "adw-gtk3"
+        else
+          null;
+        example = "Adwaita";
+        description = ''
+          The windows decorations theme to use.
+        '';
+      };
+      icon-theme = mkOption {
+        type = with types; nullOr str;
+        default = "Tela-circle";
+        example = "Adwaita";
+        description = ''
+          The icon theme to use.
+        '';
+      };
+      cursor-theme = mkOption {
+        type = with types; nullOr str;
+        default = if config.foxflake.environment.type == "gnome" then
+          "Adwaita"
+        else
+          "Breeze_Snow";
+        example = "Adwaita";
+        description = ''
+          The cursor theme to use.
+        '';
+      };
+      launcher-icon = mkOption {
+        type = with types; nullOr str;
+        default = "foxflake-icon-light";
+        example = "icon-name";
+        description = ''
+          The icon to use for the application launcher.
+        '';
+      };
+    };
   };
 
-  config = mkIf config.foxflake.customization.enable {
+  config = {
 
     boot.loader.grub = {
       splashImage =
@@ -67,7 +96,8 @@ in
       theme = mkDefault config.foxflake.customization.grub.theme;
     };
 
-    environment.systemPackages = with pkgs; [ foxflake-icons (sleek-grub-theme.override { withBanner = "FoxFlake"; withStyle = "light"; }) ];
+    environment.systemPackages = [ (pkgs.callPackage ../../../packages/foxflake-icons {}) (pkgs.unstable.sleek-grub-theme.override { withBanner = "FoxFlake"; withStyle = "light"; }) ];
+
   };
 
 }

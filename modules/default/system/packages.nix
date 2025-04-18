@@ -40,7 +40,7 @@ with lib;
   };
 
   config = {
-  
+
     environment.systemPackages = config.foxflake.system.packages;
 
     programs.appimage = {
@@ -49,8 +49,8 @@ with lib;
     };
 
     services.flatpak = {
-      enable = true;
-      remotes = [
+      enable = mkDefault true;
+      remotes = mkDefault [
         {
           name = "flathub";
           location = "https://dl.flathub.org/repo/flathub.flatpakrepo";
@@ -60,31 +60,9 @@ with lib;
           location = "https://dl.flathub.org/beta-repo/flathub-beta.flatpakrepo";
         }
       ];
-      packages = config.foxflake.system.flatpaks;
+      packages = mkDefault config.foxflake.system.flatpaks;
     };
 
-    systemd = {
-      services.system-flatpak-updates = {
-        description = "Update system flatpaks";
-        after = [ "network-online.target" ];
-        wants = [ "network-online.target" ];
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = "${pkgs.flatpak}/bin/flatpak update --assumeyes --noninteractive";
-        };
-        wantedBy = [ "multi-user.target" ];
-        startAt = "daily";
-      };
-      user.services.user-flatpak-updates = {
-        description = "Update user flatpaks";
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = "${pkgs.flatpak}/bin/flatpak update --assumeyes --noninteractive --system";
-        };
-        wantedBy = [ "default.target" ];
-        startAt = "daily";
-      };
-    };
   };
 
 }

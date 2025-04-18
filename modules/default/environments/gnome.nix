@@ -9,7 +9,6 @@ with lib;
 {
 
   config = mkIf (config.foxflake.environment.enable && config.foxflake.environment.type == "gnome") {
-
     services = {
       displayManager.defaultSession = mkDefault "gnome";
       power-profiles-daemon.enable = mkDefault true;
@@ -72,22 +71,22 @@ with lib;
           settings = {
             "org/gnome/desktop/wm/preferences" = {
               button-layout = "appmenu:minimize,maximize,close";
-              theme = "adw-gtk3";
+              theme = "${osConfig.foxflake.customization.environment.theme}";
               focus-mode = "click";
               visual-bell = false;
             };
 
             "org/gnome/desktop/interface" = {
-              cursor-theme = "Adwaita";
-              gtk-theme = "adw-gtk3";
-              icon-theme = "Tela-circle";
+              cursor-theme = "${osConfig.foxflake.customization.environment.cursor-theme}";
+              gtk-theme = "${osConfig.foxflake.customization.environment.theme}";
+              icon-theme = "${osConfig.foxflake.customization.environment.icon-theme}";
             };
 
             "org/gnome/desktop/background" = {
               color-shading-type = "solid";
               picture-options = "zoom";
-              picture-uri = "file://${config.foxflake.customization.wallpaper}";
-              picture-uri-dark = "file://${config.foxflake.customization.wallpaper}";
+              picture-uri = "file://${config.foxflake.customization.environment.wallpaper}";
+              picture-uri-dark = "file://${config.foxflake.customization.environment.wallpaper}";
             };
 
             "org/gnome/desktop/peripherals/touchpad" = {

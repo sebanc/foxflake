@@ -32,12 +32,13 @@
                       mkdir -p $out/lib/calamares/modules/foxflake
                       cp ${./calamares-patches/modules/foxflake/main.py}                    $out/lib/calamares/modules/foxflake/main.py
                       cp ${./calamares-patches/modules/foxflake/module.desc}                $out/lib/calamares/modules/foxflake/module.desc
-                      cp ${./calamares-patches/branding/nixos/branding.desc}            $out/share/calamares/branding/nixos/branding.desc
-                      cp ${./calamares-patches/config/settings.conf}                    $out/share/calamares/settings.conf
-                      cp ${./calamares-patches/config/modules/bundles.conf}             $out/share/calamares/modules/bundles.conf
-                      cp ${./calamares-patches/config/modules/environment.conf}         $out/share/calamares/modules/environment.conf
-                      cp ${./calamares-patches/config/modules/users.conf}               $out/share/calamares/modules/users.conf
-                      cp ${./calamares-patches/config/modules/waydroid.conf}            $out/share/calamares/modules/waydroid.conf
+                      cp ${./calamares-patches/branding/nixos/branding.desc}                $out/share/calamares/branding/nixos/branding.desc
+                      cp ${../assets/logos/foxflake-logo-light.png}                         $out/share/calamares/branding/nixos/foxflake-logo-light.png
+                      cp ${./calamares-patches/config/settings.conf}                        $out/share/calamares/settings.conf
+                      cp ${./calamares-patches/config/modules/bundles.conf}                 $out/share/calamares/modules/bundles.conf
+                      cp ${./calamares-patches/config/modules/environment.conf}             $out/share/calamares/modules/environment.conf
+                      cp ${./calamares-patches/config/modules/users.conf}                   $out/share/calamares/modules/users.conf
+                      cp ${./calamares-patches/config/modules/waydroid.conf}                $out/share/calamares/modules/waydroid.conf
                     '';
                   });
                 })

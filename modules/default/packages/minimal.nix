@@ -8,14 +8,18 @@ with lib;
 
 {
 
-  environment.systemPackages = with pkgs; [
-    pciutils
-    usbutils
-    git
-    gzip
-    xz
-    zip
-    zstd
-  ];
+  config = {
+
+    environment.systemPackages = with pkgs; [
+      pciutils
+      usbutils
+      git
+      gzip
+      xz
+      zip
+      zstd
+    ];
+
+  };
 
 }

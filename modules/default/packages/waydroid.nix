@@ -19,6 +19,7 @@ with lib;
       pkgs.unstable.waydroid-helper
       (pkgs.callPackage ../../../packages/foxflake-waydroid-setup {})
     ];
+
   };
 
 }

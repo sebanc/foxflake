@@ -23,5 +23,7 @@ with lib;
     };
 
     services.xserver.videoDrivers = mkDefault [ "nvidia" ];
+
   };
+
 }
