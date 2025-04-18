@@ -4,6 +4,7 @@
   pkgs,
   ...
 }:
+with lib;
 
 {
 
