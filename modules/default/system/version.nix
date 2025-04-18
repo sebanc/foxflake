@@ -5,6 +5,8 @@
   ...
 }:
 
+{
+
   config = {
 
     system.nixos.distroName = "FoxFlake";
