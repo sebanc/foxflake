@@ -9,6 +9,11 @@ with lib;
 {
   
   options.foxflake.boot = {
+    enable = mkOption {
+      description = "Enable FoxFlake Boot configurations";
+      type = with types; bool;
+      default = true;
+    };
     efiSupport = mkOption {
       description = "Whether GRUB should be built with EFI support.";
       type = types.bool;
@@ -53,7 +58,7 @@ with lib;
     };
   };
 
-  config = {
+  config = mkIf config.foxflake.boot.enable {
 
     boot = {
       loader = {

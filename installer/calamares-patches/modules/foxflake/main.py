@@ -109,7 +109,6 @@ cfgtime = """
 
 cfgbootefi = """
   # Bootloader configuration
-  foxflake.boot.enable = true;
   foxflake.boot.efiSupport = true;
   foxflake.boot.device = "nodev";
 
@@ -117,7 +116,6 @@ cfgbootefi = """
 
 cfgbootbios = """
   # Bootloader configuration
-  foxflake.boot.enable = true;
   foxflake.boot.efiSupport = false;
   foxflake.boot.device = "@@bootdev@@";
 
