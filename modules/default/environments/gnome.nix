@@ -72,15 +72,15 @@ with lib;
           settings = {
             "org/gnome/desktop/wm/preferences" = {
               button-layout = "appmenu:minimize,maximize,close";
-              theme = "${osConfig.foxflake.customization.environment.theme}";
+              theme = "${config.foxflake.customization.environment.theme}";
               focus-mode = "click";
               visual-bell = false;
             };
 
             "org/gnome/desktop/interface" = {
-              cursor-theme = "${osConfig.foxflake.customization.environment.cursor-theme}";
-              gtk-theme = "${osConfig.foxflake.customization.environment.theme}";
-              icon-theme = "${osConfig.foxflake.customization.environment.icon-theme}";
+              cursor-theme = "${config.foxflake.customization.environment.cursor-theme}";
+              gtk-theme = "${config.foxflake.customization.environment.theme}";
+              icon-theme = "${config.foxflake.customization.environment.icon-theme}";
             };
 
             "org/gnome/desktop/background" = {
