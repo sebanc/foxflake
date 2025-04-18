@@ -26,32 +26,36 @@ with lib;
     };
 
     systemd = {
-      services.system-flatpak-updates = {
+      services.update-system-flatpaks = {
         description = "Update system flatpaks";
         after = [ "network-online.target" ];
         wants = [ "network-online.target" ];
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = ''
-            #!${pkgs.bash}/bin/bash
-            if ${pkgs.curl}/bin/curl -L https://github.com/sebanc/foxflake > /dev/null 2>&1; then
-            	${pkgs.flatpak}/bin/flatpak update --assumeyes --noninteractive --system
-            fi
-          '';
+          ExecStart = getExe pkgs.writeShellApplication {
+            name = "update-system-flatpaks";
+            text = ''
+              if ${pkgs.curl}/bin/curl -L https://github.com/sebanc/foxflake > /dev/null 2>&1; then
+            	  ${pkgs.flatpak}/bin/flatpak update --assumeyes --noninteractive --system
+              fi
+            '';
+          };
         };
         wantedBy = [ "multi-user.target" ];
         startAt = "daily";
       };
-      user.services.user-flatpak-updates = {
+      user.services.update-user-flatpaks = {
         description = "Update user flatpaks";
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = ''
-            #!${pkgs.bash}/bin/bash
-            if ${pkgs.curl}/bin/curl -L https://github.com/sebanc/foxflake > /dev/null 2>&1; then
-            	${pkgs.flatpak}/bin/flatpak update --assumeyes --noninteractive
-            fi
-          '';
+          ExecStart = getExe pkgs.writeShellApplication {
+            name = "update-user-flatpaks";
+            text = ''
+              if ${pkgs.curl}/bin/curl -L https://github.com/sebanc/foxflake > /dev/null 2>&1; then
+            	  ${pkgs.flatpak}/bin/flatpak update --assumeyes --noninteractive
+              fi
+            '';
+          };
         };
         wantedBy = [ "default.target" ];
         startAt = "daily";
