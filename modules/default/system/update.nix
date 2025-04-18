@@ -37,7 +37,7 @@ with lib;
             if ${pkgs.curl}/bin/curl -L https://github.com/sebanc/foxflake > /dev/null 2>&1; then
               ${pkgs.flatpak}/bin/flatpak update --assumeyes --noninteractive --system
             fi
-          ''}";
+          ''}/bin/update-system-flatpaks";
         };
         wantedBy = [ "multi-user.target" ];
         startAt = "daily";
@@ -46,12 +46,12 @@ with lib;
         description = "Update user flatpaks";
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = "${pkgs.writeShellScriptBin "update-system-flatpaks" ''
+          ExecStart = "${pkgs.writeShellScriptBin "update-user-flatpaks" ''
             #!${pkgs.bash}
             if ${pkgs.curl}/bin/curl -L https://github.com/sebanc/foxflake > /dev/null 2>&1; then
               ${pkgs.flatpak}/bin/flatpak update --assumeyes --noninteractive
             fi
-          ''}";
+          ''}/bin/update-user-flatpaks";
         };
         wantedBy = [ "default.target" ];
         startAt = "daily";
