@@ -9,11 +9,11 @@
         "plasma-manager": "plasma-manager"
       },
       "locked": {
-        "lastModified": 1744915311,
-        "narHash": "sha256-Wjd6yF+9UWtkAmhFol20oRg3k8qgstwK3jDE0/5FANo=",
+        "lastModified": 1744937431,
+        "narHash": "sha256-rcc1ZuBtSlegPrtPIsn+SYVh1jJqnEUJWVtxpIh+9TM=",
         "owner": "sebanc",
         "repo": "foxflake",
-        "rev": "fcd50c0546f41f7d2a2d0ed7a9f7a6985c333cd9",
+        "rev": "e2040ba22d6c881f49b42de8cf89ae02c844afaf",
         "type": "github"
       },
       "original": {
