@@ -9,6 +9,7 @@ with lib;
 {
 
   config = mkIf (config.foxflake.environment.enable && config.foxflake.environment.type == "gnome") {
+
     services = {
       displayManager.defaultSession = mkDefault "gnome";
       power-profiles-daemon.enable = mkDefault true;
@@ -66,7 +67,7 @@ with lib;
 
     programs.dconf = {
       enable = mkDefault true;
-      profiles.user.databases = if config.foxflake.customization.enable then [
+      profiles.user.databases = [
         {
           settings = {
             "org/gnome/desktop/wm/preferences" = {
@@ -133,8 +134,9 @@ with lib;
             };
           };
         }
-      ] else [ ];
+      ];
     };
+
   };
 
 }
