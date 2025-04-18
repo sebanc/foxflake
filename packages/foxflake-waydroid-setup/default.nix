@@ -74,7 +74,7 @@ fi
       icon = "foxflake-icon-dark";
       exec = "${script}/bin/${name}";
       terminal = true;
-      categories = ["Utilities"];
+      categories = ["Utility"];
     };
   in ''
     mkdir -p $out/bin
