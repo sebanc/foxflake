@@ -7,12 +7,12 @@ with lib;
 
     programs.plasma = {
       enable = mkDefault true;
-      kscreenlocker.appearance.wallpaper = mkDefault "${osConfig.foxflake.customization.environment.wallpaper}";
+      kscreenlocker.appearance.wallpaper = mkDefault osConfig.foxflake.customization.environment.wallpaper;
       workspace = {
-        cursor.theme = mkDefault "${osConfig.foxflake.customization.environment.cursor-theme}";
-        iconTheme = mkDefault "${osConfig.foxflake.customization.environment.icon-theme}";
-        windowDecorations.theme = "${osConfig.foxflake.customization.environment.theme}";
-        wallpaper = mkDefault "${osConfig.foxflake.customization.environment.wallpaper}";
+        cursor.theme = mkDefault osConfig.foxflake.customization.environment.cursor-theme;
+        iconTheme = mkDefault osConfig.foxflake.customization.environment.icon-theme;
+        windowDecorations.theme = osConfig.foxflake.customization.environment.theme;
+        wallpaper = mkDefault osConfig.foxflake.customization.environment.wallpaper;
       };
       panels = mkDefault [
         {
@@ -21,7 +21,7 @@ with lib;
               name = "org.kde.plasma.kickoff";
               config = {
                 General = {
-                  icon = "${osConfig.foxflake.customization.environment.launcher-icon}";
+                  icon = mkDefault osConfig.foxflake.customization.environment.launcher-icon;
                 };
               };
             }
