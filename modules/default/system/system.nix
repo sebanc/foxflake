@@ -17,7 +17,7 @@ with lib;
         automatic = mkDefault true;
         dates = mkDefault "weekly";
         options = mkDefault "--delete-older-than 30d";
-        randomizedDelaySec = "1m";
+        randomizedDelaySec = "45m";
       };
       settings = {
         auto-optimise-store = mkDefault true;

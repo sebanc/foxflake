@@ -47,7 +47,7 @@ with lib;
       theme = mkOption {
         type = with types; nullOr str;
         default = if config.foxflake.environment.type == "gnome" then
-          "Orchis"
+          "Adwaita"
         else
           null;
         example = "Adwaita";

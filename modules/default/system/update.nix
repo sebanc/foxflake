@@ -22,8 +22,8 @@ with lib;
       operation = mkDefault "boot";
       allowReboot = mkDefault false;
       flake = "/etc/nixos#foxflake";
-      flags = [ "--update-input" "foxflake" "--commit-lock-file" ];
-      randomizedDelaySec = "1m";
+      flags = [ "--recreate-lock-file" ];
+      randomizedDelaySec = "45m";
     };
 
     systemd = {
@@ -41,9 +41,15 @@ with lib;
           ''}/bin/update-system-flatpaks";
         };
         wantedBy = [ "multi-user.target" ];
-        startAt = "daily";
         restartIfChanged = false;
-        randomizedDelaySec = "1m";
+      };
+      systemd.timers."update-system-flatpaks" = {
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnBootSec = "45m";
+          OnCalendar = "daily";
+          Unit = "update-system-flatpaks.service";
+        };
       };
       user.services.update-user-flatpaks = {
         description = "Update user flatpaks";
@@ -58,9 +64,15 @@ with lib;
           ''}/bin/update-user-flatpaks";
         };
         wantedBy = [ "default.target" ];
-        startAt = "daily";
         restartIfChanged = false;
-        randomizedDelaySec = "1m";
+      };
+      systemd.user.timers."update-user-flatpaks" = {
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnBootSec = "45m";
+          OnCalendar = "daily";
+          Unit = "update-user-flatpaks.service";
+        };
       };
     };
 

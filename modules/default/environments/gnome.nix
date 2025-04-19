@@ -36,9 +36,11 @@ with lib;
 
     environment = {
       systemPackages = with pkgs; [
+        gnome-themes-extra
         orchis-theme
         tela-circle-icon-theme
         gnome-tweaks
+        gnomeExtensions.blur-my-shell
         gnomeExtensions.caffeine
         gnomeExtensions.gsconnect
         gnomeExtensions.appindicator
@@ -102,10 +104,11 @@ with lib;
             "org/gnome/shell" = {
               disable-user-extensions = false;
               enabled-extensions = [
-                "caffeine@patapon.info"
-                "gsconnect@andyholmes.github.io"
                 "appindicatorsupport@rgcjonas.gmail.com"
+                "blur-my-shell@aunetx"
+                "caffeine@patapon.info"
                 "dash-to-dock@micxgx.gmail.com"
+                "gsconnect@andyholmes.github.io"
               ];
               favorite-apps = [
                 "firefox.desktop"
@@ -115,8 +118,7 @@ with lib;
             };
 
             "org/gnome/shell/extensions/dash-to-dock" = {
-              click-action = "minimize-or-overview";
-              disable-overview-on-startup = true;
+              background-opacity = 0;
               dock-position = "BOTTOM";
               running-indicator-style = "DOTS";
               isolate-monitor = false;
