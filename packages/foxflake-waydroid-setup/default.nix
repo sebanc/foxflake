@@ -56,10 +56,18 @@ else
 
 	if [ -d /sys/class/drm/renderD128 ] && [ -d /sys/class/drm/renderD129 ] && { [ "$(${pkgs.coreutils}/bin/realpath /sys/class/drm/renderD128/device/driver)" == "/sys/bus/pci/drivers/nvidia" ] || [ "$(${pkgs.coreutils}/bin/realpath /sys/class/drm/renderD128/device/driver)" == "/sys/bus/pci/drivers/nouveau" ]; }; then
 		${pkgs.gnused}/bin/sed -i -z 's@\n\[properties]@drm_device = /dev/dri/renderD129\n\n\[properties]@g' /var/lib/waydroid/waydroid.cfg
+		if [ "$(${pkgs.coreutils}/bin/realpath /sys/class/drm/renderD129/device/driver)" == "/sys/bus/pci/drivers/amdgpu" ]; then arm_translation="libndk"; fi
 	elif { [ -d /sys/class/drm/renderD128 ] && { [ "$(${pkgs.coreutils}/bin/realpath /sys/class/drm/renderD128/device/driver)" == "/sys/bus/pci/drivers/nvidia" ] || [ "$(${pkgs.coreutils}/bin/realpath /sys/class/drm/renderD128/device/driver)" == "/sys/bus/pci/drivers/nouveau" ]; }; } || ${pkgs.gnugrep}/bin/grep -q 'qemu' /etc/nixos/hardware-configuration.nix; then
 		echo -e "ro.hardware.gralloc=default\nro.hardware.egl=swiftshader" >> /var/lib/waydroid/waydroid.cfg
+	else
+		if [ "$(${pkgs.coreutils}/bin/realpath /sys/class/drm/renderD128/device/driver)" == "/sys/bus/pci/drivers/amdgpu" ]; then arm_translation="libndk"; fi
 	fi
 	echo -e "persist.waydroid.multi_windows=true" >> /var/lib/waydroid/waydroid.cfg
+	if [ -n "''${arm_translation}" ]; then arm_translation="libhoudini"; fi
+
+	${pkgs.coreutils}/bin/rm -r /tmp/waydroid_script
+	${pkgs.git}/bin/git clone -b main https://github.com/casualsnek/waydroid_script.git /tmp/waydroid_script
+	${pkgs.nix}/bin/nix-shell -p bash -p curl -p gnupg -p lzip -p util-linux -p unzip -p xz -p python3 -p python3.inquirerpy -p python3.requests -p python3.tqdm --run "/tmp/waydroid_script/main.py install ''${arm_translation} widevine"
 
 	${pkgs.unstable.waydroid}/bin/waydroid upgrade -o
 
@@ -69,14 +77,14 @@ else
 		echo ""
 		echo 'ANDROID_RUNTIME_ROOT=/apex/com.android.runtime ANDROID_DATA=/data ANDROID_TZDATA_ROOT=/apex/com.android.tzdata ANDROID_I18N_ROOT=/apex/com.android.i18n sqlite3 /data/data/com.google.android.gsf/databases/gservices.db "select * from main where name = \"android_id\";"' | ${pkgs.unstable.waydroid}/bin/waydroid shell
 		echo ""
-		echo "Waydroid setup is finished, in order to use the playstore you will first need to register the above android id with your google account at https://www.google.com/android/uncertified (it might take a few minutes to take effect)."
+		read -rp "Waydroid setup is finished, in order to use the playstore you will first need to register the above android id with your google account at https://www.google.com/android/uncertified (it might take a few minutes to take effect)."
 		echo ""
-		read -rp "Complementary features (ARM translation tools, Tweaks...) can be installed with the waydroid-helper program."
+		read -rp "Complementary features (Magisk, Tweaks...) can be installed with the waydroid-helper program."
 	else
 		echo ""
-		echo "Waydroid setup is finished."
+		read -rp "Waydroid setup is finished."
 		echo ""
-		read -rp "Complementary features (ARM translation tools, Tweaks...) can be installed with the waydroid-helper program."
+		read -rp "Complementary features (Magisk, Tweaks...) can be installed with the waydroid-helper program."
 	fi
 fi
       '';

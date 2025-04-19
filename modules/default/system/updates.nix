@@ -32,7 +32,7 @@ with lib;
         after = [ "network-online.target" ];
         wants = [ "network-online.target" ];
         serviceConfig = {
-          Type = "simple";
+          Type = "oneshot";
           ExecStart = "${pkgs.writeShellScriptBin "update-system-flatpaks" ''
             #!${pkgs.bash}
             if ${pkgs.curl}/bin/curl -L https://github.com/sebanc/foxflake > /dev/null 2>&1; then
@@ -46,16 +46,15 @@ with lib;
       timers."update-system-flatpaks" = {
         wantedBy = [ "timers.target" ];
         timerConfig = {
-          OnBootSec = "45m";
+          OnBootSec = "2m";
           OnCalendar = "daily";
           Unit = "update-system-flatpaks.service";
         };
       };
       user.services.update-user-flatpaks = {
         description = "Update user flatpaks";
-        after = [ "network.target" ];
         serviceConfig = {
-          Type = "simple";
+          Type = "oneshot";
           ExecStart = "${pkgs.writeShellScriptBin "update-user-flatpaks" ''
             #!${pkgs.bash}
             if ${pkgs.curl}/bin/curl -L https://github.com/sebanc/foxflake > /dev/null 2>&1; then
@@ -69,7 +68,7 @@ with lib;
       user.timers."update-user-flatpaks" = {
         wantedBy = [ "timers.target" ];
         timerConfig = {
-          OnBootSec = "45m";
+          OnBootSec = "2m";
           OnCalendar = "daily";
           Unit = "update-user-flatpaks.service";
         };
