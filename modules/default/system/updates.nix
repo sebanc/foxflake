@@ -43,7 +43,7 @@ with lib;
         wantedBy = [ "multi-user.target" ];
         restartIfChanged = false;
       };
-      systemd.timers."update-system-flatpaks" = {
+      timers."update-system-flatpaks" = {
         wantedBy = [ "timers.target" ];
         timerConfig = {
           OnBootSec = "45m";
@@ -66,7 +66,7 @@ with lib;
         wantedBy = [ "default.target" ];
         restartIfChanged = false;
       };
-      systemd.user.timers."update-user-flatpaks" = {
+      user.timers."update-user-flatpaks" = {
         wantedBy = [ "timers.target" ];
         timerConfig = {
           OnBootSec = "45m";
