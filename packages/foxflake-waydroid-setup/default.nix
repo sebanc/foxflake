@@ -74,7 +74,7 @@ else
 		read -rp "Complementary features (ARM translation tools, Tweaks...) can be installed with the waydroid-helper program."
 	else
 		echo ""
-		echo "Waydroid setup is finished.
+		echo "Waydroid setup is finished."
 		echo ""
 		read -rp "Complementary features (ARM translation tools, Tweaks...) can be installed with the waydroid-helper program."
 	fi
