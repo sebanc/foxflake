@@ -67,7 +67,7 @@ else
 
 	${pkgs.coreutils}/bin/rm -rf /tmp/waydroid_script
 	${pkgs.git}/bin/git clone -b main https://github.com/casualsnek/waydroid_script.git /tmp/waydroid_script
-	${pkgs.nix}/bin/nix-shell -p bash -p curl -p gnupg -p lzip -p util-linux -p unzip -p xz -p python3 -p python3.inquirerpy -p python3.requests -p python3.tqdm --run "/tmp/waydroid_script/main.py install ''${arm_translation} widevine"
+	${pkgs.nix}/bin/nix-shell -p bash -p curl -p gnupg -p lzip -p util-linux -p unzip -p xz -p python3 -p python3Packages.inquirerpy -p python3Packages.requests -p python3Packages.tqdm --run "/tmp/waydroid_script/main.py install ''${arm_translation} widevine"
 
 	${pkgs.unstable.waydroid}/bin/waydroid upgrade -o
 
