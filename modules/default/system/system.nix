@@ -17,6 +17,7 @@ with lib;
         automatic = mkDefault true;
         dates = mkDefault "weekly";
         options = mkDefault "--delete-older-than 30d";
+        randomizedDelaySec = "1m";
       };
       settings = {
         auto-optimise-store = mkDefault true;
@@ -26,7 +27,7 @@ with lib;
 
     services.fstrim = {
       enable = mkDefault true;
-      interval = mkDefault "daily";
+      interval = mkDefault "weekly";
     };
 
     zramSwap.enable = mkDefault true;

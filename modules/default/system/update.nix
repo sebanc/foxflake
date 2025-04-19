@@ -23,6 +23,7 @@ with lib;
       allowReboot = mkDefault false;
       flake = "/etc/nixos#foxflake";
       flags = [ "--update-input" "foxflake" "--commit-lock-file" ];
+      randomizedDelaySec = "1m";
     };
 
     systemd = {
@@ -31,7 +32,7 @@ with lib;
         after = [ "network-online.target" ];
         wants = [ "network-online.target" ];
         serviceConfig = {
-          Type = "oneshot";
+          Type = "simple";
           ExecStart = "${pkgs.writeShellScriptBin "update-system-flatpaks" ''
             #!${pkgs.bash}
             if ${pkgs.curl}/bin/curl -L https://github.com/sebanc/foxflake > /dev/null 2>&1; then
@@ -41,11 +42,14 @@ with lib;
         };
         wantedBy = [ "multi-user.target" ];
         startAt = "daily";
+        restartIfChanged = false;
+        randomizedDelaySec = "1m";
       };
       user.services.update-user-flatpaks = {
         description = "Update user flatpaks";
+        after = [ "network.target" ];
         serviceConfig = {
-          Type = "oneshot";
+          Type = "simple";
           ExecStart = "${pkgs.writeShellScriptBin "update-user-flatpaks" ''
             #!${pkgs.bash}
             if ${pkgs.curl}/bin/curl -L https://github.com/sebanc/foxflake > /dev/null 2>&1; then
@@ -55,6 +59,8 @@ with lib;
         };
         wantedBy = [ "default.target" ];
         startAt = "daily";
+        restartIfChanged = false;
+        randomizedDelaySec = "1m";
       };
     };
 

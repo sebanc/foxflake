@@ -47,7 +47,7 @@ with lib;
       theme = mkOption {
         type = with types; nullOr str;
         default = if config.foxflake.environment.type == "gnome" then
-          "adw-gtk3"
+          "Orchis"
         else
           null;
         example = "Adwaita";
@@ -68,7 +68,7 @@ with lib;
         default = if config.foxflake.environment.type == "gnome" then
           "Adwaita"
         else
-          "Breeze_Snow";
+          "Breeze_Light";
         example = "Adwaita";
         description = ''
           The cursor theme to use.
@@ -76,7 +76,7 @@ with lib;
       };
       launcher-icon = mkOption {
         type = with types; nullOr str;
-        default = "foxflake-icon-light";
+        default = "nix-snowflake-white";
         example = "icon-name";
         description = ''
           The icon to use for the application launcher.

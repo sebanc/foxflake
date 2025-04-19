@@ -36,8 +36,7 @@ with lib;
 
     environment = {
       systemPackages = with pkgs; [
-        adw-gtk3
-        graphite-gtk-theme
+        orchis-theme
         tela-circle-icon-theme
         gnome-tweaks
         gnomeExtensions.caffeine
