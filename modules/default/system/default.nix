@@ -6,7 +6,7 @@
     ./internationalisation.nix
     ./packages.nix
     ./system.nix
-    ./update.nix
+    ./updates.nix
     ./users.nix
     ./version.nix
   ];
