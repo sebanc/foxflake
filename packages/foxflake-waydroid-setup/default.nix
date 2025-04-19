@@ -32,7 +32,7 @@ if [ "''${interface}" -eq 1 ]; then
 	if [ -z "$selected_variant" ]; then exit 0; fi
 
 	if ${pkgs.coreutils}/bin/test "x$(${pkgs.coreutils}/bin/id -u)" != "x0"; then
-		pkexec --disable-internal-agent "''${0}" "''${selected_variant}"
+		pkexec --disable-internal-agent env DISPLAY="${DISPLAY}" WAYLAND_DISPLAY="${WAYLAND_DISPLAY}" XAUTHORITY="${XAUTHORITY}" XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR}" "''${0}" "''${selected_variant}"
 		status=$?
 		exit $status
 	fi
@@ -40,7 +40,7 @@ if [ "''${interface}" -eq 1 ]; then
 else
 
 	if ${pkgs.coreutils}/bin/test "x$(${pkgs.coreutils}/bin/id -u)" != "x0"; then
-		pkexec --disable-internal-agent "''${0}" "''${1}"
+		pkexec --disable-internal-agent env DISPLAY="${DISPLAY}" WAYLAND_DISPLAY="${WAYLAND_DISPLAY}" XAUTHORITY="${XAUTHORITY}" XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR}" "''${0}" "''${1}"
 		status=$?
 		exit $status
 	fi
@@ -65,7 +65,7 @@ else
 
 	if [  "''${1}" == "GAPPS" ]; then
 		sleep 5
-		${pkgs.sudo}/bin/sudo -u "$(${pkgs.coreutils}/bin/id -nu "''${PKEXEC_UID}")" waydroid session start
+		${pkgs.sudo}/bin/sudo --preserve-env=DISPLAY,WAYLAND_DISPLAY,XAUTHORITY,XDG_RUNTIME_DIR -u "$(${pkgs.coreutils}/bin/id -nu "''${PKEXEC_UID}")" waydroid session start
 		echo ""
 		waydroid shell 'ANDROID_RUNTIME_ROOT=/apex/com.android.runtime ANDROID_DATA=/data ANDROID_TZDATA_ROOT=/apex/com.android.tzdata ANDROID_I18N_ROOT=/apex/com.android.i18n sqlite3 /data/data/com.google.android.gsf/databases/gservices.db "select * from main where name = \"android_id\";"'
 		read -rp "Setup is finished, to enable the playstore you need to register the above android device id at https://www.google.com/android/uncertified. You can also install complementary features (ARM translation tools, Tweaks...) with the waydroid-helper program."
