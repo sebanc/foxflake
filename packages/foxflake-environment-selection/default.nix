@@ -105,9 +105,9 @@ else
 	${pkgs.gnused}/bin/sed -i "s@foxflake.system.waydroid.*;@foxflake.system.waydroid ''${3};@g" /etc/nixos/configuration.nix
 
 	${pkgs.nixos-rebuild}/bin/nixos-rebuild boot || { \
-		${pkgs.gnused}/bin/sed "s@foxflake.environment.type.*;@foxflake.environment.type ''${current_environment};@g" /etc/nixos/configuration.nix; \
-		${pkgs.gnused}/bin/sed "s@foxflake.system.bundles.*;@foxflake.system.bundles ''${current_bundles};@g" /etc/nixos/configuration.nix; \
-		${pkgs.gnused}/bin/sed "s@foxflake.system.waydroid.*;@foxflake.system.waydroid ''${current_waydroid};@g" /etc/nixos/configuration.nix; \
+		${pkgs.gnused}/bin/sed -i "s@foxflake.environment.type.*;@foxflake.environment.type ''${current_environment};@g" /etc/nixos/configuration.nix; \
+		${pkgs.gnused}/bin/sed -i "s@foxflake.system.bundles.*;@foxflake.system.bundles ''${current_bundles};@g" /etc/nixos/configuration.nix; \
+		${pkgs.gnused}/bin/sed -i "s@foxflake.system.waydroid.*;@foxflake.system.waydroid ''${current_waydroid};@g" /etc/nixos/configuration.nix; \
 		echo ""; read -rp "Error: FoxFlake update failed."; \
 		exit 1; \
 	}

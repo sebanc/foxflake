@@ -118,7 +118,7 @@ with lib;
             };
 
             "org/gnome/shell/extensions/dash-to-dock" = {
-              background-opacity = 0;
+              background-opacity = 0.0;
               dock-position = "BOTTOM";
               running-indicator-style = "DOTS";
               isolate-monitor = false;
