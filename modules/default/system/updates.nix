@@ -40,6 +40,7 @@ with lib;
             fi
           ''}/bin/update-system-flatpaks";
         };
+        path = [ pkgs.flatpak ];
         wantedBy = [ "multi-user.target" ];
         restartIfChanged = false;
       };
@@ -62,6 +63,7 @@ with lib;
             fi
           ''}/bin/update-user-flatpaks";
         };
+        path = [ pkgs.flatpak ];
         wantedBy = [ "default.target" ];
         restartIfChanged = false;
       };

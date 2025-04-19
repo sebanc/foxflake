@@ -65,7 +65,7 @@ else
 	echo -e "persist.waydroid.multi_windows=true" >> /var/lib/waydroid/waydroid.cfg
 	if [ -n "''${arm_translation}" ]; then arm_translation="libhoudini"; fi
 
-	${pkgs.coreutils}/bin/rm -r /tmp/waydroid_script
+	${pkgs.coreutils}/bin/rm -rf /tmp/waydroid_script
 	${pkgs.git}/bin/git clone -b main https://github.com/casualsnek/waydroid_script.git /tmp/waydroid_script
 	${pkgs.nix}/bin/nix-shell -p bash -p curl -p gnupg -p lzip -p util-linux -p unzip -p xz -p python3 -p python3.inquirerpy -p python3.requests -p python3.tqdm --run "/tmp/waydroid_script/main.py install ''${arm_translation} widevine"
 
