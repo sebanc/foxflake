@@ -32,7 +32,7 @@ if [ "''${interface}" -eq 1 ]; then
 	if [ -z "$selected_variant" ]; then exit 0; fi
 
 	if ${pkgs.coreutils}/bin/test "x$(${pkgs.coreutils}/bin/id -u)" != "x0"; then
-		pkexec --disable-internal-agent env DISPLAY="${DISPLAY}" WAYLAND_DISPLAY="${WAYLAND_DISPLAY}" XAUTHORITY="${XAUTHORITY}" XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR}" "''${0}" "''${selected_variant}"
+		pkexec --disable-internal-agent env DISPLAY=":0" WAYLAND_DISPLAY="${WAYLAND_DISPLAY}" XAUTHORITY="${XAUTHORITY}" XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR}" "''${0}" "''${selected_variant}"
 		status=$?
 		exit $status
 	fi
@@ -40,7 +40,7 @@ if [ "''${interface}" -eq 1 ]; then
 else
 
 	if ${pkgs.coreutils}/bin/test "x$(${pkgs.coreutils}/bin/id -u)" != "x0"; then
-		pkexec --disable-internal-agent env DISPLAY="${DISPLAY}" WAYLAND_DISPLAY="${WAYLAND_DISPLAY}" XAUTHORITY="${XAUTHORITY}" XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR}" "''${0}" "''${1}"
+		pkexec --disable-internal-agent env DISPLAY=":0" WAYLAND_DISPLAY="${WAYLAND_DISPLAY}" XAUTHORITY="${XAUTHORITY}" XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR}" "''${0}" "''${1}"
 		status=$?
 		exit $status
 	fi
