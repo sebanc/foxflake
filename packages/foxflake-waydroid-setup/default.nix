@@ -65,7 +65,7 @@ else
 
 	if [  "''${1}" == "GAPPS" ]; then
 		sleep 5
-		sudo -u ''${SUDO_USER} waydroid session init
+		${pkgs.sudo}/bin/sudo -u "''${SUDO_USER}" waydroid session init
 		echo ""
 		waydroid shell 'ANDROID_RUNTIME_ROOT=/apex/com.android.runtime ANDROID_DATA=/data ANDROID_TZDATA_ROOT=/apex/com.android.tzdata ANDROID_I18N_ROOT=/apex/com.android.i18n sqlite3 /data/data/com.google.android.gsf/databases/gservices.db "select * from main where name = \"android_id\";"'
 		read -rp "Setup is finished, to enable the playstore you need to register the above android device id at https://www.google.com/android/uncertified. You can also install complementary features (ARM translation tools, Tweaks...) with the waydroid-helper program."
