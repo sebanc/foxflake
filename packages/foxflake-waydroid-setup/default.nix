@@ -64,11 +64,10 @@ else
 	${pkgs.unstable.waydroid}/bin/waydroid upgrade -o
 
 	if [  "''${1}" == "GAPPS" ]; then
-		sleep 5
-		${pkgs.unstable.waydroid}/bin/waydroid container start
-		${pkgs.sudo}/bin/sudo --preserve-env=DISPLAY,WAYLAND_DISPLAY,XAUTHORITY,XDG_RUNTIME_DIR -u "$(${pkgs.coreutils}/bin/id -nu "''${PKEXEC_UID}")" ${pkgs.unstable.waydroid}/bin/waydroid session start &
+		${pkgs.sudo}/bin/sudo --preserve-env=DISPLAY,WAYLAND_DISPLAY,XAUTHORITY,XDG_RUNTIME_DIR -u "$(${pkgs.coreutils}/bin/id -nu "''${PKEXEC_UID}")" ${pkgs.coreutils}/bin/nohup ${pkgs.unstable.waydroid}/bin/waydroid session start > /dev/null 2>&1 &
+		sleep 15
 		echo ""
-		${pkgs.unstable.waydroid}/bin/waydroid shell 'ANDROID_RUNTIME_ROOT=/apex/com.android.runtime ANDROID_DATA=/data ANDROID_TZDATA_ROOT=/apex/com.android.tzdata ANDROID_I18N_ROOT=/apex/com.android.i18n sqlite3 /data/data/com.google.android.gsf/databases/gservices.db "select * from main where name = \"android_id\";"'
+		echo 'ANDROID_RUNTIME_ROOT=/apex/com.android.runtime ANDROID_DATA=/data ANDROID_TZDATA_ROOT=/apex/com.android.tzdata ANDROID_I18N_ROOT=/apex/com.android.i18n sqlite3 /data/data/com.google.android.gsf/databases/gservices.db "select * from main where name = \"android_id\";"' | ${pkgs.unstable.waydroid}/bin/waydroid shell
 		read -rp "Setup is finished, to enable the playstore you need to register the above android device id at https://www.google.com/android/uncertified. You can also install complementary features (ARM translation tools, Tweaks...) with the waydroid-helper program."
 	else
 		echo ""
