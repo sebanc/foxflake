@@ -68,10 +68,15 @@ else
 		sleep 15
 		echo ""
 		echo 'ANDROID_RUNTIME_ROOT=/apex/com.android.runtime ANDROID_DATA=/data ANDROID_TZDATA_ROOT=/apex/com.android.tzdata ANDROID_I18N_ROOT=/apex/com.android.i18n sqlite3 /data/data/com.google.android.gsf/databases/gservices.db "select * from main where name = \"android_id\";"' | ${pkgs.unstable.waydroid}/bin/waydroid shell
-		read -rp "Setup is finished, to enable the playstore you need to register the above android device id at https://www.google.com/android/uncertified. You can also install complementary features (ARM translation tools, Tweaks...) with the waydroid-helper program."
+		echo ""
+		echo "Waydroid setup is finished, in order to use the playstore you will first need to register the above android id with your google account at https://www.google.com/android/uncertified (it might take a few minutes to take effect)."
+		echo ""
+		read -rp "Complementary features (ARM translation tools, Tweaks...) can be installed with the waydroid-helper program."
 	else
 		echo ""
-		read -rp "Setup is finished, you can now start waydroid. You can also install complementary features (ARM translation tools, Tweaks...) with the waydroid-helper program."
+		echo "Waydroid setup is finished.
+		echo ""
+		read -rp "Complementary features (ARM translation tools, Tweaks...) can be installed with the waydroid-helper program."
 	fi
 fi
       '';
