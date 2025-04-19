@@ -96,7 +96,7 @@ with lib;
       theme = mkDefault config.foxflake.customization.grub.theme;
     };
 
-    foxflake.customization.grub.theme = mkDefault (pkgs.sleek-grub-theme.override { withBanner = "FoxFlake"; withStyle = "light"; });
+    foxflake.customization.grub.theme = mkDefault (pkgs.sleek-grub-theme.override { withBanner = "OS Selection"; withStyle = "light"; });
     environment.systemPackages = [ (pkgs.callPackage ../../../packages/foxflake-icons {}) ];
 
   };

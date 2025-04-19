@@ -48,7 +48,7 @@
               { config, ... }:
               {
                 isoImage = {
-                  grubTheme = (pkgs.sleek-grub-theme.override { withBanner = "FoxFlake"; withStyle = "light"; });
+                  grubTheme = (pkgs.sleek-grub-theme.override { withBanner = "OS Selection"; withStyle = "light"; });
                   volumeID = "FoxFlake-ALPHA-OMNISLASH_2";
                   includeSystemBuildDependencies = false;
                   storeContents = [ config.system.build.toplevel ];
