@@ -65,13 +65,15 @@ else
 	echo -e "persist.waydroid.multi_windows=true" >> /var/lib/waydroid/waydroid.cfg
 	if [ -n "''${arm_translation}" ]; then arm_translation="libhoudini"; fi
 
+	echo ""
+	echo "Installing "''${arm_translation}" and widevine."
+	${pkgs.coreutils}/bin/rm -rf /tmp/waydroid_script
+	${pkgs.git}/bin/git clone -b main https://github.com/casualsnek/waydroid_script.git /tmp/waydroid_script
+	${pkgs.nix}/bin/nix-shell -p bash -p curl -p gnupg -p lzip -p util-linux -p unzip -p xz -p python3 -p python3Packages.inquirerpy -p python3Packages.requests -p python3Packages.tqdm --run "/tmp/waydroid_script/main.py install "''${arm_translation}" widevine"
+
 	${pkgs.unstable.waydroid}/bin/waydroid upgrade -o
 	${pkgs.sudo}/bin/sudo --preserve-env=DISPLAY,WAYLAND_DISPLAY,XAUTHORITY,XDG_RUNTIME_DIR -u "$(${pkgs.coreutils}/bin/id -nu "''${PKEXEC_UID}")" ${pkgs.coreutils}/bin/nohup ${pkgs.unstable.waydroid}/bin/waydroid session start > /dev/null 2>&1 &
 	sleep 15
-
-	${pkgs.coreutils}/bin/rm -rf /tmp/waydroid_script
-	${pkgs.git}/bin/git clone -b main https://github.com/casualsnek/waydroid_script.git /tmp/waydroid_script
-	${pkgs.nix}/bin/nix-shell -p bash -p curl -p gnupg -p lzip -p util-linux -p unzip -p xz -p python3 -p python3Packages.inquirerpy -p python3Packages.requests -p python3Packages.tqdm --run "/tmp/waydroid_script/main.py install ''${arm_translation} widevine"
 
 	if [  "''${1}" == "GAPPS" ]; then
 		echo ""
