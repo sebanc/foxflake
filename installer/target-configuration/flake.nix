@@ -3,7 +3,7 @@
   description = "FoxFlake";
 
   inputs = {
-    foxflake.url = "github:sebanc/foxflake/stable";
+    foxflake.url = "github:sebanc/foxflake/unstable";
   };
 
   outputs =
