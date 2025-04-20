@@ -63,7 +63,7 @@ else
 		if [ "$(${pkgs.coreutils}/bin/realpath /sys/class/drm/renderD128/device/driver)" == "/sys/bus/pci/drivers/amdgpu" ]; then arm_translation="libndk"; fi
 	fi
 	echo -e "persist.waydroid.multi_windows=true" >> /var/lib/waydroid/waydroid.cfg
-	if [ -n "''${arm_translation}" ]; then arm_translation="libhoudini"; fi
+	if [ -z "''${arm_translation}" ]; then arm_translation="libhoudini"; fi
 
 	echo ""
 	echo "Installing ''${arm_translation} and widevine."
@@ -88,17 +88,13 @@ else
 		echo ""
 		read -rp "Complementary features (Magisk, Tweaks...) can be installed with the waydroid-helper program."
 	fi
-
-	${pkgs.unstable.waydroid}/bin/waydroid session stop > /dev/null 2>&1
-	${pkgs.unstable.waydroid}/bin/waydroid container stop > /dev/null 2>&1
-
 fi
       '';
     };
     desktopEntry = pkgs.makeDesktopItem {
       name = name;
       desktopName = "FoxFlake Waydroid setup";
-      icon = "foxflake-logo-light";
+      icon = "foxflake-icon-light";
       exec = "${script}/bin/${name}";
       terminal = true;
       categories = ["Utility"];
