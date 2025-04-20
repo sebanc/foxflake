@@ -34,6 +34,8 @@
                       cp ${./calamares-patches/config/settings.conf}                        $out/share/calamares/settings.conf
                       cp ${./calamares-patches/branding/nixos/branding.desc}                $out/share/calamares/branding/nixos/branding.desc
                       cp ${../packages/foxflake-logos/foxflake-logo-light.png}              $out/share/calamares/branding/nixos/foxflake-logo-light.png
+                      cp ${./calamares-patches/config/images/gnome.png}                     $out/share/calamares/images/gnome.png
+                      cp ${./calamares-patches/config/images/plasma6.png}                   $out/share/calamares/images/plasma6.png
                       cp ${./calamares-patches/config/images/minimal.png}                   $out/share/calamares/images/minimal.png
                       cp ${./calamares-patches/config/images/standard.png}                  $out/share/calamares/images/standard.png
                       cp ${./calamares-patches/config/images/gaming.png}                    $out/share/calamares/images/gaming.png
@@ -42,6 +44,7 @@
                       cp ${./calamares-patches/config/images/standard_studio.png}           $out/share/calamares/images/standard_studio.png
                       cp ${./calamares-patches/config/images/gaming_studio.png}             $out/share/calamares/images/gaming_studio.png
                       cp ${./calamares-patches/config/images/full.png}                      $out/share/calamares/images/full.png
+                      cp ${./calamares-patches/config/images/waydroid.png}                  $out/share/calamares/images/waydroid.png
                       cp ${./calamares-patches/config/modules/bundles.conf}                 $out/share/calamares/modules/bundles.conf
                       cp ${./calamares-patches/config/modules/environment.conf}             $out/share/calamares/modules/environment.conf
                       cp ${./calamares-patches/config/modules/users.conf}                   $out/share/calamares/modules/users.conf
