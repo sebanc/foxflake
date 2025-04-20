@@ -21,7 +21,6 @@
         "foxflake-installer" = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            ./configuration.nix
             inputs.foxflake.nixosModules.default
             "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares-gnome.nix"
             {
@@ -47,6 +46,20 @@
             (
               { config, lib, ... }:
               {
+                foxflake = {
+                  autoUpgrade = false;
+                  environment.type = "gnome";
+                  environment.switching.enable = false;
+                  system.bundles = [ ];
+                };
+                specialisation = {
+                  nvidia = {
+                    configuration = {
+                      system.nixos.tags = lib.mkForce [ "nvidia_driver" ];
+                      foxflake.nvidia.enable = true;
+                    };
+                  };
+                };
                 image.baseName = lib.mkForce "foxflake-${config.isoImage.edition}-${pkgs.stdenv.hostPlatform.uname.processor}";
                 isoImage = {
                   grubTheme = (pkgs.sleek-grub-theme.override { withBanner = "FoxFlake installer"; withStyle = "light"; });
