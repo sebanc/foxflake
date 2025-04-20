@@ -12,9 +12,8 @@ FoxFlake is a customized version of the NixOS Linux distribution (Flake) that ai
 - Firefox is proposed as default web browser (but is not imposed, the choice remains yours).<br>
 - Optional installation of Waydroid for android apps integration.<br>
 - Complement your system with Linux applications of your choice for productivity, gaming, media creation...<br><br>
-Gnome:<br><img alt="Gnome" src="https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/config/images/gnome.png?raw=true" width="480" height="270" />
-Plasma:<br><img alt="Plasma" src="https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/config/images/plasma6.png?raw=true" width="480" height="270" />
-<br>
+Gnome:<br><img alt="Gnome" src="https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/config/images/gnome.png?raw=true" width="480" height="270" /><br><br>
+Plasma:<br><img alt="Plasma" src="https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/config/images/plasma6.png?raw=true" width="480" height="270" /><br><br>
 The use of NixOS as a base guarantees the overall system stability and provides incredible rollback capabilities through the generations system. FoxFlake adds:<br>
 - Its own configurations declared in this repository that allows delegated management of maintenance tasks (NixOS options changes, package name changes...). All NixOS configurations are still available for users who want to customize their systems and supersede any FoxFlake default configuration.<br>
 - The use of NixOS stable channel as a rolling release (the switch from one stable version to the next is automated).<br>
