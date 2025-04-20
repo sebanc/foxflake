@@ -13,8 +13,8 @@ FoxFlake is a customized version of the NixOS Linux distribution (Flake) that ai
 - Optional installation of Waydroid for android apps integration.  
 - Complement your system with Linux applications of your choice for productivity, gaming, media creation...  
 <br>
-[<img alt="Gnome" src="https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/config/images/gnome.png?raw=true" width="480" height="270" />](https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/config/images/gnome.png?raw=true)
-[<img alt="Plasma" src="https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/config/images/plasma6.png?raw=true" width="480" height="270" />](https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/config/images/plasma6.png?raw=true)
+Gnome:<br><img alt="Gnome" src="https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/config/images/gnome.png?raw=true" width="480" height="270" />
+Plasma:<br><img alt="Plasma" src="https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/config/images/plasma6.png?raw=true" width="480" height="270" />
 <br>
 The use of NixOS as a base guarantees the overall system stability and provides incredible rollback capabilities through the generations system. FoxFlake adds:  
 - Its own configurations declared in this repository that allows delegated management of maintenance tasks (NixOS options changes, package name changes...). All NixOS configurations are still available for users who want to customize their systems and supersede any FoxFlake default configuration.  
