@@ -529,15 +529,16 @@ def run():
     libcalamares.job.setprogress(0.3)
 
     # Flake lock update
-    nixosFlakeUpdateCmd = [ "pkexec" ]
+    nixosFlakeUpdateCmd = [ 'pkexec' ]
     nixosFlakeUpdateCmd.extend(generateProxyStrings())
     nixosFlakeUpdateCmd.extend(
         [
-            "nix",
-            "--extra-experimental-features",
-            "flake",
-            "update",
-            "--flake",
+            'nix',
+            '--extra-experimental-features',
+            '"nix-command flakes"',
+            'flake',
+            'update',
+            '--flake',
             dest_dir
         ]
     )
@@ -562,17 +563,17 @@ def run():
         return (_("nix flake update failed"), _("Installation failed to complete"))
 
     # Installation
-    nixosInstallCmd = [ "pkexec" ]
+    nixosInstallCmd = [ 'pkexec' ]
     nixosInstallCmd.extend(generateProxyStrings())
     nixosInstallCmd.extend(
         [
-            "nixos-install",
-            "--no-root-passwd",
-            "--flake",
-            f"{root_mount_point}/etc/nixos#foxflake",
-            "--root",
+            'nixos-install',
+            '--no-root-passwd',
+            '--flake',
+            f'{root_mount_point}/etc/nixos#foxflake',
+            '--root',
             root_mount_point,
-            "--show-trace"
+            '--show-trace'
         ]
     )
 
