@@ -45,9 +45,9 @@
               ];
             }
             (
-              { config, ... }:
+              { config, lib, ... }:
               {
-                image.baseName = "foxflake-${config.isoImage.edition}-${pkgs.stdenv.hostPlatform.uname.processor}";
+                image.baseName = lib.mkForce "foxflake-${config.isoImage.edition}-${pkgs.stdenv.hostPlatform.uname.processor}";
                 isoImage = {
                   grubTheme = (pkgs.sleek-grub-theme.override { withBanner = "FoxFlake installer"; withStyle = "light"; });
                   edition = "installer";
