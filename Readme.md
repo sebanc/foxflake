@@ -21,7 +21,7 @@ The use of NixOS as a base guarantees the overall system stability and provides 
 
 As such, there are 2 main usages with FoxFlake:  
 - Zero maintenance mode: Install the system with the bundles of packages that correspond to your needs and complement them with flatpak applications.  
-- Customized declarative configurations: FoxFlake will manage the main system configurations and you are only in charge of the maintenance of your customizations.  
+- Customized declarative configurations: FoxFlake will manage the main system configurations and you are only in charge of the maintenance of your custom configurations.  
 
 The 3 bundles of applications included in FoxFlake are all optional and respectively contain:  
 - Standard bundle: Firefox, Thunderbird and LibreOffice.  
@@ -50,6 +50,10 @@ Once Waydroid is setup, you can use the "Waydroid helper" application to add com
 
 Home manager is installed by default, to initialize home manager for your user you need to run the command: `nix run home-manager -- init --switch`.  
 You can then apply your user home manager configuration updates with the command: `nix run home-manager switch`.  
+
+### Building the installer iso image
+
+Refer to the Readme in the "installer" subdirectory of this repository.  
 
 ## Thanks goes to:
 - [NixOS][NixOS] and community modules (home-manager, plasma-manager and nix-flatpak) maintainers.  

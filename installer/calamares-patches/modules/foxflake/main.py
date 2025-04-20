@@ -211,7 +211,8 @@ def run():
 
     # Setup variables
     root_mount_point = gs.value("rootMountPoint")
-    config = os.path.join(root_mount_point, "etc/nixos/configuration.nix")
+    dest_dir = os.path.join(root_mount_point, "etc/nixos/")
+    config = os.path.join(dest_dir, "configuration.nix")
     fw_type = gs.value("firmwareType")
     bootdev = (
         "nodev"
@@ -522,21 +523,45 @@ def run():
     # Write the configuration.nix file
     libcalamares.utils.host_env_process_output(["cp", "/dev/stdin", config], None, cfg)
 
-    # ========================================================================================
-    # Write and Install
-    # ========================================================================================
-
-    dest_dir = os.path.join(root_mount_point, "etc/nixos/")
     subprocess.run(["sudo", "cp", "/iso/target-configuration/flake.nix", dest_dir], check=True)
-    subprocess.run(["sudo", "cp", "/iso/target-configuration/flake.lock", dest_dir], check=True)
-
-    # Update flake
-    subprocess.run(["sudo", "nix", "--extra-experimental-features", "\"nix-command flakes\"", "flake", "update", "--flake", dest_dir], check=True)
 
     status = _("Installing NixOS")
     libcalamares.job.setprogress(0.3)
 
-    # Build nixos-install command
+    # Flake lock update
+    nixosFlakeUpdateCmd = [ "pkexec" ]
+    nixosFlakeUpdateCmd.extend(generateProxyStrings())
+    nixosFlakeUpdateCmd.extend(
+        [
+            "nix",
+            "--extra-experimental-features",
+            "flake",
+            "update",
+            "--flake",
+            dest_dir
+        ]
+    )
+
+    try:
+        output = ""
+        proc = subprocess.Popen(
+            nixosFlakeUpdateCmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT
+        )
+        while True:
+            line = proc.stdout.readline().decode("utf-8")
+            output += line
+            libcalamares.utils.debug("nix flake update: {}".format(line.strip()))
+            if not line:
+                break
+        exit = proc.wait()
+        if exit != 0:
+            return (_("nix flake update failed"), _(output))
+    except:
+        return (_("nix flake update failed"), _("Installation failed to complete"))
+
+    # Installation
     nixosInstallCmd = [ "pkexec" ]
     nixosInstallCmd.extend(generateProxyStrings())
     nixosInstallCmd.extend(
@@ -551,7 +576,6 @@ def run():
         ]
     )
 
-    # Install customizations
     try:
         output = ""
         proc = subprocess.Popen(

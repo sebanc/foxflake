@@ -1,4 +1,4 @@
-name: "Update flakes locks"
+name: "Update flake locks"
 on:
   workflow_dispatch:
   schedule:
@@ -15,12 +15,10 @@ jobs:
         ref: stable
     - name: Install nix
       uses: cachix/install-nix-action@v31
-    - name: Update flakes locks
+    - name: Update flake locks
       run: |
-        nix flake update --flake ./installer/target-configuration
-        nix flake update --flake ./installer
         nix flake update --flake .
     - name: Commit changes
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
-        commit_message: Update flakes locks
+        commit_message: Update flake locks

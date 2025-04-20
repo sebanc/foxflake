@@ -49,7 +49,9 @@
               {
                 isoImage = {
                   grubTheme = (pkgs.sleek-grub-theme.override { withBanner = "FoxFlake installer"; withStyle = "light"; });
-                  volumeID = "FoxFlake-ALPHA-OMNISLASH_2";
+                  edition = "installer";
+                  baseName = "foxflake-${config.isoImage.edition}-${pkgs.stdenv.hostPlatform.uname.processor}";
+                  volumeID = config.isoImage.baseName;
                   includeSystemBuildDependencies = false;
                   storeContents = [ config.system.build.toplevel ];
                   contents = [
