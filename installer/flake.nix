@@ -47,11 +47,11 @@
             (
               { config, ... }:
               {
+                image.baseName = "foxflake-${config.isoImage.edition}-${pkgs.stdenv.hostPlatform.uname.processor}";
                 isoImage = {
                   grubTheme = (pkgs.sleek-grub-theme.override { withBanner = "FoxFlake installer"; withStyle = "light"; });
                   edition = "installer";
-                  baseName = "foxflake-${config.isoImage.edition}-${pkgs.stdenv.hostPlatform.uname.processor}";
-                  volumeID = config.isoImage.baseName;
+                  volumeID = config.image.baseName;
                   includeSystemBuildDependencies = false;
                   storeContents = [ config.system.build.toplevel ];
                   contents = [
