@@ -45,7 +45,7 @@ with lib;
       timers."update-system-flatpaks" = {
         wantedBy = [ "timers.target" ];
         timerConfig = {
-          OnBootSec = "2m";
+          OnBootSec = "0";
           OnCalendar = "daily";
           Unit = "update-system-flatpaks.service";
         };
@@ -68,7 +68,7 @@ with lib;
       user.timers."update-user-flatpaks" = {
         wantedBy = [ "timers.target" ];
         timerConfig = {
-          OnBootSec = "2m";
+          OnBootSec = "0";
           OnCalendar = "daily";
           Unit = "update-user-flatpaks.service";
         };
