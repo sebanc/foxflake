@@ -34,7 +34,7 @@ The 3 bundles of applications included in FoxFlake are all optional and respecti
 ### Installing the nvidia driver
 
 If you have a nvidia card supported by the latest nvidia open source driver, select the 2nd bootloader option (nvidia_driver) when booting the installer iso and the latest nvidia-open driver will be installed automatically.<br>
-After install, you can add the line `foxflake.nvidia.enable = true;` to /etc/nixos/configuration.nix to enable the nvidia-open driver.<br>
+If you did not select the 2nd bootloader option (nvidia_driver) at install time, you can still add the line `foxflake.nvidia.enable = true;` to /etc/nixos/configuration.nix file to enable the nvidia-open driver.<br>
 
 For older nvidia card, you will need to follow the [NixOS nvidia instructions][NixOS-nvidia].<br><br>
 
@@ -45,7 +45,7 @@ The "FoxFlake Environment Selection" application allows you to review at any poi
 ### Setting up android apps
 
 It is highly recommended to use the "FoxFlake Waydroid setup" for the first time setup of Waydroid as it will detect your computer graphics and apply corresponding options.<br>
-Once Waydroid is setup, you can use the "Waydroid helper" application to add complementary features (ARM translation tools, Tweaks...).<br><br>
+Once Waydroid is setup, you can use the "Waydroid helper" application to add complementary features (Magisk, Tweaks...).<br><br>
 
 ### Setting up the Home manager user environment
 
