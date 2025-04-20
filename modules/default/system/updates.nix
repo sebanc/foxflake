@@ -29,7 +29,10 @@ with lib;
     systemd = {
       services.update-system-flatpaks = {
         description = "Update system flatpaks";
-        after = [ "network-online.target" ];
+        before = [ "multi-user.target" "shutdown.target" ];
+        after = [ "basic.target" "network-online.target" ];
+        conflicts = [ "shutdown.target" ];
+        requires = [ "basic.target" "network-online.target" ];
         wants = [ "network-online.target" ];
         serviceConfig = {
           Type = "oneshot";
@@ -40,7 +43,7 @@ with lib;
             fi
           ''}/bin/update-system-flatpaks";
         };
-        path = [ pkgs.flatpak ];
+        path = [ pkgs.curl pkgs.flatpak ];
         wantedBy = [ "multi-user.target" ];
         restartIfChanged = false;
       };
@@ -54,6 +57,10 @@ with lib;
       };
       user.services.update-user-flatpaks = {
         description = "Update user flatpaks";
+        before = [ "default.target" "shutdown.target" ];
+        after = [ "app.slice" "-.mount" "basic.target" "multi-user.target" ];
+        conflicts = [ "shutdown.target" ];
+        requires = [ "app.slice" "basic.target" ];
         serviceConfig = {
           Type = "oneshot";
           ExecStart = "${pkgs.writeShellScriptBin "update-user-flatpaks" ''
@@ -63,7 +70,7 @@ with lib;
             fi
           ''}/bin/update-user-flatpaks";
         };
-        path = [ pkgs.flatpak ];
+        path = [ pkgs.curl pkgs.flatpak ];
         wantedBy = [ "default.target" ];
         restartIfChanged = false;
       };
