@@ -65,34 +65,38 @@ else
 	echo -e "persist.waydroid.multi_windows=true" >> /var/lib/waydroid/waydroid.cfg
 	if [ -n "''${arm_translation}" ]; then arm_translation="libhoudini"; fi
 
+	${pkgs.unstable.waydroid}/bin/waydroid upgrade -o
+	${pkgs.sudo}/bin/sudo --preserve-env=DISPLAY,WAYLAND_DISPLAY,XAUTHORITY,XDG_RUNTIME_DIR -u "$(${pkgs.coreutils}/bin/id -nu "''${PKEXEC_UID}")" ${pkgs.coreutils}/bin/nohup ${pkgs.unstable.waydroid}/bin/waydroid session start > /dev/null 2>&1 &
+	sleep 15
+
 	${pkgs.coreutils}/bin/rm -rf /tmp/waydroid_script
 	${pkgs.git}/bin/git clone -b main https://github.com/casualsnek/waydroid_script.git /tmp/waydroid_script
 	${pkgs.nix}/bin/nix-shell -p bash -p curl -p gnupg -p lzip -p util-linux -p unzip -p xz -p python3 -p python3Packages.inquirerpy -p python3Packages.requests -p python3Packages.tqdm --run "/tmp/waydroid_script/main.py install ''${arm_translation} widevine"
 
-	${pkgs.unstable.waydroid}/bin/waydroid upgrade -o
-
 	if [  "''${1}" == "GAPPS" ]; then
-		${pkgs.sudo}/bin/sudo --preserve-env=DISPLAY,WAYLAND_DISPLAY,XAUTHORITY,XDG_RUNTIME_DIR -u "$(${pkgs.coreutils}/bin/id -nu "''${PKEXEC_UID}")" ${pkgs.coreutils}/bin/nohup ${pkgs.unstable.waydroid}/bin/waydroid session start > /dev/null 2>&1 &
-		sleep 15
 		echo ""
 		echo 'ANDROID_RUNTIME_ROOT=/apex/com.android.runtime ANDROID_DATA=/data ANDROID_TZDATA_ROOT=/apex/com.android.tzdata ANDROID_I18N_ROOT=/apex/com.android.i18n sqlite3 /data/data/com.google.android.gsf/databases/gservices.db "select * from main where name = \"android_id\";"' | ${pkgs.unstable.waydroid}/bin/waydroid shell
 		echo ""
-		read -rp "Waydroid setup is finished, in order to use the playstore you will first need to register the above android id with your google account at https://www.google.com/android/uncertified (it might take a few minutes to take effect)."
+		echo "Waydroid setup is finished, in order to use the playstore you will first need to register the above android id with your google account at https://www.google.com/android/uncertified (it might take a few minutes to take effect)."
 		echo ""
 		read -rp "Complementary features (Magisk, Tweaks...) can be installed with the waydroid-helper program."
 	else
 		echo ""
-		read -rp "Waydroid setup is finished."
+		echo "Waydroid setup is finished."
 		echo ""
 		read -rp "Complementary features (Magisk, Tweaks...) can be installed with the waydroid-helper program."
 	fi
+
+	${pkgs.unstable.waydroid}/bin/waydroid session stop > /dev/null 2>&1
+	${pkgs.unstable.waydroid}/bin/waydroid container stop > /dev/null 2>&1
+
 fi
       '';
     };
     desktopEntry = pkgs.makeDesktopItem {
       name = name;
       desktopName = "FoxFlake Waydroid setup";
-      icon = "foxflake-icon-dark";
+      icon = "foxflake-logo-light";
       exec = "${script}/bin/${name}";
       terminal = true;
       categories = ["Utility"];
