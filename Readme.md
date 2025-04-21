@@ -52,9 +52,21 @@ Once Waydroid is setup, you can use the "Waydroid helper" application to add com
 Home manager is installed by default, to initialize home manager for your user you need to run the command: `nix run home-manager -- init --switch`.<br>
 You can then apply your user home manager configuration updates with the command: `nix run home-manager switch`.<br><br>
 
-### Building the installer iso image
+### Building the FoxFlake installer iso image
 
-Refer to the Readme in the "installer" subdirectory of this repository.<br><br>
+1. Install the nix package manager on your system according to the instructions at: https://nixos.org/download.<br>
+
+2. Clone this repository:<br>
+`git clone -b stable https://github.com/sebanc/foxflake.git`<br>
+
+3. Enter the "installer" subfolder:<br>
+`cd ./foxflake/installer`<br>
+
+4. Update the installer flake lock:<br>
+`nix --extra-experimental-features "nix-command flakes" flake update --flake .`<br>
+
+5. Launch the build:<br>
+`nix --extra-experimental-features "nix-command flakes" build .#installer`<br><br>
 
 ## Thanks goes to:
 - [NixOS][NixOS] and community modules (home-manager, plasma-manager and nix-flatpak) maintainers.<br>
