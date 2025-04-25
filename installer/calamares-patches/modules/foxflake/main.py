@@ -44,7 +44,6 @@ cfgenvironment = """
 
 cfgautologin = """
   # Autologin
-  foxflake.environment.autologin = true;
   foxflake.environment.autologinUser = "@@username@@";
 
 """
