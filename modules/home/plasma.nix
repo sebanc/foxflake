@@ -47,6 +47,21 @@ with lib;
           ];
         }
       ];
+      session.sessionRestore.restoreOpenApplicationsOnLogin = mkDefault "whenSessionWasManuallySaved";
+    };
+
+    home.file = {
+      ".config/kwalletrc" = {
+        text = ''
+          [Wallet]
+          Enabled=false
+        '';
+        executable = false;
+        enable = if osConfig.foxflake.environment.autologin then
+          true
+        else
+          false;
+      };
     };
 
   };
