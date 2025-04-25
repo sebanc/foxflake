@@ -11,6 +11,8 @@ with lib;
   config = mkIf (builtins.elem "gaming" config.foxflake.system.bundles) {
 
     environment.systemPackages = with pkgs; [
+      gamescope
+      gamescope-wsi
       heroic
       lutris
       mangohud
@@ -22,7 +24,6 @@ with lib;
       gamemode.enable = mkDefault true;
       steam = {
         enable = mkDefault true;
-        gamescopeSession.enable = mkDefault true;
         dedicatedServer.openFirewall = mkDefault true;
         remotePlay.openFirewall = mkDefault true;
         localNetworkGameTransfers.openFirewall = mkDefault true;
