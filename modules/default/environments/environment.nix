@@ -18,7 +18,10 @@ in
     };
     autologin = mkOption {
       type = with types; bool;
-      default = false;
+      default = if config.foxflake.environment.autologinUser == null || config.foxflake.environment.autologinUser == "" then
+        false
+      else
+        true;
       description = "Enable desktop environment autologin";
     };
     autologinUser = mkOption {
