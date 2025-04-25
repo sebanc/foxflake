@@ -65,11 +65,8 @@ with lib;
       };
       cursor-theme = mkOption {
         type = with types; nullOr str;
-        default = if config.foxflake.environment.type == "gnome" then
-          "Adwaita"
-        else
-          "Breeze_Light";
-        example = "Adwaita";
+        default = "Adwaita";
+        example = "Breeze_Light";
         description = ''
           The cursor theme to use.
         '';
