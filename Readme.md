@@ -68,6 +68,8 @@ You can then apply your user home manager configuration updates with the command
 5. Launch the build:<br>
 `nix --extra-experimental-features "nix-command flakes" build .#installer`<br><br>
 
+The generated installer iso image will be located in the "result/iso" folder.
+
 ## Thanks goes to:
 - [NixOS][NixOS] and community modules (home-manager, plasma-manager and nix-flatpak) maintainers.<br>
 - The Gaming Linux France community for the inspiration coming from their [gaming oriented GLF OS][GLF-OS].<br><br>
