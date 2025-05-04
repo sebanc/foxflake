@@ -26,9 +26,9 @@ with lib;
     };
 
     programs.gnupg = {
-      package = pkgs.gnupg1;
-      agent.enable = true;
-      dirmngr.enable = true;
+      package = mkDefault pkgs.gnupg1;
+      agent.enable = mkDefault true;
+      dirmngr.enable = mkDefault true;
     };
 
     services.fstrim = {
