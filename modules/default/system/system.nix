@@ -25,6 +25,12 @@ with lib;
       };
     };
 
+    programs.gnupg = {
+      package = pkgs.gnupg1;
+      agent.enable = true;
+      dirmngr.enable = true;
+    };
+
     services.fstrim = {
       enable = mkDefault true;
       interval = mkDefault "weekly";
