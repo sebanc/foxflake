@@ -31,9 +31,12 @@ with lib;
       dirmngr.enable = mkDefault true;
     };
 
-    services.fstrim = {
-      enable = mkDefault true;
-      interval = mkDefault "weekly";
+    services = {
+      fstrim = {
+        enable = mkDefault true;
+        interval = mkDefault "weekly";
+      };
+      thermald.enable = mkDefault true;
     };
 
     zramSwap.enable = mkDefault true;
