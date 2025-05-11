@@ -26,7 +26,7 @@ _ = gettext.translation(
 # ====================================================
 # Configuration.nix (Modified)
 # ====================================================
-cfghead = """{ inputs, config, pkgs, lib, ... }:
+cfghead = """{ config, pkgs, lib, ... }:
 {
   # Imports
   imports =
