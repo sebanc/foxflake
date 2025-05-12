@@ -7,27 +7,36 @@
 
 ## About this project
 
-FoxFlake is a customized version of the NixOS Linux distribution (Flake) that aims to reproduce the best features of ChromeOS using Open Source Software (simple, very stable system and without any maintenance tasks needed) while providing native access to the full catalogue of Linux applications:<br>
-- Plasma and Gnome desktop environments ensure simplicity of use and respectively provide KDE Connect / GSConnect for Phone integration with your Computer.<br>
+FoxFlake is a comprehensive configuration of the NixOS Linux distribution (Flake) which aims to reproduce the best features of ChromeOS using Open Source Software (simple, very stable system and without any maintenance tasks needed) while providing native access to the full catalogue of Linux applications:<br>
+- FoxFlake automatically configures the system and does not require any preliminary NixOS knowledge.<br>
+- Plasma and Gnome desktop environments ensure ease of use and respectively provide KDE Connect / GSConnect for Phone integration with your Computer.<br>
 - Firefox is proposed as default web browser (but is not imposed, the choice remains yours).<br>
-- Optional installation of Waydroid for android apps integration.<br>
-- Complement your system with Linux applications of your choice for productivity, gaming, media creation...<br><br>
-Gnome:<br><img alt="Gnome" src="https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/config/images/gnome.png?raw=true" width="480" height="270" /><br><br>
+- Waydroid can be included for android applications support (optional).<br>
+- Flatpak allows to complement your system with Linux applications of your choice for productivity, gaming, media creation...<br><br>
+
 Plasma:<br><img alt="Plasma" src="https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/config/images/plasma6.png?raw=true" width="480" height="270" /><br><br>
-The use of NixOS as a base guarantees the overall system stability and provides incredible rollback capabilities through the generations system. FoxFlake adds:<br>
-- Its own configurations declared in this repository that allows delegated management of maintenance tasks (NixOS options changes, package name changes...). All NixOS configurations are still available for users who want to customize their systems and supersede any FoxFlake default configuration.<br>
+Gnome:<br><img alt="Gnome" src="https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/config/images/gnome.png?raw=true" width="480" height="270" /><br><br>
+
+## Installation
+
+Download the installer iso from the releases section of this repository.<br><br>
+
+## Features
+
+The use of NixOS as a base guarantees the overall system stability and provides strong rollback capabilities through the generations mechanism. FoxFlake provides:<br>
+- A comprehensive NixOS configuration, declared in this repository, that allows delegated management of maintenance tasks (NixOS options changes, package name changes...). All NixOS options are still available for users who want to customize their systems and supersede any FoxFlake default configuration.<br>
 - The use of NixOS stable channel as a rolling release (the switch from one stable version to the next is automated).<br>
 - Unattended daily updates of your system (for both NixOS system packages and system / user flatpaks).<br>
-- NixOS community maintained modules home-manager, plasma-manager and nix-flatpak modules are included for those interested in having a fully declarative configuration from system to user profiles.<br><br>
+- NixOS community maintained modules home-manager, plasma-manager and nix-flatpak modules are included and allow to have a fully declarative configuration from system to user profiles.<br><br>
 
-As such, there are 2 main usages with FoxFlake:<br>
-- Zero maintenance mode: Install the system with the bundles of packages that correspond to your needs and complement them with flatpak applications.<br>
-- Customized declarative configurations: FoxFlake will manage the main system configurations and you are only in charge of the maintenance of your custom configurations.<br><br>
-
-The 3 bundles of applications included in FoxFlake are all optional and respectively contain:<br>
+3 bundles of applications are proposed, they are all optional and respectively contain:<br>
 - Standard bundle: Firefox, Thunderbird and LibreOffice.<br>
 - Gaming bundle: Steam, Heroic and Lutris.<br>
-- Studio bundle: DaVinci Resolve, OBS Studio, Blender, Kdenlive, GIMP, Audacity.<br>
+- Studio bundle: OBS Studio, Blender, Kdenlive, GIMP, Audacity.<br><br>
+
+As such, there are 2 possible usages with FoxFlake:<br>
+- Zero maintenance mode: Install the system with the bundles of packages that correspond to your needs and complement them with flatpak applications.<br>
+- Custom declarative configurations: FoxFlake will manage the main system configurations and you are only in charge of the maintenance of your custom configurations.<br><br>
 
 ## Complementary instructions:
 
