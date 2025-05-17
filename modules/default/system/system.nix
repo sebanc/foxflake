@@ -37,6 +37,7 @@ with lib;
         enable = mkDefault true;
         interval = mkDefault "weekly";
       };
+      fwupd.enable = mkDefault true;
       thermald.enable = mkDefault true;
     };
 
