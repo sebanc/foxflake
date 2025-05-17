@@ -22,6 +22,7 @@ with lib;
       settings = {
         auto-optimise-store = mkDefault true;
         cores = mkDefault 4;
+        download-buffer-size = 524288000;
       };
     };
 
