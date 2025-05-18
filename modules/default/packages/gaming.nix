@@ -10,10 +10,11 @@ with lib;
 
   config = mkIf (builtins.elem "gaming" config.foxflake.system.bundles) {
 
-    environment.systemPackages = with pkgs; [
+    environment.systemPackages = with pkgs.unstable; [
       gamescope
       gamescope-wsi
       heroic
+      joystickwake
       lutris
       mangohud
     ];
