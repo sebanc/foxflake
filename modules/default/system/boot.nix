@@ -61,6 +61,7 @@ with lib;
   config = mkIf config.foxflake.boot.enable {
 
     boot = {
+      consoleLogLevel = mkDefault 3;
       loader = {
         grub = {
           enable = mkDefault config.foxflake.boot.enable;
