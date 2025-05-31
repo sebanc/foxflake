@@ -9,9 +9,7 @@
     { self, foxflake, ... }@inputs:
     let
       system = "x86_64-linux";
-      # Use nixpkgs-unstable for the installer until switch to 25.05 to support specialisations
-      #nixpkgs = inputs.foxflake.inputs.nixpkgs;
-      nixpkgs = inputs.foxflake.inputs.nixpkgs-unstable;
+      nixpkgs = inputs.foxflake.inputs.nixpkgs;
       pkgs = import nixpkgs { config.allowUnfree = true; system = "x86_64-linux"; };
     in
     {
