@@ -61,18 +61,27 @@
                   environment.switching.enable = false;
                   system.bundles = [ ];
                 };
+                system.nixos.label = "";
                 specialisation = {
-                  nvidia = {
+                  nvidia_open = {
                     configuration = {
-                      system.nixos.tags = lib.mkForce [ "nvidia_driver" ];
+                      isoImage.appendToMenuLabel = lib.mkForce " Installer (with Nvidia open source kernel driver)";
                       foxflake.nvidia.enable = true;
+                    };
+                  };
+                  nvidia_proprietary = {
+                    configuration = {
+                      isoImage.appendToMenuLabel = lib.mkForce " Installer (with Nvidia proprietary kernel driver)";
+                      foxflake.nvidia.enable = true;
+                      foxflake.nvidia.open = false;
                     };
                   };
                 };
                 image.baseName = lib.mkForce "foxflake-${config.isoImage.edition}-${pkgs.stdenv.hostPlatform.uname.processor}";
                 isoImage = {
-                  grubTheme = (pkgs.sleek-grub-theme.override { withBanner = "FoxFlake installer"; withStyle = "light"; });
+                  appendToMenuLabel = " Installer";
                   edition = "installer";
+                  grubTheme = pkgs.minimal-grub-theme;
                   volumeID = config.image.baseName;
                   includeSystemBuildDependencies = false;
                   storeContents = [ config.system.build.toplevel ];
