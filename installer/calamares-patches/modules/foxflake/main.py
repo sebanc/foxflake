@@ -66,9 +66,16 @@ cfgusers = """
 
 """
 
-cfg_nvidia = """
+cfg_nvidia_open = """
   # Nvidia open source driver support
   foxflake.nvidia.enable = true;
+
+"""
+
+cfg_nvidia_proprietary = """
+  # Nvidia proprietary driver support
+  foxflake.nvidia.enable = true;
+  foxflake.nvidia.open = false;
 
 """
 
@@ -183,13 +190,16 @@ def catenate(d, key, *values):
 
     d[key] = "".join(values)
 
-def get_specialisation():
-    result = subprocess.run(['cat', '/run/booted-system/nixos-version'], stdout=subprocess.PIPE, text=True)
-    if result is None:
-        specialisation = ""
+def detect_nvidia():
+    result = subprocess.run(['sudo', 'bash', '-c', 'lspci | grep "VGA compatible controller:\|3D controller:"'], stdout=subprocess.PIPE, text=True)
+    lspci_output = result.stdout.strip()
+    if "RTX 50" in lspci_output or "RTX 40" in lspci_output or "RTX 30" in lspci_output:
+        nvidia_driver = "open"
+    elif "RTX 20" in lspci_output or "GTX 10" in lspci_output or "GTX 9" in lspci_output or "GTX 8" in lspci_output:
+        nvidia_driver = "proprietary"
     else:
-        specialisation = result.stdout.strip().splitlines()[0]
-    return specialisation
+        nvidia_driver = ""
+    return nvidia_driver
 
 # ==================================================================================================
 # Configuration
@@ -244,9 +254,11 @@ def run():
         catenate(variables, "groups", (" ").join(['"' + s + '"' for s in groups]))
 
     # Nvidia support
-    specialisation = get_specialisation()
-    if "nvidia" in specialisation:
-        cfg += cfg_nvidia
+    nvidia_driver = detect_nvidia()
+    if nvidia_driver == "open":
+        cfg += cfg_nvidia_open
+    elif nvidia_driver == "proprietary":
+        cfg += cfg_nvidia_proprietary
 
 # ================================================================================
 # Writing cfg modules to configuration.nix
