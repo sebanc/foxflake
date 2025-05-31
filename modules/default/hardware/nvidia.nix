@@ -9,6 +9,11 @@ with lib;
       default = false;
       description = "Enable nvidia support";
     };
+    open = mkOption {
+      description = "Whether to enable the Nvidia open source kernel driver.";
+      type = with types; bool;
+      default = true;
+    };
   };
 
   config = mkIf config.foxflake.nvidia.enable {
@@ -17,7 +22,7 @@ with lib;
 
     hardware.nvidia = {
       package = mkDefault config.boot.kernelPackages.nvidiaPackages.stable;
-      open = mkDefault true;
+      open = mkDefault config.foxflake.nvidia.open;
       modesetting.enable = mkDefault true;
       nvidiaSettings = mkDefault true;
     };
