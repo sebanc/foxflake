@@ -42,10 +42,9 @@ As such, there are 2 possible usages with FoxFlake:<br>
 
 ### Installing the nvidia driver
 
-If you have a nvidia card supported by the latest nvidia open source driver, select the 2nd bootloader option (nvidia_driver) when booting the installer iso and the latest nvidia-open driver will be installed automatically.<br>
-If you did not select the 2nd bootloader option (nvidia_driver) at install time, you can still add the line `foxflake.nvidia.enable = true;` to /etc/nixos/configuration.nix file to enable the nvidia-open driver.<br>
+For Nvidia GPU compatible with the latest open source or proprietary kernel modules, recommended drivers are automatically enabled during install.<br><br>
 
-For older nvidia card, you will need to follow the [NixOS nvidia instructions][NixOS-nvidia].<br><br>
+For older nvidia cards, you will need to follow the [NixOS nvidia instructions][NixOS-nvidia].<br><br>
 
 ### Changing desktop environment or application bundles after installation
 
