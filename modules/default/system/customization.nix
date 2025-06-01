@@ -85,7 +85,11 @@ with lib;
   config = {
 
     boot.loader.grub = {
-      splashImage = mkDefault config.foxflake.customization.grub.splashImage;
+      splashImage =
+        if config.foxflake.customization.grub.theme != null then
+          null
+        else
+          mkDefault config.foxflake.customization.grub.splashImage;
       theme = mkDefault config.foxflake.customization.grub.theme;
     };
 
