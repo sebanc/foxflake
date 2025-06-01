@@ -27,7 +27,7 @@ with lib;
       };
       theme = mkOption {
         type = with types; nullOr path;
-        default = "${pkgs.sleek-grub-theme}";
+        default = "${pkgs.minimal-grub-theme}";
         example = literalExpression ''"''${pkgs.libsForQt5.breeze-grub}/grub/themes/breeze"'';
         description = ''
           Path to the grub theme to be used.
@@ -87,13 +87,12 @@ with lib;
     boot.loader.grub = {
       splashImage =
         if config.foxflake.customization.grub.theme != null then
-          null
+          mkDefault null
         else
           mkDefault config.foxflake.customization.grub.splashImage;
       theme = mkDefault config.foxflake.customization.grub.theme;
     };
 
-    foxflake.customization.grub.theme = mkDefault (pkgs.sleek-grub-theme.override { withBanner = "OS Selection"; withStyle = "light"; });
     environment.systemPackages = [ (pkgs.callPackage ../../../packages/foxflake-icons {}) ];
 
   };
