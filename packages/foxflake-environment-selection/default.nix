@@ -111,6 +111,7 @@ else
 	}
 
 	if [ "''${current_environment}" != "''${1}" ]; then
+		${pkgs.sudo}/bin/sudo -u "$(${pkgs.coreutils}/bin/id -nu "''${PKEXEC_UID}")" ${pkgs.dconf}/bin/dconf reset -f /
 		for gtkconfig in /home/*/.gtkrc* /home/*/.config/gtkrc* /home/*/.config/gtk-* /home/*/.config/dconf; do ${pkgs.coreutils}/bin/rm -rf "''${gtkconfig}"; done
 	fi
 
