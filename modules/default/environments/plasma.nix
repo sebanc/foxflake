@@ -43,7 +43,10 @@ with lib;
         '')
       ];
     };
-    programs.kdeconnect.enable = mkDefault true;
+    programs = {
+      kdeconnect.enable = mkDefault true;
+      partition-manager.enable = mkDefault true;
+    };
   };
 
 }
