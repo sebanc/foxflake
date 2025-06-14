@@ -18,7 +18,7 @@ with lib;
 
   config = mkIf config.foxflake.nvidia.enable {
 
-    boot.blacklistedKernelModules = [ "nouveau" ];
+    boot.blacklistedKernelModules = [ "nouveau" "nova_core" ];
 
     hardware.nvidia = {
       package = mkDefault config.boot.kernelPackages.nvidiaPackages.stable;
