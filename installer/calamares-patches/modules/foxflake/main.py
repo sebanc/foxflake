@@ -195,7 +195,7 @@ def detect_nvidia():
     lspci_output = result.stdout.strip()
     if "RTX 50" in lspci_output or "RTX 40" in lspci_output or "RTX 30" in lspci_output:
         nvidia_driver = "open"
-    elif "RTX 20" in lspci_output or "GTX 10" in lspci_output or "GTX 9" in lspci_output or "GTX 8" in lspci_output:
+    elif "RTX 20" in lspci_output or "GTX 16" in lspci_output or "GTX 10" in lspci_output or "GTX 9" in lspci_output or "GTX 8" in lspci_output:
         nvidia_driver = "proprietary"
     else:
         nvidia_driver = ""
