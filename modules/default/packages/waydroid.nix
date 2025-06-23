@@ -15,8 +15,8 @@ with lib;
     environment.systemPackages = [
       pkgs.unzip
       pkgs.fakeroot
-      pkgs.unstable.waydroid
       pkgs.unstable.waydroid-helper
+      (pkgs.unstable.waydroid.override { python3Packages = pkgs.python312Packages; })
       (pkgs.callPackage ../../../packages/foxflake-waydroid-setup {})
     ];
 
