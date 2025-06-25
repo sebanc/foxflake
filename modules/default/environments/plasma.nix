@@ -26,8 +26,25 @@ with lib;
       xdgOpenUsePortal = mkDefault true;
     };
 
-    systemd.services."getty@tty1".enable = mkDefault false;
-    systemd.services."autovt@tty1".enable = mkDefault false;
+    systemd = {
+      services."getty@tty1".enable = mkDefault false;
+      services."autovt@tty1".enable = mkDefault false;
+      user.services.plasma-taskbar-icon-fix = {
+        description = "Fix plasma taskbar icon path";
+        before = [ "plasma-plasmashell.service" ];
+        wantedBy = [ "plasma-core.target" ];
+        serviceConfig = {
+          Type = "simple";
+          ExecStart = "${pkgs.writeShellScriptBin "plasma-taskbar-icon-fix" ''
+            #!${pkgs.bash}
+            if [ -f ''${HOME}/.config/plasma-org.kde.plasma.desktop-appletsrc ]; then
+              ${pkgs.gnused}/bin/sed -i 's/file:\/\/\/nix\/store\/[^\/]*\/share\/applications\//applications:/gi' ''${HOME}/.config/plasma-org.kde.plasma.desktop-appletsrc
+            fi
+          ''}/bin/plasma-taskbar-icon-fix";
+        };
+        restartIfChanged = false;
+      };
+    };
 
     environment = {
       plasma6.excludePackages = with pkgs; [
