@@ -33,6 +33,7 @@ with lib;
     };
 
     services = {
+      envfs.enable = mkDefault true;
       fstrim = {
         enable = mkDefault true;
         interval = mkDefault "weekly";
