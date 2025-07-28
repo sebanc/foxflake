@@ -15,6 +15,11 @@ with lib;
         enable = mkDefault true;
         support32Bit = mkDefault true;
       };
+      extraConfig.pipewire."91-min-quantum" = {
+        "context.properties" = {
+          "default.clock.min-quantum" = 1024;
+        };
+      };
     };
 
   };
