@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ lib, config, pkgs, ... }:
 with lib;
 
 {
@@ -28,6 +28,8 @@ with lib;
     };
 
     services.xserver.videoDrivers = mkDefault [ "nvidia" ];
+
+    programs.nix-ld.libraries = with pkgs; [ linuxPackages.nvidia_x11 ];
 
   };
 
