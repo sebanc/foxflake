@@ -45,7 +45,7 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.sharedModules = [ inputs.plasma-manager.homeManagerModules.plasma-manager inputs.nix-flatpak.homeManagerModules.nix-flatpak ./modules/home ];
+              home-manager.sharedModules = [ inputs.plasma-manager.homeModules.plasma-manager inputs.nix-flatpak.homeManagerModules.nix-flatpak ./modules/home ];
             }
           ];
         };
