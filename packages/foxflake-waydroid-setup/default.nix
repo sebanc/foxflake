@@ -56,7 +56,7 @@ else
 	if [ -d /sys/class/drm/renderD128 ] && [ -d /sys/class/drm/renderD129 ] && { [ "$(${pkgs.coreutils}/bin/realpath /sys/class/drm/renderD128/device/driver)" == "/sys/bus/pci/drivers/nvidia" ] || [ "$(${pkgs.coreutils}/bin/realpath /sys/class/drm/renderD128/device/driver)" == "/sys/bus/pci/drivers/nouveau" ]; }; then
 		${pkgs.gnused}/bin/sed -i -z 's@\n\[properties]@drm_device = /dev/dri/renderD129\n\n\[properties]@g' /var/lib/waydroid/waydroid.cfg
 		if [ "$(${pkgs.coreutils}/bin/realpath /sys/class/drm/renderD129/device/driver)" == "/sys/bus/pci/drivers/amdgpu" ]; then arm_translation="libndk"; fi
-	elif { [ -d /sys/class/drm/renderD128 ] && { [ "$(${pkgs.coreutils}/bin/realpath /sys/class/drm/renderD128/device/driver)" == "/sys/bus/pci/drivers/nvidia" ] || [ "$(${pkgs.coreutils}/bin/realpath /sys/class/drm/renderD128/device/driver)" == "/sys/bus/pci/drivers/nouveau" ]; }; } || ${pkgs.gnugrep}/bin/grep -q 'QEMU' /sys/class/dmi/id/chassis_vendor; then
+	elif ${pkgs.gnugrep}/bin/grep -q 'QEMU' /sys/class/dmi/id/chassis_vendor; then
 		echo -e "ro.hardware.gralloc=default\nro.hardware.egl=swiftshader" >> /var/lib/waydroid/waydroid.cfg
 	else
 		if [ "$(${pkgs.coreutils}/bin/realpath /sys/class/drm/renderD128/device/driver)" == "/sys/bus/pci/drivers/amdgpu" ]; then arm_translation="libndk"; fi
