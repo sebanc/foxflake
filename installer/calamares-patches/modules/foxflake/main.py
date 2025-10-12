@@ -23,9 +23,12 @@ _ = gettext.translation(
     fallback=True,
 ).gettext
 
+libcalamares.utils.host_env_process_output(["chmod", "0755", "/tmp"], None)
+
 # ====================================================
-# Configuration.nix (Modified)
+# Configuration.nix
 # ====================================================
+
 cfghead = """{ config, pkgs, lib, ... }:
 {
   # Imports
@@ -610,5 +613,7 @@ def run():
     # Set maximum EFI boot priority
     if fw_type == "efi":
         subprocess.run(['sudo', 'bash', '-c', 'efibootmgr -o $(efibootmgr | grep "FoxFlake-boot" | tail -1 | cut -d"*" -f1 | sed "s@Boot@@g")'], check=True)
+
+    libcalamares.utils.host_env_process_output(["chmod", "1777", "/tmp"], None)
 
     return None

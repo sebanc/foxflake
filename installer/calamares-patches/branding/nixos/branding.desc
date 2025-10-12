@@ -157,10 +157,10 @@ strings:
 # These filenames can also use substitutions from os-release (see above).
 images:
     # productBanner:       "banner.png"
-    productIcon:         "foxflake-logo-light.png"
+    productIcon:         "images/foxflake-logo-light.png"
     productLogo:         "white.png"
     # productWallpaper:    "wallpaper.png"
-    productWelcome:      "foxflake-logo-light.png"
+    productWelcome:      "images/foxflake-logo-light.png"
 
 # Colors for text and background components.
 #
