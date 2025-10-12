@@ -11,13 +11,11 @@ with lib;
   config = mkIf (config.foxflake.environment.enable && config.foxflake.environment.type == "gnome") {
 
     services = {
+      desktopManager.gnome.enable = mkDefault true;
+      displayManager.gdm.enable = mkDefault true;
       displayManager.defaultSession = mkDefault "gnome";
       power-profiles-daemon.enable = mkDefault true;
       udev.packages = mkDefault [ pkgs.gnome-settings-daemon ];
-      xserver = {
-        displayManager.gdm.enable = mkDefault true;
-        desktopManager.gnome.enable = mkDefault true;
-      };
     };
 
     xdg.portal = {
