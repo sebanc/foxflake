@@ -45,6 +45,7 @@ in
     
     hardware.bluetooth.enable = mkDefault true;
     networking.networkmanager.enable = mkDefault true;
+    services.resolved.enable = mkDefault true;
 
     services = {
       displayManager.autoLogin = {
