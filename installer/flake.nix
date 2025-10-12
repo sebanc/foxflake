@@ -26,6 +26,7 @@
                 (_self: super: {
                   calamares-nixos-extensions = super.calamares-nixos-extensions.overrideAttrs (_oldAttrs: {
                     postInstall = ''
+                      mkdir -p $out/etc/calamares $out/lib/calamares/modules $out/share/calamares/branding
                       cp -rT ${./calamares-patches/config}                                  $out/etc/calamares/
                       cp -rT ${./calamares-patches/modules}                                 $out/lib/calamares/modules/
                       cp -rT ${./calamares-patches/branding}                                $out/share/calamares/branding/
