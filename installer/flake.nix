@@ -26,8 +26,9 @@
                 (_self: super: {
                   calamares-nixos-extensions = super.calamares-nixos-extensions.overrideAttrs (_oldAttrs: {
                     postInstall = ''
-                      mkdir -p $out/etc/calamares $out/lib/calamares/modules $out/share/calamares/branding
+                      mkdir -p $out/etc/calamares $out/lib/calamares/modules $out/share/calamares/branding/nixos/images
                       cp -rT ${./calamares-patches/config}                                  $out/etc/calamares/
+                      cp -rT ${./calamares-patches/config}                                  $out/share/calamares/
                       cp -rT ${./calamares-patches/modules}                                 $out/lib/calamares/modules/
                       cp -rT ${./calamares-patches/branding}                                $out/share/calamares/branding/
                       cp ${../packages/foxflake-logos/foxflake-logo-light.png}              $out/share/calamares/branding/nixos/images/foxflake-logo-light.png
