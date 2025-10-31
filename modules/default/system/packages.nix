@@ -42,7 +42,6 @@ with lib;
   config = {
 
     environment.systemPackages = config.foxflake.system.packages;
-    environment.systemPackages = with pkgs; [ bzip2 dmidecode efibootmgr p7zip ];
 
     programs.appimage = {
       enable = mkDefault true;
