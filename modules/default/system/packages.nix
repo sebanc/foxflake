@@ -16,7 +16,7 @@ with lib;
     };
     packages = mkOption {
       type = with types; listOf package;
-      default = with pkgs; [ bzip2 dmidecode efibootmgr p7zip ];
+      default = with pkgs; [ ];
       example = literalExpression "with pkgs; [ firefox ]";
       description = ''
         The set of packages that should be made available to all users.
@@ -42,6 +42,7 @@ with lib;
   config = {
 
     environment.systemPackages = config.foxflake.system.packages;
+    environment.systemPackages = with pkgs; [ bzip2 dmidecode efibootmgr p7zip ];
 
     programs.appimage = {
       enable = mkDefault true;
