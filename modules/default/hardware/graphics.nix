@@ -10,12 +10,12 @@ with lib;
       enable32Bit = mkDefault true;
       extraPackages = with pkgs; [
         intel-media-driver
-        vaapiIntel
+        intel-vaapi-driver
         vaapiVdpau
       ];
       extraPackages32 = with pkgs; [
         intel-media-driver
-        vaapiIntel
+        intel-vaapi-driver
         vaapiVdpau
       ];
     };
