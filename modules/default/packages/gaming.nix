@@ -10,7 +10,7 @@ with lib;
 
   config = mkIf (builtins.elem "gaming" config.foxflake.system.bundles) {
 
-    environment.systemPackages = with pkgs.unstable; [
+    environment.systemPackages = with pkgs; [
       gamescope
       gamescope-wsi
       heroic
