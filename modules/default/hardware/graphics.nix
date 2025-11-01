@@ -11,12 +11,12 @@ with lib;
       extraPackages = with pkgs; [
         intel-media-driver
         intel-vaapi-driver
-        vaapiVdpau
+        libva-vdpau-driver
       ];
       extraPackages32 = with pkgs; [
         intel-media-driver
         intel-vaapi-driver
-        vaapiVdpau
+        libva-vdpau-driver
       ];
     };
 
