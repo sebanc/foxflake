@@ -3,14 +3,14 @@
   description = "FoxFlake Stable";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     plasma-manager = {
-      url = "github:nix-community/plasma-manager";
+      url = "github:pjones/plasma-manager";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
@@ -19,19 +19,21 @@
 
   outputs =
     { nixpkgs, nixpkgs-unstable, home-manager, plasma-manager, nix-flatpak, ... }@inputs:
+    let
+      system = "x86_64-linux";
+    in
     {
       nixosModules = rec {
         foxflake = {
           imports = [
             { nix.settings.experimental-features = [ "nix-command" "flakes" ]; }
-            { nixpkgs.hostPlatform = "x86_64-linux"; }
             { nixpkgs.config.allowUnfree = true; }
             {
               nixpkgs.overlays = [
                 (final: prev: {
                   unstable = import nixpkgs-unstable {
                     inherit prev;
-                    system = builtins.currentSystem;
+                    inherit system;
                     config.allowUnfree = true;
                   };
                 })
