@@ -14,7 +14,7 @@ with lib;
       desktopManager.gnome.enable = mkDefault true;
       displayManager = {
         gdm.enable = mkDefault true;
-        displayManager.defaultSession = mkDefault "gnome";
+        defaultSession = mkDefault "gnome";
       };
       power-profiles-daemon.enable = mkDefault true;
       udev.packages = mkDefault [ pkgs.gnome-settings-daemon ];
