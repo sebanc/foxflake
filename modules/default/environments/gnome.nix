@@ -12,8 +12,10 @@ with lib;
 
     services = {
       desktopManager.gnome.enable = mkDefault true;
-      displayManager.gdm.enable = mkDefault true;
-      displayManager.defaultSession = mkDefault "gnome";
+      displayManager = {
+        gdm.enable = mkDefault true;
+        defaultSession = mkDefault "gnome";
+      };
       power-profiles-daemon.enable = mkDefault true;
       udev.packages = mkDefault [ pkgs.gnome-settings-daemon ];
     };
@@ -23,9 +25,6 @@ with lib;
       extraPortals = mkDefault [ pkgs.xdg-desktop-portal-gnome ];
       xdgOpenUsePortal = mkDefault true;
     };
-
-    systemd.services."getty@tty1".enable = mkDefault false;
-    systemd.services."autovt@tty1".enable = mkDefault false;
 
     programs.kdeconnect = {
       enable = mkDefault true;
