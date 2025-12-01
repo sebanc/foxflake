@@ -31,6 +31,7 @@
                 (final: prev: {
                   unstable = import nixpkgs-unstable {
                     inherit prev;
+                    system = prev.system;
                     config.allowUnfree = true;
                   };
                 })
