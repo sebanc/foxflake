@@ -19,6 +19,7 @@
 
   outputs =
     { nixpkgs, nixpkgs-unstable, home-manager, plasma-manager, nix-flatpak, ... }@inputs:
+    {
       nixosModules = rec {
         foxflake = {
           imports = [
@@ -48,5 +49,6 @@
         };
         default = foxflake;
       };
+    };
 
 }
