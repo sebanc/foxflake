@@ -29,6 +29,16 @@ with lib;
 
     services.xserver.videoDrivers = mkDefault [ "nvidia" ];
 
+    systemd.services.nvidia-suspend.enable = mkDefault true;
+    systemd.services.nvidia-resume.enable = mkDefault true;
+    systemd.services.nvidia-hibernate.enable = mkDefault true;
+    systemd.shutdown."nvidia.shutdown" = pkgs.writeScript "nvidia.shutdown" ''
+      #!/bin/sh
+      for MODULE in nvidia_drm nvidia_modeset nvidia_uvm nvidia; do
+        if lsmod | grep "''${MODULE}" &> /dev/null; then rmmod ''${MODULE}; fi
+      done
+    '';
+
     programs.nix-ld.libraries = with pkgs; [ linuxPackages.nvidia_x11 ];
 
   };
