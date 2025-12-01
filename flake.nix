@@ -20,7 +20,7 @@
   outputs =
     { nixpkgs, nixpkgs-unstable, home-manager, plasma-manager, nix-flatpak, ... }@inputs:
     let
-      system = "x86_64-linux";
+      inherit system;
     in
     {
       nixosModules = rec {

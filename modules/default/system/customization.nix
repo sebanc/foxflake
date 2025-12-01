@@ -73,7 +73,7 @@ with lib;
       };
       launcher-icon = mkOption {
         type = with types; nullOr str;
-        default = "nix-snowflake-white";
+        default = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake-white.svg";
         example = "icon-name";
         description = ''
           The icon to use for the application launcher.
