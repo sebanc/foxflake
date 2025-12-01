@@ -10,14 +10,14 @@ with lib;
 
   config = mkIf (config.foxflake.environment.enable && config.foxflake.environment.type == "plasma") {
     services = {
+      desktopManager.plasma6.enable = mkDefault true;
       displayManager = {
-        defaultSession = mkDefault "plasma";
         sddm = {
           enable = mkDefault true;
           theme = mkDefault "breeze";
         };
+        defaultSession = mkDefault "plasma";
       };
-      desktopManager.plasma6.enable = mkDefault true;
     };
 
     xdg.portal = {
@@ -27,8 +27,6 @@ with lib;
     };
 
     systemd = {
-      services."getty@tty1".enable = mkDefault false;
-      services."autovt@tty1".enable = mkDefault false;
       user.services.plasma-taskbar-icon-fix = {
         description = "Fix plasma taskbar icon path";
         before = [ "plasma-plasmashell.service" ];
@@ -47,6 +45,13 @@ with lib;
     };
 
     environment = {
+      etc."xdg/baloofilerc" = {
+        mode = "0644";
+        text = ''
+          [Basic Settings]
+          Indexing-Enabled=false
+        '';
+      };
       plasma6.excludePackages = with pkgs; [
         kdePackages.plasma-browser-integration
         kdePackages.oxygen
