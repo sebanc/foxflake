@@ -33,7 +33,7 @@
                 (final: prev: {
                   unstable = import nixpkgs-unstable {
                     inherit prev;
-                    system = prev.system;
+                    inherit system;
                     config.allowUnfree = true;
                   };
                 })
