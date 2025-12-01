@@ -31,7 +31,6 @@
                 (final: prev: {
                   unstable = import nixpkgs-unstable {
                     inherit prev;
-                    inherit hostPlatform;
                     config.allowUnfree = true;
                   };
                 })
