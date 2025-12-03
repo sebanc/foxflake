@@ -48,6 +48,8 @@ with lib;
         type = with types; nullOr str;
         default = if config.foxflake.environment.type == "gnome" then
           "Adwaita"
+        else if config.foxflake.environment.type == "plasma" then
+          "default"
         else
           null;
         example = "Adwaita";
