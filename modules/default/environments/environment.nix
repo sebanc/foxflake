@@ -61,6 +61,20 @@ in
         };
       };
     };
+
+    systemd.user.services = {
+      xdg-user-dirs-update = {
+        description = "User folders update";
+        before = [ "graphical-session-pre.target" ];
+        wantedBy = [ "graphical-session-pre.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = "${pkgs.xdg-user-dirs}/bin/xdg-user-dirs-update";
+        };
+        restartIfChanged = false;
+      };
+    };
+
   };
 
 }
