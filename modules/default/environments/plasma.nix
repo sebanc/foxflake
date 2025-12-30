@@ -94,7 +94,6 @@ with lib;
             KWALLETRC
               fi
             fi
-
           ''}/bin/plasma-defaults";
         };
         restartIfChanged = false;
@@ -120,7 +119,6 @@ with lib;
             usersWallpapers=${config.foxflake.customization.environment.wallpaper}
             PLASMARC
             fi
-
           ''}/bin/plasma-theme";
         };
         restartIfChanged = false;
