@@ -5,6 +5,7 @@
     ./nvidia.nix
     ./pipewire.nix
     ./printing.nix
+    ./vm-support.nix
   ];
 
 }
