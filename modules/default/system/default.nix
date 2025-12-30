@@ -1,6 +1,7 @@
 {
 
   imports = [
+    ./appimages.nix
     ./boot.nix
     ./customization.nix
     ./internationalisation.nix
