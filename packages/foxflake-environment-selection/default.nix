@@ -15,7 +15,7 @@ if ! ${pkgs.curl}/bin/curl -L https://github.com/sebanc/foxflake > /dev/null 2>&
 if [ ''${#} -eq 0 ]; then
 	interface=1
 elif [ ''${#} -eq 3 ]; then
-	if { [ "''${1}" != "= \"gnome\"" ] && [ "''${1}" != "= \"plasma\"" ]; } || { [ "''${2}" != "= [ ]" ] && [ "''${2}" != "= [ \"standard\" ]" ] && [ "''${2}" != "= [ \"gaming\" ]" ] && [ "''${2}" != "= [ \"studio\" ]" ] && [ "''${2}" != "= [ \"standard\" \"gaming\" ]" ] && [ "''${2}" != "= [ \"standard\" \"studio\" ]" ] && [ "''${2}" != "= [ \"gaming\" \"studio\" ]" ] && [ "''${2}" != "= [ \"standard\" \"gaming\" \"studio\" ]" ]; } || { [ "''${3}" != "= true" ] && [ "''${3}" != "= false" ]; }; then
+	if { [ "''${1}" != "= \"cosmic\"" ] && [ "''${1}" != "= \"gnome\"" ] && [ "''${1}" != "= \"plasma\"" ]; } || { [ "''${2}" != "= [ ]" ] && [ "''${2}" != "= [ \"standard\" ]" ] && [ "''${2}" != "= [ \"gaming\" ]" ] && [ "''${2}" != "= [ \"studio\" ]" ] && [ "''${2}" != "= [ \"standard\" \"gaming\" ]" ] && [ "''${2}" != "= [ \"standard\" \"studio\" ]" ] && [ "''${2}" != "= [ \"gaming\" \"studio\" ]" ] && [ "''${2}" != "= [ \"standard\" \"gaming\" \"studio\" ]" ]; } || { [ "''${3}" != "= true" ] && [ "''${3}" != "= false" ]; }; then
 		${pkgs.zenity}/bin/zenity --width=800 --title="FoxFlake - Environment selection interface" --error --ok-label="Exit" --text "Error: Parameters are not valid, please specify FoxFlake environment, edition and whether Waydroid should be installed." 2>/dev/null
 		exit 1
 	else
@@ -28,7 +28,7 @@ fi
 
 if [ "''${interface}" -eq 1 ]; then
 
-	environment_options=( "Gnome" "Plasma" )
+	environment_options=( "Cosmic" "Gnome" "Plasma" )
 	bundles_options=( "Minimal" "Standard" "Gaming" "Studio" "Standard + Gaming" "Standard + Studio" "Gaming + Studio" "Full")
 	waydroid_options=( "Yes" "No" )
 
@@ -38,6 +38,9 @@ if [ "''${interface}" -eq 1 ]; then
 	if [ -z "$selected_environment" ]; then exit 0; fi
 
 	case $selected_environment in
+		'Cosmic')
+			environment_short_name="= \"cosmic\""
+		;;
 		'Gnome')
 			environment_short_name="= \"gnome\""
 		;;
