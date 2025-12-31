@@ -100,6 +100,6 @@ The generated installer iso image will be located in the "result/iso" folder.
 <!-- Outbound Links -->
 [NixOS]: https://nixos.org/
 [NixOS-nvidia]: https://nixos.wiki/wiki/Nvidia
-[GLF-OS]: https://github.com/Gaming-Linux-FR/GLF-OS
+[GLF-OS]: https://www.gaminglinux.fr/glf-os
 
 
