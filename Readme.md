@@ -9,13 +9,13 @@
 
 FoxFlake is a comprehensive configuration of the NixOS Linux distribution (Flake) which aims to reproduce the best features of ChromeOS using Open Source Software (simple, very stable system and without any maintenance tasks needed) while providing native access to the full catalogue of Linux applications:<br>
 - FoxFlake automatically configures the system and does not require any preliminary NixOS knowledge.<br>
-- Plasma and Gnome desktop environments ensure ease of use and respectively provide KDE Connect / GSConnect for Phone integration with your Computer.<br>
-- Firefox is proposed as default web browser (but is not imposed, the choice remains yours).<br>
+- Gnome, Plasma and Cosmic desktop environments are available and can be switched easily.<br>
 - Waydroid can be included for android applications support (optional).<br>
 - Flatpak allows to complement your system with Linux applications of your choice for productivity, gaming, media creation...<br><br>
 
-Plasma:<br><img alt="Plasma" src="https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/branding/nixos/images/plasma.png?raw=true" width="480" height="270" /><br><br>
 Gnome:<br><img alt="Gnome" src="https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/branding/nixos/images/gnome.png?raw=true" width="480" height="270" /><br><br>
+Plasma:<br><img alt="Plasma" src="https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/branding/nixos/images/plasma.png?raw=true" width="480" height="270" /><br><br>
+Cosmic:<br><img alt="Gnome" src="https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/branding/nixos/images/cosmic.png?raw=true" width="480" height="270" /><br><br>
 
 ## Installation
 
