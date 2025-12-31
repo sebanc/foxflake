@@ -13,11 +13,11 @@ FoxFlake is a comprehensive configuration of the NixOS Linux distribution (Flake
 - Waydroid can be included for android applications support (optional).<br>
 - Flatpak allows to complement your system with Linux applications of your choice for productivity, gaming, media creation...<br><br>
 
-<p style="text-align:center;">
+<div align="center">
 Gnome:<br><img alt="Gnome" src="https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/branding/nixos/images/gnome.png?raw=true" width="512" height="320" /><br><br>
 Plasma:<br><img alt="Plasma" src="https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/branding/nixos/images/plasma.png?raw=true" width="512" height="320" /><br><br>
 Cosmic:<br><img alt="Gnome" src="https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/branding/nixos/images/cosmic.png?raw=true" width="512" height="320" /><br><br>
-</p>
+</div>
 
 ## Installation
 
