@@ -20,7 +20,7 @@ with lib;
       ];
     };
 
-    # AMD OpenCL support
+    rocmSupport = mkDefault true;
     systemd.tmpfiles.rules = [
       "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
     ];
