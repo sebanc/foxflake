@@ -41,6 +41,8 @@ with lib;
 
     programs.nix-ld.libraries = with pkgs; [ linuxPackages.nvidia_x11 ];
 
+    nixpkgs.config.cudaSupport = mkDefault true;
+    nixpkgs.config.rocmSupport = mkOverride 999 false;
   };
 
 }
