@@ -12,7 +12,7 @@ with lib;
 
     environment.systemPackages = with pkgs; [
       audacity
-      blender
+      pkgsRocm.blender
       gimp
       inkscape-with-extensions
       kdePackages.kdenlive
