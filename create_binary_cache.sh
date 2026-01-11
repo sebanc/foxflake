@@ -6,7 +6,7 @@ cat >/home/runner/work/foxflake/foxflake/upload-to-cache.sh <<BUILD_OUTPUT
 #!/bin/sh
 
 set -e
-echo test
+nix copy --to file:///home/runner/work/foxflake/foxflake/foxflake-binary-cache \$outPath
 #set -f # disable globbing
 #export IFS=' '
 #
@@ -229,7 +229,7 @@ mkdir /home/runner/work/foxflake/foxflake/foxflake-binary-cache
 for version in "stable" "unstable"; do
 	for environment in "cosmic" "gnome" "plasma"; do
 		for nvidia in "" "-nvidia"; do
-			nix build .#nixosConfigurations.foxflake-${version}-${environment}${nvidia}.config.system.build.toplevel -vvv
+			nix build .#nixosConfigurations.foxflake-${version}-${environment}${nvidia}.config.system.build.toplevel
 			nix-collect-garbage -d
 		done
 	done
