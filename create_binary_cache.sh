@@ -225,6 +225,7 @@ cat >./flake.nix <<MAIN_FLAKE
 
 }
 MAIN_FLAKE
+git add "flake.nix"
 
 git clone -b stable https://github.com/sebanc/foxflake.git foxflake-stable
 nix flake update --flake ./foxflake-stable
