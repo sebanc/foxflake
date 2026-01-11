@@ -3,7 +3,7 @@
 set -e
 
 cat >/home/runner/work/foxflake/foxflake/upload-to-cache.sh <<BUILD_OUTPUT
-#!/usr/bin/env bash
+#!/bin/sh
 
 set -uf
 
