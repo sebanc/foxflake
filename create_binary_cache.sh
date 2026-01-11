@@ -2,8 +2,7 @@
 
 set -e
 
-mkdir -p ${HOME}/.local/share/nix
-cat >${HOME}/.local/share/nix/upload-to-cache.sh <<BUILD_OUTPUT
+cat >/tmp/upload-to-cache.sh <<BUILD_OUTPUT
 #!/bin/sh
 
 set -eu
@@ -13,14 +12,7 @@ export IFS=' '
 echo "Uploading paths" \$OUT_PATHS
 exec nix copy --to "${PWD}/foxflake-binary-cache" \$OUT_PATHS
 BUILD_OUTPUT
-chmod 0755 ${HOME}/.local/share/nix/upload-to-cache.sh
-cat >${HOME}/.local/share/nix/nix.conf <<NIX_CONFIGURATION
-post-build-hook = ${HOME}/.local/share/nix/upload-to-cache.sh
-secret-key-files = /tmp/foxflake-binary-cache.priv
-substituters = https://cache.nixos-cuda.org/ https://cache.nixos.org/
-trusted-substituters = https://cache.nixos-cuda.org/ https://cache.nixos.org/
-trusted-public-keys = cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
-NIX_CONFIGURATION
+chmod 0755 /tmp/upload-to-cache.sh
 
 cat >./flake.nix <<MAIN_FLAKE
 {
@@ -227,30 +219,10 @@ cat >./flake.nix <<MAIN_FLAKE
 MAIN_FLAKE
 git add flake.nix
 
-git clone -b stable https://github.com/sebanc/foxflake.git foxflake-stable
-nix flake update --flake ./foxflake-stable
-git -C ./foxflake-stable add flake.lock
-cp ./foxflake-stable/flake.lock /tmp/foxflake-stable-flake.lock
-
-git clone -b stable-test https://github.com/sebanc/foxflake.git foxflake-stable-test
-nix flake update --flake ./foxflake-stable-test
-git -C ./foxflake-stable-test add flake.lock
-cp ./foxflake-stable-test/flake.lock /tmp/foxflake-stable-test-flake.lock
-
-git clone -b unstable https://github.com/sebanc/foxflake.git foxflake-unstable
-nix flake update --flake ./foxflake-unstable
-git -C ./foxflake-unstable add flake.lock
-cp ./foxflake-unstable/flake.lock /tmp/foxflake-unstable-flake.lock
-
-git clone -b unstable-test https://github.com/sebanc/foxflake.git foxflake-unstable-test
-nix flake update --flake ./foxflake-unstable-test
-git -C ./foxflake-unstable-test add flake.lock
-cp ./foxflake-unstable-test/flake.lock /tmp/foxflake-unstable-test-flake.lock
-
-git clone -b dev https://github.com/sebanc/foxflake.git foxflake-dev
-nix flake update --flake ./foxflake-dev
-git -C ./foxflake-dev add flake.lock
-cp ./foxflake-dev/flake.lock /tmp/foxflake-dev-flake.lock
+for branch in "stable" "stable-test" "unstable" "unstable-test" "dev"; do
+	git clone -b stable https://github.com/sebanc/foxflake.git foxflake-${branch}
+	nix flake update --flake ./foxflake-${branch}
+done
 
 mkdir ./foxflake-binary-cache
 for version in "stable" "unstable"; do
@@ -262,6 +234,12 @@ for version in "stable" "unstable"; do
 	done
 done
 rm /tmp/foxflake-binary-cache.priv
+
+cp ./foxflake-stable/flake.lock /tmp/foxflake-stable-flake.lock
+cp ./foxflake-stable-test/flake.lock /tmp/foxflake-stable-test-flake.lock
+cp ./foxflake-unstable/flake.lock /tmp/foxflake-unstable-flake.lock
+cp ./foxflake-unstable-test/flake.lock /tmp/foxflake-unstable-test-flake.lock
+cp ./foxflake-dev/flake.lock /tmp/foxflake-dev-flake.lock
 
 cd ./foxflake-binary-cache
 echo -e '<html><body><h1>FoxFlake binary cache</h1></body></html>' > index.html
