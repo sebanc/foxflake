@@ -7,9 +7,9 @@ cat >/tmp/upload-to-cache.sh <<BUILD_OUTPUT
 
 set -uf
 
-if [[ -n "''${OUT_PATHS:-}" ]]; then
-	echo "upload $OUT_PATHS"
-	printf "%s" "$OUT_PATHS" | xargs nix copy --to 'file:///tmp/foxflake-binary-cache'
+if [[ -n "\${OUT_PATHS:-}" ]]; then
+	echo "upload \$OUT_PATHS"
+	printf "%s" "\$OUT_PATHS" | xargs nix copy --to 'file:///tmp/foxflake-binary-cache'
 fi
 BUILD_OUTPUT
 chmod 0755 /tmp/upload-to-cache.sh
