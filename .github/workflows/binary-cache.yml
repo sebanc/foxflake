@@ -32,8 +32,8 @@ jobs:
         with:
           extra_nix_config: |
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-            post-build-hook = /tmp/upload-to-cache.sh
-            secret-key-files = /tmp/foxflake-binary-cache.priv
+            post-build-hook = /home/runner/work/foxflake/foxflake/upload-to-cache.sh
+            secret-key-files = /home/runner/work/foxflake/foxflake/foxflake-binary-cache.priv
             substituters = https://cache.nixos-cuda.org/ https://cache.nixos.org/
             trusted-substituters = https://cache.nixos-cuda.org/ https://cache.nixos.org/
             trusted-public-keys = cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
@@ -41,41 +41,41 @@ jobs:
         env:
           FOXFLAKE_BINARY_CACHE_PRIV: ${{ secrets.FOXFLAKE_BINARY_CACHE_PRIV }}
         run: |
-          echo "$FOXFLAKE_BINARY_CACHE_PRIV" | base64 -d > /tmp/foxflake-binary-cache.priv
+          echo "$FOXFLAKE_BINARY_CACHE_PRIV" | base64 -d > /home/runner/work/foxflake/foxflake/foxflake-binary-cache.priv
           ./create_binary_cache.sh
       - name: Upload FoxFlake binary cache as artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: /tmp/foxflake-binary-cache/
+          path: /home/runner/work/foxflake/foxflake/foxflake-binary-cache/
 #      - name: Upload FoxFlake stable flake.lock
 #        uses: actions/upload-artifact@v4
 #        with:
 #          name: foxflake-stable-flake-lock
-#          path: /tmp/foxflake-stable-flake.lock
+#          path: /home/runner/work/foxflake/foxflake/foxflake-stable-flake.lock
 #          if-no-files-found: error
 #      - name: Upload FoxFlake stable test flake.lock
 #        uses: actions/upload-artifact@v4
 #        with:
 #          name: foxflake-stable-test-flake-lock
-#          path: /tmp/foxflake-stable-test-flake.lock
+#          path: /home/runner/work/foxflake/foxflake/foxflake-stable-test-flake.lock
 #          if-no-files-found: error
 #      - name: Upload FoxFlake unstable flake.lock
 #        uses: actions/upload-artifact@v4
 #        with:
 #          name: foxflake-unstable-flake-lock
-#          path: /tmp/foxflake-unstable-flake.lock
+#          path: /home/runner/work/foxflake/foxflake/foxflake-unstable-flake.lock
 #          if-no-files-found: error
 #      - name: Upload FoxFlake unstable test flake.lock
 #        uses: actions/upload-artifact@v4
 #        with:
 #          name: foxflake-unstable-test-flake-lock
-#          path: /tmp/foxflake-unstable-test-flake.lock
+#          path: /home/runner/work/foxflake/foxflake/foxflake-unstable-test-flake.lock
 #          if-no-files-found: error
       - name: Upload FoxFlake dev flake.lock
         uses: actions/upload-artifact@v4
         with:
           name: foxflake-dev-flake-lock
-          path: /tmp/foxflake-dev-flake.lock
+          path: /home/runner/work/foxflake/foxflake/foxflake-dev-flake.lock
           if-no-files-found: error
   deploy-foxflake-binary-cache:
     runs-on: ubuntu-latest
@@ -107,9 +107,9 @@ jobs:
 #        uses: actions/download-artifact@v4
 #        with:
 #          name: foxflake-stable-flake-lock
-#          path: /tmp/foxflake-stable-flake.lock
+#          path: /home/runner/work/foxflake/foxflake/foxflake-stable-flake.lock
 #      - name: Copy FoxFlake stable flake lock
-#        run: cp /tmp/foxflake-stable-flake.lock ./flake.lock
+#        run: cp /home/runner/work/foxflake/foxflake/foxflake-stable-flake.lock ./flake.lock
 #      - name: Commit changes
 #        uses: stefanzweifel/git-auto-commit-action@v5
 #        with:
@@ -129,9 +129,9 @@ jobs:
 #        uses: actions/download-artifact@v4
 #        with:
 #          name: foxflake-stable-test-flake-lock
-#          path: /tmp/foxflake-stable-test-flake.lock
+#          path: /home/runner/work/foxflake/foxflake/foxflake-stable-test-flake.lock
 #      - name: Copy FoxFlake stable test flake lock
-#        run: cp /tmp/foxflake-stable-test-flake.lock ./flake.lock
+#        run: cp /home/runner/work/foxflake/foxflake/foxflake-stable-test-flake.lock ./flake.lock
 #      - name: Commit changes
 #        uses: stefanzweifel/git-auto-commit-action@v5
 #        with:
@@ -151,9 +151,9 @@ jobs:
 #        uses: actions/download-artifact@v4
 #        with:
 #          name: foxflake-unstable-flake-lock
-#          path: /tmp/foxflake-unstable-flake.lock
+#          path: /home/runner/work/foxflake/foxflake/foxflake-unstable-flake.lock
 #      - name: Copy FoxFlake unstable flake lock
-#        run: cp /tmp/foxflake-unstable-flake.lock ./flake.lock
+#        run: cp /home/runner/work/foxflake/foxflake/foxflake-unstable-flake.lock ./flake.lock
 #      - name: Commit changes
 #        uses: stefanzweifel/git-auto-commit-action@v5
 #        with:
@@ -173,9 +173,9 @@ jobs:
 #        uses: actions/download-artifact@v4
 #        with:
 #          name: foxflake-unstable-test-flake-lock
-#          path: /tmp/foxflake-unstable-test-flake.lock
+#          path: /home/runner/work/foxflake/foxflake/foxflake-unstable-test-flake.lock
 #      - name: Copy FoxFlake unstable test flake lock
-#        run: cp /tmp/foxflake-unstable-test-flake.lock ./flake.lock
+#        run: cp /home/runner/work/foxflake/foxflake/foxflake-unstable-test-flake.lock ./flake.lock
 #      - name: Commit changes
 #        uses: stefanzweifel/git-auto-commit-action@v5
 #        with:
@@ -196,9 +196,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: foxflake-dev-flake-lock
-          path: /tmp/foxflake-dev-flake.lock
+          path: /home/runner/work/foxflake/foxflake/foxflake-dev-flake.lock
       - name: Copy FoxFlake dev flake lock
-        run: cp /tmp/foxflake-dev-flake.lock ./flake.lock
+        run: cp /home/runner/work/foxflake/foxflake/foxflake-dev-flake.lock ./flake.lock
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:

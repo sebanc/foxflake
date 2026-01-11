@@ -2,17 +2,17 @@
 
 set -e
 
-cat >/tmp/upload-to-cache.sh <<BUILD_OUTPUT
+cat >/home/runner/work/foxflake/foxflake/upload-to-cache.sh <<BUILD_OUTPUT
 #!/usr/bin/env bash
 
 set -uf
 
 if [[ -n "\${OUT_PATHS:-}" ]]; then
 	echo "upload \$OUT_PATHS"
-	printf "%s" "\$OUT_PATHS" | xargs nix copy --to 'file:///tmp/foxflake-binary-cache'
+	printf "%s" "\$OUT_PATHS" | xargs nix copy --to 'file:///home/runner/work/foxflake/foxflake/foxflake-binary-cache'
 fi
 BUILD_OUTPUT
-chmod 0755 /tmp/upload-to-cache.sh
+chmod 0755 /home/runner/work/foxflake/foxflake/upload-to-cache.sh
 
 cat >./flake.nix <<MAIN_FLAKE
 {
@@ -224,7 +224,7 @@ for branch in "stable" "stable-test" "unstable" "unstable-test" "dev"; do
 	nix flake update --flake ./foxflake-${branch}
 done
 
-mkdir /tmp/foxflake-binary-cache
+mkdir /home/runner/work/foxflake/foxflake/foxflake-binary-cache
 for version in "stable" "unstable"; do
 	for environment in "cosmic" "gnome" "plasma"; do
 		for nvidia in "" "-nvidia"; do
@@ -233,15 +233,15 @@ for version in "stable" "unstable"; do
 		done
 	done
 done
-rm /tmp/foxflake-binary-cache.priv
+rm /home/runner/work/foxflake/foxflake/foxflake-binary-cache.priv
 
-cp ./foxflake-stable/flake.lock /tmp/foxflake-stable-flake.lock
-cp ./foxflake-stable-test/flake.lock /tmp/foxflake-stable-test-flake.lock
-cp ./foxflake-unstable/flake.lock /tmp/foxflake-unstable-flake.lock
-cp ./foxflake-unstable-test/flake.lock /tmp/foxflake-unstable-test-flake.lock
-cp ./foxflake-dev/flake.lock /tmp/foxflake-dev-flake.lock
+cp ./foxflake-stable/flake.lock /home/runner/work/foxflake/foxflake/foxflake-stable-flake.lock
+cp ./foxflake-stable-test/flake.lock /home/runner/work/foxflake/foxflake/foxflake-stable-test-flake.lock
+cp ./foxflake-unstable/flake.lock /home/runner/work/foxflake/foxflake/foxflake-unstable-flake.lock
+cp ./foxflake-unstable-test/flake.lock /home/runner/work/foxflake/foxflake/foxflake-unstable-test-flake.lock
+cp ./foxflake-dev/flake.lock /home/runner/work/foxflake/foxflake/foxflake-dev-flake.lock
 
-cd /tmp/foxflake-binary-cache
+cd /home/runner/work/foxflake/foxflake/foxflake-binary-cache
 echo -e '<html><body><h1>FoxFlake binary cache</h1></body></html>' > index.html
 echo -e 'StoreDir: /nix/store\nWantMassQuery: 1\nPriority: 60' > nix-cache-info
 echo 'http(s)://sebanc.github.io/foxflake' > binary-cache-url
