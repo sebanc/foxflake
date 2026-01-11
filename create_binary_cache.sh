@@ -3,14 +3,14 @@
 set -e
 
 cat >/tmp/upload-to-cache.sh <<BUILD_OUTPUT
-#!/bin/sh
+#!/usr/bin/env bash
 
 set -eu
 set -f # disable globbing
 export IFS=' '
 
 echo "Uploading paths" \$OUT_PATHS
-exec nix copy --to "/tmp/foxflake-binary-cache" \$OUT_PATHS
+exec nix copy --to "file:///tmp/foxflake-binary-cache" \$OUT_PATHS
 BUILD_OUTPUT
 chmod 0755 /tmp/upload-to-cache.sh
 
@@ -241,7 +241,7 @@ cp ./foxflake-unstable/flake.lock /tmp/foxflake-unstable-flake.lock
 cp ./foxflake-unstable-test/flake.lock /tmp/foxflake-unstable-test-flake.lock
 cp ./foxflake-dev/flake.lock /tmp/foxflake-dev-flake.lock
 
-cd ./foxflake-binary-cache
+cd /tmp/foxflake-binary-cache
 echo -e '<html><body><h1>FoxFlake binary cache</h1></body></html>' > index.html
 echo -e 'StoreDir: /nix/store\nWantMassQuery: 1\nPriority: 60' > nix-cache-info
 echo 'http(s)://sebanc.github.io/foxflake' > binary-cache-url
