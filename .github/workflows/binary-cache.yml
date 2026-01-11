@@ -32,7 +32,7 @@ jobs:
         with:
           extra_nix_config: |
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-            post-build-hook = /home/runner/work/foxflake/foxflake/upload-to-cache.sh
+            #post-build-hook = /home/runner/work/foxflake/foxflake/upload-to-cache.sh
             secret-key-files = /home/runner/work/foxflake/foxflake/foxflake-binary-cache.priv
             substituters = https://cache.nixos-cuda.org/ https://cache.nixos.org/
             trusted-substituters = https://cache.nixos-cuda.org/ https://cache.nixos.org/
