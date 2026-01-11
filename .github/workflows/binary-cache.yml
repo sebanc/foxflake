@@ -1,0 +1,183 @@
+name: Build FoxFlake binary cache and update flake locks 
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+  push:
+    branches:
+      - 'main'
+    paths-ignore:
+      - 'README.md'
+concurrency:
+  group: environment-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  create-foxflake-binary-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Install nix
+        uses: cachix/install-nix-action@v31
+      - name: Build FoxFlake binary cache
+        env:
+          FOXFLAKE_BINARY_CACHE_PRIV: ${{ secrets.FOXFLAKE_BINARY_CACHE_PRIV }}
+        run: |
+          echo "$FOXFLAKE_BINARY_CACHE_PRIV" | base64 -d > /tmp/foxflake-binary-cache.priv
+          ./create_binary_cache.sh
+      - name: Upload FoxFlake binary cache as artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: foxflake-binary-cache/
+#      - name: Upload FoxFlake stable flake.lock
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: foxflake-stable-flake-lock
+#          path: /tmp/foxflake-stable-flake.lock
+#          if-no-files-found: error
+#      - name: Upload FoxFlake stable test flake.lock
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: foxflake-stable-test-flake-lock
+#          path: /tmp/foxflake-stable-test-flake.lock
+#          if-no-files-found: error
+#      - name: Upload FoxFlake unstable flake.lock
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: foxflake-unstable-flake-lock
+#          path: /tmp/foxflake-unstable-flake.lock
+#          if-no-files-found: error
+#      - name: Upload FoxFlake unstable test flake.lock
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: foxflake-unstable-test-flake-lock
+#          path: /tmp/foxflake-unstable-test-flake.lock
+#          if-no-files-found: error
+      - name: Upload FoxFlake dev flake.lock
+        uses: actions/upload-artifact@v4
+        with:
+          name: foxflake-dev-flake-lock
+          path: /tmp/foxflake-dev-flake.lock
+          if-no-files-found: error
+  deploy-foxflake-binary-cache:
+    runs-on: ubuntu-latest
+    needs: create-foxflake-binary-cache
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy FoxFlake binary cache to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+  wait-for-github-pages-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait 30m for github pages update
+        run: sleep 1800
+#  update-foxflake-stable-flake-lock:
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: write
+#    steps:
+#      - name: Checkout stable branch
+#        uses: actions/checkout@v4
+#        with:
+#          ref: stable
+#      - name: Download FoxFlake stable flake lock
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: foxflake-stable-flake-lock
+#          path: /tmp/foxflake-stable-flake.lock
+#      - name: Copy FoxFlake stable flake lock
+#        run: cp /tmp/foxflake-stable-flake.lock ./flake.lock
+#      - name: Commit changes
+#        uses: stefanzweifel/git-auto-commit-action@v5
+#        with:
+#          branch: stable
+#          commit_message: Update flake lock
+#  update-foxflake-stable-test-flake-lock:
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: write
+#    steps:
+#      - name: Checkout stable test branch
+#        uses: actions/checkout@v4
+#        with:
+#          ref: stable-test
+#      - name: Download FoxFlake stable test flake lock
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: foxflake-stable-test-flake-lock
+#          path: /tmp/foxflake-stable-test-flake.lock
+#      - name: Copy FoxFlake stable test flake lock
+#        run: cp /tmp/foxflake-stable-test-flake.lock ./flake.lock
+#      - name: Commit changes
+#        uses: stefanzweifel/git-auto-commit-action@v5
+#        with:
+#          branch: stable-test
+#          commit_message: Update flake lock
+#  update-foxflake-unstable-flake-lock:
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: write
+#    steps:
+#      - name: Checkout unstable branch
+#        uses: actions/checkout@v4
+#        with:
+#          ref: unstable
+#      - name: Download FoxFlake unstable flake lock
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: foxflake-unstable-flake-lock
+#          path: /tmp/foxflake-unstable-flake.lock
+#      - name: Copy FoxFlake unstable flake lock
+#        run: cp /tmp/foxflake-unstable-flake.lock ./flake.lock
+#      - name: Commit changes
+#        uses: stefanzweifel/git-auto-commit-action@v5
+#        with:
+#          branch: unstable
+#          commit_message: Update flake lock
+#  update-foxflake-unstable-test-flake-lock:
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: write
+#    steps:
+#      - name: Checkout unstable test branch
+#        uses: actions/checkout@v4
+#        with:
+#          ref: unstable-test
+#      - name: Download FoxFlake unstable test flake lock
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: foxflake-unstable-test-flake-lock
+#          path: /tmp/foxflake-unstable-test-flake.lock
+#      - name: Copy FoxFlake unstable test flake lock
+#        run: cp /tmp/foxflake-unstable-test-flake.lock ./flake.lock
+#      - name: Commit changes
+#        uses: stefanzweifel/git-auto-commit-action@v5
+#        with:
+#          branch: unstable-test
+#          commit_message: Update flake lock
+  update-foxflake-dev-flake-lock:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout dev branch
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+      - name: Download FoxFlake dev flake lock
+        uses: actions/download-artifact@v4
+        with:
+          name: foxflake-dev-flake-lock
+          path: /tmp/foxflake-dev-flake.lock
+      - name: Copy FoxFlake dev flake lock
+        run: cp /tmp/foxflake-dev-flake.lock ./flake.lock
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          branch: dev
+          commit_message: Update flake lock
