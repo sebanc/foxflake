@@ -80,6 +80,9 @@ jobs:
   deploy-foxflake-binary-cache:
     runs-on: ubuntu-latest
     needs: create-foxflake-binary-cache
+    permissions:
+      id-token: write
+      pages: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
