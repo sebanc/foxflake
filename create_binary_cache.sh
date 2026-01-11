@@ -229,7 +229,7 @@ mkdir /home/runner/work/foxflake/foxflake/foxflake-binary-cache
 for version in "stable" "unstable"; do
 	for environment in "cosmic" "gnome" "plasma"; do
 		for nvidia in "" "-nvidia"; do
-			nix build .#nixosConfigurations.foxflake-${version}-${environment}${nvidia}.config.system.build.toplevel
+			nix build .#nixosConfigurations.foxflake-${version}-${environment}${nvidia}.config.system.build.toplevel -vv
 			nix-collect-garbage -d
 		done
 	done
