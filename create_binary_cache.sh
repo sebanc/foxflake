@@ -5,13 +5,12 @@ set -e
 cat >/home/runner/work/foxflake/foxflake/upload-to-cache.sh <<BUILD_OUTPUT
 #!/bin/sh
 
-set -ef
+set -e
+set -f # disable globbing
+export IFS=' '
 
-echo "upload \$OUT_PATHS"
-
-if [ -n "\${OUT_PATHS}" ]; then
-	printf "%s" "\$OUT_PATHS" | xargs nix copy --to 'file:///home/runner/work/foxflake/foxflake/foxflake-binary-cache'
-fi
+echo "Uploading paths" \$OUT_PATHS
+exec nix copy --to "file:///home/runner/work/foxflake/foxflake/foxflake-binary-cache" \$OUT_PATHS
 BUILD_OUTPUT
 chmod 0755 /home/runner/work/foxflake/foxflake/upload-to-cache.sh
 
