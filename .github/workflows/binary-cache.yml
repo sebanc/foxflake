@@ -46,7 +46,7 @@ jobs:
       - name: Upload FoxFlake binary cache as artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: foxflake-binary-cache/
+          path: /tmp/foxflake-binary-cache/
 #      - name: Upload FoxFlake stable flake.lock
 #        uses: actions/upload-artifact@v4
 #        with:

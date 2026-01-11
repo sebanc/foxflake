@@ -10,7 +10,7 @@ set -f # disable globbing
 export IFS=' '
 
 echo "Uploading paths" \$OUT_PATHS
-exec nix copy --to "${PWD}/foxflake-binary-cache" \$OUT_PATHS
+exec nix copy --to "/tmp/foxflake-binary-cache" \$OUT_PATHS
 BUILD_OUTPUT
 chmod 0755 /tmp/upload-to-cache.sh
 
@@ -224,7 +224,7 @@ for branch in "stable" "stable-test" "unstable" "unstable-test" "dev"; do
 	nix flake update --flake ./foxflake-${branch}
 done
 
-mkdir ./foxflake-binary-cache
+mkdir /tmp/foxflake-binary-cache
 for version in "stable" "unstable"; do
 	for environment in "cosmic" "gnome" "plasma"; do
 		for nvidia in "" "-nvidia"; do
