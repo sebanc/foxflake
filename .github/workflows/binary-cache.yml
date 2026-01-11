@@ -73,11 +73,13 @@ jobs:
         uses: actions/deploy-pages@v4
   wait-for-github-pages-update:
     runs-on: ubuntu-latest
+    needs: deploy-foxflake-binary-cache
     steps:
       - name: Wait 30m for github pages update
         run: sleep 1800
 #  update-foxflake-stable-flake-lock:
 #    runs-on: ubuntu-latest
+#    needs: wait-for-github-pages-update
 #    permissions:
 #      contents: write
 #    steps:
@@ -99,6 +101,7 @@ jobs:
 #          commit_message: Update flake lock
 #  update-foxflake-stable-test-flake-lock:
 #    runs-on: ubuntu-latest
+#    needs: update-foxflake-stable-flake-lock
 #    permissions:
 #      contents: write
 #    steps:
@@ -120,6 +123,7 @@ jobs:
 #          commit_message: Update flake lock
 #  update-foxflake-unstable-flake-lock:
 #    runs-on: ubuntu-latest
+#    needs: update-foxflake-stable-test-flake-lock
 #    permissions:
 #      contents: write
 #    steps:
@@ -141,6 +145,7 @@ jobs:
 #          commit_message: Update flake lock
 #  update-foxflake-unstable-test-flake-lock:
 #    runs-on: ubuntu-latest
+#    needs: update-foxflake-unstable-flake-lock
 #    permissions:
 #      contents: write
 #    steps:
@@ -162,6 +167,7 @@ jobs:
 #          commit_message: Update flake lock
   update-foxflake-dev-flake-lock:
     runs-on: ubuntu-latest
+#    needs: update-foxflake-unstable-test-flake-lock
     permissions:
       contents: write
     steps:
