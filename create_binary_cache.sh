@@ -5,7 +5,7 @@ set -e
 cat >/home/runner/work/foxflake/foxflake/upload-to-cache.sh <<BUILD_OUTPUT
 #!/bin/sh
 
-set -uf
+set -ef
 
 echo "upload \$OUT_PATHS"
 
