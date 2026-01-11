@@ -39,6 +39,10 @@ with lib;
       done
     '';
 
+    environment.variables = {
+      __GL_SHADER_DISK_CACHE_SIZE = "12000000000";
+    };
+
     programs.nix-ld.libraries = with pkgs; [ linuxPackages.nvidia_x11 ];
   };
 
