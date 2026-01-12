@@ -238,9 +238,9 @@ for version in "stable" "unstable"; do
 		for nvidia in "" "-nvidia"; do
 			nix build .#nixosConfigurations.foxflake-${version}-${environment}${nvidia}.config.system.build.toplevel
 			nix copy --to file:///home/runner/work/foxflake/foxflake/foxflake-binary-cache $(nix path-info --recursive --json --json-format 1 .#nixosConfigurations.foxflake-${version}-${environment}${nvidia}.config.system.build.toplevel | jq -r 'to_entries[] | select(.value.ultimate == true) | .key')
-			#nix-collect-garbage -d
 		done
 	done
+	nix-collect-garbage -d
 done
 rm /home/runner/work/foxflake/foxflake/foxflake-binary-cache.priv
 for narinfo in $(ls /home/runner/work/foxflake/foxflake/foxflake-binary-cache/*.narinfo | sed 's@.narinfo@@g' | sed 's@/home/runner/work/foxflake/foxflake/foxflake-binary-cache/@@g'); do
