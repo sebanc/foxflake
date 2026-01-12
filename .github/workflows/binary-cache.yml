@@ -32,12 +32,11 @@ jobs:
         with:
           extra_nix_config: |
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-            post-build-hook = /home/runner/work/foxflake/foxflake/upload-to-cache.sh
+            #post-build-hook = /home/runner/work/foxflake/foxflake/upload-to-cache.sh
             secret-key-files = /home/runner/work/foxflake/foxflake/foxflake-binary-cache.priv
             substituters = https://cache.nixos-cuda.org/ https://cache.nixos.org/
             trusted-substituters = https://cache.nixos-cuda.org/ https://cache.nixos.org/
             trusted-public-keys = cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
-          install_url: https://releases.nixos.org/nix/nix-2.30.0/install
       - name: Build FoxFlake binary cache
         env:
           FOXFLAKE_BINARY_CACHE_PRIV: ${{ secrets.FOXFLAKE_BINARY_CACHE_PRIV }}
