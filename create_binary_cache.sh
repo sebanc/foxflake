@@ -237,21 +237,21 @@ for version in "stable" "unstable"; do
 	for environment in "cosmic" "gnome" "plasma"; do
 		for nvidia in "" "-nvidia"; do
 			nix build --no-link .#nixosConfigurations.foxflake-${version}-${environment}${nvidia}.config.system.build.toplevel
-			nix copy --to file:///home/runner/work/foxflake/foxflake/foxflake-binary-cache $(nix path-info --recursive --json --json-format 1 .#nixosConfigurations.foxflake-${version}-${environment}${nvidia}.config.system.build.toplevel | jq -r 'to_entries[] | select(.value.ultimate == true) | .key')
+			#nix copy --to file:///home/runner/work/foxflake/foxflake/foxflake-binary-cache $(nix path-info --recursive --json --json-format 1 .#nixosConfigurations.foxflake-${version}-${environment}${nvidia}.config.system.build.toplevel | jq -r 'to_entries[] | select(.value.ultimate == true) | .key')
 		done
 	done
-	nix-collect-garbage -d
+	#nix-collect-garbage -d
 done
-rm /home/runner/work/foxflake/foxflake/foxflake-binary-cache.priv
-for narinfo in $(ls /home/runner/work/foxflake/foxflake/foxflake-binary-cache/*.narinfo | sed 's@.narinfo@@g' | sed 's@/home/runner/work/foxflake/foxflake/foxflake-binary-cache/@@g'); do
-	narbin=$(cat /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narinfo}.narinfo | grep 'URL: ' | cut -d' ' -f2 | cut -d'?' -f1)
-	if [ ! -f /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narbin} ] || curl --fail --silent "https://cache.nixos.org/${narinfo}.narinfo" 2>&1 > /dev/null || curl --fail --silent "https://cache.nixos-cuda.org/${narinfo}.narinfo" 2>&1 > /dev/null; then
-		echo "Removing cache ${narinfo} from ${narbin}"
-		rm -f /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narinfo}.narinfo /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narbin}
-	else
-		echo "Keeping cache ${narinfo} from ${narbin}"
-	fi
-done
+#rm /home/runner/work/foxflake/foxflake/foxflake-binary-cache.priv
+#for narinfo in $(ls /home/runner/work/foxflake/foxflake/foxflake-binary-cache/*.narinfo | sed 's@.narinfo@@g' | sed 's@/home/runner/work/foxflake/foxflake/foxflake-binary-cache/@@g'); do
+#	narbin=$(cat /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narinfo}.narinfo | grep 'URL: ' | cut -d' ' -f2 | cut -d'?' -f1)
+#	if [ ! -f /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narbin} ] || curl --fail --silent "https://cache.nixos.org/${narinfo}.narinfo" 2>&1 > /dev/null || curl --fail --silent "https://cache.nixos-cuda.org/${narinfo}.narinfo" 2>&1 > /dev/null; then
+#		echo "Removing cache ${narinfo} from ${narbin}"
+#		rm -f /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narinfo}.narinfo /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narbin}
+#	else
+#		echo "Keeping cache ${narinfo} from ${narbin}"
+#	fi
+#done
 
 cp ./foxflake-stable/flake.lock /home/runner/work/foxflake/foxflake/foxflake-stable-flake.lock
 cp ./foxflake-stable-test/flake.lock /home/runner/work/foxflake/foxflake/foxflake-stable-test-flake.lock
@@ -259,9 +259,9 @@ cp ./foxflake-unstable/flake.lock /home/runner/work/foxflake/foxflake/foxflake-u
 cp ./foxflake-unstable-test/flake.lock /home/runner/work/foxflake/foxflake/foxflake-unstable-test-flake.lock
 cp ./foxflake-dev/flake.lock /home/runner/work/foxflake/foxflake/foxflake-dev-flake.lock
 
-cd /home/runner/work/foxflake/foxflake/foxflake-binary-cache
-echo -e '<html><body><h1>FoxFlake binary cache</h1></body></html>' > index.html
-echo -e 'StoreDir: /nix/store\nWantMassQuery: 1\nPriority: 60' > nix-cache-info
-echo 'http(s)://sebanc.github.io/foxflake' > binary-cache-url
-cd ..
+#cd /home/runner/work/foxflake/foxflake/foxflake-binary-cache
+#echo -e '<html><body><h1>FoxFlake binary cache</h1></body></html>' > index.html
+#echo -e 'StoreDir: /nix/store\nWantMassQuery: 1\nPriority: 60' > nix-cache-info
+#echo 'https://sebanc.github.io/foxflake' > binary-cache-url
+#cd ..
 
