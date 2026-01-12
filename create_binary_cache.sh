@@ -237,20 +237,22 @@ for version in "stable" "unstable"; do
 	for environment in "cosmic" "gnome" "plasma"; do
 		for nvidia in "" "-nvidia"; do
 			nix build .#nixosConfigurations.foxflake-${version}-${environment}${nvidia}.config.system.build.toplevel
-			nix copy --to file:///home/runner/work/foxflake/foxflake/foxflake-binary-cache $(nix path-info --recursive --json .#nixosConfigurations.foxflake-${version}-${environment}${nvidia}.config.system.build.toplevel | jq -r 'to_entries[] | select(.value.ultimate == true) | .key')
+			nix copy --to file:///home/runner/work/foxflake/foxflake/foxflake-binary-cache $(nix path-info --recursive --json --json-format 1 .#nixosConfigurations.foxflake-${version}-${environment}${nvidia}.config.system.build.toplevel | jq -r 'to_entries[] | select(.value.ultimate == true) | .key')
 			#nix-collect-garbage -d
 		done
 	done
 done
 rm /home/runner/work/foxflake/foxflake/foxflake-binary-cache.priv
+ls /home/runner/work/foxflake/foxflake/foxflake-binary-cache/
 for narinfo in $(ls /home/runner/work/foxflake/foxflake/foxflake-binary-cache/*.narinfo | sed 's@.narinfo@@g' | sed 's@/home/runner/work/foxflake/foxflake/foxflake-binary-cache/@@g'); do
-	narbin=$(curl --fail --silent "https://cache.nixos.org/${narinfo}.narinfo" | grep 'URL: ' | cut -d' ' -f2)
+	narbin=$(curl --fail --silent "https://cache.nixos.org/${narinfo}.narinfo" | grep 'URL: ' | cut -d' ' -f2 | cut -d'?' -f1)
 	if [ "${narbin}" != "" ]; then
 		rm /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narinfo}.narinfo /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narbin}
-	fi
-	narbin=$(curl --fail --silent "https://cache.nixos-cuda.org/${narinfo}.narinfo" | grep 'URL: ' | cut -d' ' -f2)
-	if [ "${narbin}" != "" ]; then
-		rm /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narinfo}.narinfo /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narbin}
+	else
+		narbin=$(curl --fail --silent "https://cache.nixos-cuda.org/${narinfo}.narinfo" | grep 'URL: ' | cut -d' ' -f2 | cut -d'?' -f1)
+		if [ "${narbin}" != "" ]; then
+			rm /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narinfo}.narinfo /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narbin}
+		fi
 	fi
 done
 
