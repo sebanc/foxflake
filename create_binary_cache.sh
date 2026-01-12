@@ -228,7 +228,7 @@ MAIN_FLAKE
 git add flake.nix
 
 for branch in "stable" "stable-test" "unstable" "unstable-test" "dev"; do
-	git clone -b stable https://github.com/sebanc/foxflake.git foxflake-${branch}
+	git clone -b ${branch} https://github.com/sebanc/foxflake.git foxflake-${branch}
 	nix flake update --flake ./foxflake-${branch}
 done
 
@@ -243,16 +243,13 @@ for version in "stable" "unstable"; do
 	done
 done
 rm /home/runner/work/foxflake/foxflake/foxflake-binary-cache.priv
-ls /home/runner/work/foxflake/foxflake/foxflake-binary-cache/
 for narinfo in $(ls /home/runner/work/foxflake/foxflake/foxflake-binary-cache/*.narinfo | sed 's@.narinfo@@g' | sed 's@/home/runner/work/foxflake/foxflake/foxflake-binary-cache/@@g'); do
-	narbin=$(curl --fail --silent "https://cache.nixos.org/${narinfo}.narinfo" | grep 'URL: ' | cut -d' ' -f2 | cut -d'?' -f1)
-	if [ "${narbin}" != "" ]; then
+	narbin=$(cat /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narinfo}.narinfo | grep 'URL: ' | cut -d' ' -f2 | cut -d'?' -f1)
+	if curl --fail --silent "https://cache.nixos.org/${narinfo}.narinfo" 2>&1 > /dev/null || curl --fail --silent "https://cache.nixos-cuda.org/${narinfo}.narinfo" 2>&1 > /dev/null; then
+		echo "Removing duplicate cache ${narinfo} from ${narbin}"
 		rm /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narinfo}.narinfo /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narbin}
 	else
-		narbin=$(curl --fail --silent "https://cache.nixos-cuda.org/${narinfo}.narinfo" | grep 'URL: ' | cut -d' ' -f2 | cut -d'?' -f1)
-		if [ "${narbin}" != "" ]; then
-			rm /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narinfo}.narinfo /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narbin}
-		fi
+		echo "Keeping cache ${narinfo} from ${narbin}"
 	fi
 done
 
