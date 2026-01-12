@@ -245,9 +245,9 @@ done
 rm /home/runner/work/foxflake/foxflake/foxflake-binary-cache.priv
 for narinfo in $(ls /home/runner/work/foxflake/foxflake/foxflake-binary-cache/*.narinfo | sed 's@.narinfo@@g' | sed 's@/home/runner/work/foxflake/foxflake/foxflake-binary-cache/@@g'); do
 	narbin=$(cat /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narinfo}.narinfo | grep 'URL: ' | cut -d' ' -f2 | cut -d'?' -f1)
-	if curl --fail --silent "https://cache.nixos.org/${narinfo}.narinfo" 2>&1 > /dev/null || curl --fail --silent "https://cache.nixos-cuda.org/${narinfo}.narinfo" 2>&1 > /dev/null; then
-		echo "Removing duplicate cache ${narinfo} from ${narbin}"
-		rm /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narinfo}.narinfo /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narbin}
+	if [ ! -f /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narbin} ] || curl --fail --silent "https://cache.nixos.org/${narinfo}.narinfo" 2>&1 > /dev/null || curl --fail --silent "https://cache.nixos-cuda.org/${narinfo}.narinfo" 2>&1 > /dev/null; then
+		echo "Removing cache ${narinfo} from ${narbin}"
+		rm -f /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narinfo}.narinfo /home/runner/work/foxflake/foxflake/foxflake-binary-cache/${narbin}
 	else
 		echo "Keeping cache ${narinfo} from ${narbin}"
 	fi
