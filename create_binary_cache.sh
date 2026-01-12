@@ -2,25 +2,17 @@
 
 set -e
 
-#cat >/home/runner/work/foxflake/foxflake/upload-to-cache.sh <<BUILD_OUTPUT
+cat >/home/runner/work/foxflake/foxflake/upload-to-cache.sh <<'BUILD_OUTPUT'
 #!/bin/sh
-#
-#set -eu
-#set -f
-#
-#export IFS=' '
-#
-#(
-#  exec >> /tmp/nix-upload.log 2>&1
-#  
-#  echo "Uploading paths: \$OUT_PATHS"
-#  
-#  nix copy --to "file:///home/runner/work/foxflake/foxflake/foxflake-binary-cache" \$OUT_PATHS
-#) &
-#
-#exit 0
-#BUILD_OUTPUT
-#chmod 0755 /home/runner/work/foxflake/foxflake/upload-to-cache.sh
+
+set -eu
+set -f # disable globbing
+export IFS=' '
+
+echo "Uploading paths" $OUT_PATHS
+exec nix copy --to "file:///home/runner/work/foxflake/foxflake/foxflake-binary-cache" $OUT_PATHS
+BUILD_OUTPUT
+chmod 0755 /home/runner/work/foxflake/foxflake/upload-to-cache.sh
 
 cat >./flake.nix <<MAIN_FLAKE
 {
@@ -236,9 +228,7 @@ mkdir /home/runner/work/foxflake/foxflake/foxflake-binary-cache
 for version in "stable" "unstable"; do
 	for environment in "cosmic" "gnome" "plasma"; do
 		for nvidia in "" "-nvidia"; do
-			nix build --no-update-lock-file .#nixosConfigurations.foxflake-${version}-${environment}${nvidia}.config.system.build.toplevel
-			nix copy --to file:///home/runner/work/foxflake/foxflake/foxflake-binary-cache --no-recursive $(nix path-info --recursive --json .#nixosConfigurations.foxflake-${version}-${environment}${nvidia}.config.system.build.toplevel | jq -r 'to_entries[] | select(.value.ultimate == true) | .key')
-			#nix-collect-garbage -d
+			nix build .#nixosConfigurations.foxflake-${version}-${environment}${nvidia}.config.system.build.toplevel
 		done
 	done
 done
