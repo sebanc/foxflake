@@ -236,7 +236,7 @@ mkdir /home/runner/work/foxflake/foxflake/foxflake-binary-cache
 for version in "stable" "unstable"; do
 	for environment in "cosmic" "gnome" "plasma"; do
 		for nvidia in "" "-nvidia"; do
-			nix build --no-out-link .#nixosConfigurations.foxflake-${version}-${environment}${nvidia}.config.system.build.toplevel
+			nix build --no-link .#nixosConfigurations.foxflake-${version}-${environment}${nvidia}.config.system.build.toplevel
 			nix copy --to file:///home/runner/work/foxflake/foxflake/foxflake-binary-cache $(nix path-info --recursive --json --json-format 1 .#nixosConfigurations.foxflake-${version}-${environment}${nvidia}.config.system.build.toplevel | jq -r 'to_entries[] | select(.value.ultimate == true) | .key')
 		done
 	done
