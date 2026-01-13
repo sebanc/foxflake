@@ -15,10 +15,10 @@ jobs:
   create-foxflake-binary-cache:
     runs-on: ubuntu-latest
     steps:
-      - name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@main
+      - name: Reclaim disk space
+        uses: wimpysworld/nothing-but-nix@main
         with:
-          tool-cache: true
+          hatchet-protocol: 'holster'
       - name: Display disk space
         run: |
           echo "Free space:"
