@@ -481,16 +481,16 @@ MAIN_FLAKE
 git add flake.nix
 
 mkdir /home/runner/work/foxflake/foxflake/foxflake-binary-cache
-for version in "stable" "stable-test" "unstable" "unstable-test" "dev"; do
-	git clone -b ${version} https://github.com/sebanc/foxflake.git foxflake-${version}
+for branch in "stable" "stable-test" "unstable" "unstable-test" "dev"; do
+	git clone -b ${branch} https://github.com/sebanc/foxflake.git foxflake-${branch}
 done
-for version in "stable" "stable-test" "unstable" "unstable-test" "dev"; do
+for branch in "stable" "stable-test" "unstable" "unstable-test" "dev"; do
 	for environment in "cosmic" "gnome" "plasma"; do
 		for nvidia in "" "-nvidia"; do
-			nix build --no-link .#nixosConfigurations.foxflake-${version}-${environment}${nvidia}.config.system.build.toplevel
+			nix build --no-link .#nixosConfigurations.foxflake-${branch}-${environment}${nvidia}.config.system.build.toplevel
 		done
 	done
-	if [ "${version}" == "stable-test" ] || [ "${version}" == "dev" ]; then nix-collect-garbage -d; fi
+	if [ "${branch}" == "stable-test" ] || [ "${branch}" == "dev" ]; then nix-collect-garbage -d; fi
 done
 
 cp ./foxflake-stable/flake.lock /home/runner/work/foxflake/foxflake/foxflake-stable-flake.lock
