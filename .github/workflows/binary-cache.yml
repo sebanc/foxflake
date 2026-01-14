@@ -30,12 +30,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main
-      - name: Initialize matrix lock
-        if: matrix.branch == 'stable'
-        uses: rakles/matrix-lock@v1.0.0
-        with:
-          step: init
-          order: "stable,stable-test,unstable,unstable-test,dev"
       - name: Install nix
         uses: cachix/install-nix-action@v31
         with:
@@ -48,23 +42,21 @@ jobs:
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - name: Build FoxFlake binary cache
         run: |
-          ./create_binary_cache.sh ${{ matrix.branch }}
-      - name: Wait for matrix lock
-        uses: rakles/matrix-lock@v1.0.0
-        with:
-          step: wait
-          id: ${{ matrix.branch }}
+           exit 0
+#          ./create_binary_cache.sh ${{ matrix.branch }}
+      - name: Test
+        run: |
+          echo "Fetch workflow run jobs"
+          json_data=$(curl -s -H "Authorization: Bearer ${{ github.token }}" \
+                 "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs")
+          echo ${json_data}
+          exit 1
       - name: Upload updated FoxFlake flake.lock
         uses: actions/upload-artifact@v4
         with:
           name: foxflake-${{ matrix.branch }}-flake-lock
           path: /home/runner/work/foxflake/foxflake/foxflake-${{ matrix.branch }}-flake.lock
           if-no-files-found: error
-      - name: Continue matrix lock
-        uses: rakles/matrix-lock@v1.0.0
-        with:
-          step: continue
-          id: ${{ matrix.branch }}
   update-foxflake-flake-locks:
     needs: create-foxflake-binary-cache
     permissions:
