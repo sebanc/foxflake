@@ -18,10 +18,15 @@ jobs:
       matrix:
         include:
           - id: stable
+            name: "stable branch"
           - id: stable-test
+            name: "stable-test branch"
           - id: unstable
+            name: "unstable branch"
           - id: unstable-test
+            name: "untable-test branch"
           - id: dev
+            name: "dev branch"
     steps:
       - name: Initialize matrix lock
         if: matrix.id == stable
