@@ -14,7 +14,21 @@ concurrency:
 jobs:
   create-foxflake-binary-cache:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - id: stable
+          - id: stable-test
+          - id: unstable
+          - id: unstable-test
+          - id: dev
     steps:
+      - name: "Initialize matrix lock"
+        if: matrix.id == stable
+        uses: rakles/matrix-lock@v1
+        with:
+          step: init
+          order: "stable,stable-test,unstable,unstable-test,dev"
       - name: Reclaim disk space
         uses: wimpysworld/nothing-but-nix@main
         with:
@@ -39,154 +53,52 @@ jobs:
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - name: Build FoxFlake binary cache
         run: |
-          ./create_binary_cache.sh
-      - name: Upload FoxFlake stable flake.lock
+          ./create_binary_cache.sh ${{ matrix.id }}
+      - name: "Wait for matrix lock"
+        uses: rakles/matrix-lock@v1
+        with:
+          step: wait
+          id: ${{ matrix.id }}
+      - name: Upload updated FoxFlake flake.lock
         uses: actions/upload-artifact@v4
         with:
-          name: foxflake-stable-flake-lock
-          path: /home/runner/work/foxflake/foxflake/foxflake-stable-flake.lock
+          name: foxflake-${{ matrix.id }}-flake-lock
+          path: /home/runner/work/foxflake/foxflake/foxflake-${{ matrix.id }}-flake.lock
           if-no-files-found: error
-      - name: Upload FoxFlake stable test flake.lock
-        uses: actions/upload-artifact@v4
+      - name: "Continue matrix lock"
+        uses: rakles/matrix-lock@v1
         with:
-          name: foxflake-stable-test-flake-lock
-          path: /home/runner/work/foxflake/foxflake/foxflake-stable-test-flake.lock
-          if-no-files-found: error
-      - name: Upload FoxFlake unstable flake.lock
-        uses: actions/upload-artifact@v4
-        with:
-          name: foxflake-unstable-flake-lock
-          path: /home/runner/work/foxflake/foxflake/foxflake-unstable-flake.lock
-          if-no-files-found: error
-      - name: Upload FoxFlake unstable test flake.lock
-        uses: actions/upload-artifact@v4
-        with:
-          name: foxflake-unstable-test-flake-lock
-          path: /home/runner/work/foxflake/foxflake/foxflake-unstable-test-flake.lock
-          if-no-files-found: error
-      - name: Upload FoxFlake dev flake.lock
-        uses: actions/upload-artifact@v4
-        with:
-          name: foxflake-dev-flake-lock
-          path: /home/runner/work/foxflake/foxflake/foxflake-dev-flake.lock
-          if-no-files-found: error
-  update-foxflake-stable-flake-lock:
-    runs-on: ubuntu-latest
+          step: continue
+          id: ${{ matrix.id }}
+  update-foxflake-flake-locks:
     needs: create-foxflake-binary-cache
     permissions:
       contents: write
-    steps:
-      - name: Checkout stable branch
-        uses: actions/checkout@v4
-        with:
-          ref: stable
-      - name: Download FoxFlake stable flake lock
-        uses: actions/download-artifact@v4
-        with:
-          name: foxflake-stable-flake-lock
-          path: /home/runner/work/foxflake/foxflake/
-      - name: Copy FoxFlake stable flake lock
-        run: |
-          cp ./foxflake-stable-flake.lock ./flake.lock
-          rm ./foxflake-stable-flake.lock
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          branch: stable
-          commit_message: Update flake lock
-  update-foxflake-stable-test-flake-lock:
     runs-on: ubuntu-latest
-    needs: create-foxflake-binary-cache
-    permissions:
-      contents: write
+    strategy:
+      matrix:
+        include:
+          - id: stable
+          - id: stable-test
+          - id: unstable
+          - id: unstable-test
+          - id: dev
     steps:
-      - name: Checkout stable test branch
+      - name: Checkout ${{ matrix.id }} branch
         uses: actions/checkout@v4
         with:
-          ref: stable-test
-      - name: Download FoxFlake stable test flake lock
+          ref: ${{ matrix.id }}
+      - name: Download FoxFlake ${{ matrix.id }} flake lock
         uses: actions/download-artifact@v4
         with:
-          name: foxflake-stable-test-flake-lock
+          name: foxflake-${{ matrix.id }}-flake-lock
           path: /home/runner/work/foxflake/foxflake/
-      - name: Copy FoxFlake stable test flake lock
+      - name: Copy FoxFlake ${{ matrix.id }} flake lock
         run: |
-          cp ./foxflake-stable-test-flake.lock ./flake.lock
-          rm ./foxflake-stable-test-flake.lock
+          cp ./foxflake-${{ matrix.id }}-flake.lock ./flake.lock
+          rm ./foxflake-${{ matrix.id }}-flake.lock
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          branch: stable-test
-          commit_message: Update flake lock
-  update-foxflake-unstable-flake-lock:
-    runs-on: ubuntu-latest
-    needs: create-foxflake-binary-cache
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout unstable branch
-        uses: actions/checkout@v4
-        with:
-          ref: unstable
-      - name: Download FoxFlake unstable flake lock
-        uses: actions/download-artifact@v4
-        with:
-          name: foxflake-unstable-flake-lock
-          path: /home/runner/work/foxflake/foxflake/
-      - name: Copy FoxFlake unstable flake lock
-        run: |
-          cp ./foxflake-unstable-flake.lock ./flake.lock
-          rm ./foxflake-unstable-flake.lock
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          branch: unstable
-          commit_message: Update flake lock
-  update-foxflake-unstable-test-flake-lock:
-    runs-on: ubuntu-latest
-    needs: create-foxflake-binary-cache
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout unstable test branch
-        uses: actions/checkout@v4
-        with:
-          ref: unstable-test
-      - name: Download FoxFlake unstable test flake lock
-        uses: actions/download-artifact@v4
-        with:
-          name: foxflake-unstable-test-flake-lock
-          path: /home/runner/work/foxflake/foxflake/
-      - name: Copy FoxFlake unstable test flake lock
-        run: |
-          cp ./foxflake-unstable-test-flake.lock ./flake.lock
-          rm ./foxflake-unstable-test-flake.lock
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          branch: unstable-test
-          commit_message: Update flake lock
-  update-foxflake-dev-flake-lock:
-    runs-on: ubuntu-latest
-    needs: create-foxflake-binary-cache
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout dev branch
-        uses: actions/checkout@v4
-        with:
-          ref: dev
-      - name: Download FoxFlake dev flake lock
-        uses: actions/download-artifact@v4
-        with:
-          name: foxflake-dev-flake-lock
-          path: /home/runner/work/foxflake/foxflake/
-      - name: Copy FoxFlake dev flake lock
-        run: |
-          cp ./foxflake-dev-flake.lock ./flake.lock
-          rm ./foxflake-dev-flake.lock
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          branch: dev
+          branch: ${{ matrix.id }}
           commit_message: Update flake lock
