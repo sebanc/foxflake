@@ -42,15 +42,21 @@ jobs:
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - name: Build FoxFlake binary cache
         run: |
-           exit 0
-#          ./create_binary_cache.sh ${{ matrix.branch }}
-      - name: Test
-        run: |
-          echo "Fetch workflow run jobs"
-          json_data=$(curl -s -H "Authorization: Bearer ${{ github.token }}" \
-                 "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs")
-          echo ${json_data}
-          exit 1
+          ./create_binary_cache.sh ${{ matrix.branch }}
+          case ${{ matrix.branch }} in
+            'stable-test')
+              while $(curl -s -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" | jq '.jobs[] | select(.name=="create-foxflake-binary-cache (stable)") | .steps[] | select(.name=="Post Install cachix action") | .conclusion') != "success"; do sleep 300; done
+            ;;
+            'unstable')
+              while $(curl -s -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" | jq '.jobs[] | select(.name=="create-foxflake-binary-cache (stable-test)") | .steps[] | select(.name=="Post Install cachix action") | .conclusion') != "success"; do sleep 300; done
+            ;;
+            'unstable-test')
+              while $(curl -s -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" | jq '.jobs[] | select(.name=="create-foxflake-binary-cache (unstable)") | .steps[] | select(.name=="Post Install cachix action") | .conclusion') != "success"; do sleep 300; done
+            ;;
+            'dev')
+              while $(curl -s -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" | jq '.jobs[] | select(.name=="create-foxflake-binary-cache (unstable-test)") | .steps[] | select(.name=="Post Install cachix action") | .conclusion') != "success"; do sleep 300; done
+            ;;
+          esac
       - name: Upload updated FoxFlake flake.lock
         uses: actions/upload-artifact@v4
         with:
