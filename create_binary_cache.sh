@@ -115,7 +115,6 @@ cat >./flake.nix <<MAIN_FLAKE
 }
 MAIN_FLAKE
 git add flake.nix
-git commit -m "Fake commit"
 
 git clone -b ${1} https://github.com/sebanc/foxflake.git foxflake-${1}
 for environment in "cosmic" "gnome" "plasma"; do
