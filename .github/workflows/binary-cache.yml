@@ -23,8 +23,8 @@ jobs:
           - id: unstable-test
           - id: dev
     steps:
-      - name: "Initialize matrix lock"
-        if: matrix.id == "stable"
+      - name: Initialize matrix lock
+        if: "${{ matrix.id }}" == "stable"
         uses: rakles/matrix-lock@v1
         with:
           step: init
@@ -54,7 +54,7 @@ jobs:
       - name: Build FoxFlake binary cache
         run: |
           ./create_binary_cache.sh ${{ matrix.id }}
-      - name: "Wait for matrix lock"
+      - name: Wait for matrix lock
         uses: rakles/matrix-lock@v1
         with:
           step: wait
@@ -65,7 +65,7 @@ jobs:
           name: foxflake-${{ matrix.id }}-flake-lock
           path: /home/runner/work/foxflake/foxflake/foxflake-${{ matrix.id }}-flake.lock
           if-no-files-found: error
-      - name: "Continue matrix lock"
+      - name: Continue matrix lock
         uses: rakles/matrix-lock@v1
         with:
           step: continue
