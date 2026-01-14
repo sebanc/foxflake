@@ -19,7 +19,7 @@ jobs:
         branch: [ "stable", "stable-test", "unstable","unstable-test","dev" ]
     steps:
       - name: Initialize matrix lock
-        if: matrix.branch == stable
+        if: ${{ matrix.branch }} == 'stable'
         uses: rakles/matrix-lock@v1
         with:
           step: init
