@@ -46,7 +46,7 @@ jobs:
           case ${{ matrix.branch }} in
             'stable-test')
               while true; do
-                previous_job_status="$(curl -s -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" | jq '.jobs[] | select(.name=="create-foxflake-binary-cache (stable)") | .steps[] | select(.name=="Post Install cachix action") | .conclusion')"
+                previous_job_status="$(curl -s -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" | jq '.jobs[] | select(.name=="create-foxflake-binary-cache (stable)") | .steps[] | select(.name=="Post Install cachix action") | .conclusion' | cut -d'"' -f2)"
                 if [ "${previous_job_status}" == "success" ]; then break; fi
                 echo "Waiting for previous job to finish (status is ${previous_job_status})..."
                 sleep 300
@@ -54,7 +54,7 @@ jobs:
             ;;
             'unstable')
               while true; do
-                previous_job_status="$(curl -s -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" | jq '.jobs[] | select(.name=="create-foxflake-binary-cache (stable-test)") | .steps[] | select(.name=="Post Install cachix action") | .conclusion')"
+                previous_job_status="$(curl -s -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" | jq '.jobs[] | select(.name=="create-foxflake-binary-cache (stable-test)") | .steps[] | select(.name=="Post Install cachix action") | .conclusion' | cut -d'"' -f2)"
                 if [ "${previous_job_status}" == "success" ]; then break; fi
                 echo "Waiting for previous job to finish (status is ${previous_job_status})..."
                 sleep 300
@@ -62,7 +62,7 @@ jobs:
             ;;
             'unstable-test')
               while true; do
-                previous_job_status="$(curl -s -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" | jq '.jobs[] | select(.name=="create-foxflake-binary-cache (unstable)") | .steps[] | select(.name=="Post Install cachix action") | .conclusion')"
+                previous_job_status="$(curl -s -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" | jq '.jobs[] | select(.name=="create-foxflake-binary-cache (unstable)") | .steps[] | select(.name=="Post Install cachix action") | .conclusion' | cut -d'"' -f2)"
                 if [ "${previous_job_status}" == "success" ]; then break; fi
                 echo "Waiting for previous job to finish (status is ${previous_job_status})..."
                 sleep 300
@@ -70,7 +70,7 @@ jobs:
             ;;
             'dev')
               while true; do
-                previous_job_status="$(curl -s -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" | jq '.jobs[] | select(.name=="create-foxflake-binary-cache (unstable-test)") | .steps[] | select(.name=="Post Install cachix action") | .conclusion')"
+                previous_job_status="$(curl -s -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" | jq '.jobs[] | select(.name=="create-foxflake-binary-cache (unstable-test)") | .steps[] | select(.name=="Post Install cachix action") | .conclusion' | cut -d'"' -f2)"
                 if [ "${previous_job_status}" == "success" ]; then break; fi
                 echo "Waiting for previous job to finish (status is ${previous_job_status})..."
                 sleep 300
