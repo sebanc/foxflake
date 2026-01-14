@@ -16,14 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        branch: [ "stable", "stable-test", "unstable","unstable-test","dev" ]
+        branch: [ "stable", "stable-test", "unstable", "unstable-test", "dev" ]
     steps:
-      - name: Initialize matrix lock
-        if: matrix.branch == 'stable'
-        uses: rakles/matrix-lock@v1.0.0
-        with:
-          step: init
-          order: "stable,stable-test,unstable,unstable-test,dev"
       - name: Reclaim disk space
         uses: wimpysworld/nothing-but-nix@main
         with:
@@ -36,6 +30,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main
+      - name: Initialize matrix lock
+        if: matrix.branch == 'stable'
+        uses: rakles/matrix-lock@v1.0.0
+        with:
+          step: init
+          order: "stable,stable-test,unstable,unstable-test,dev"
       - name: Install nix
         uses: cachix/install-nix-action@v31
         with:
