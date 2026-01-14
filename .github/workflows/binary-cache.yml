@@ -16,20 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        include:
-          - id: stable
-            name: "stable branch"
-          - id: stable-test
-            name: "stable-test branch"
-          - id: unstable
-            name: "unstable branch"
-          - id: unstable-test
-            name: "untable-test branch"
-          - id: dev
-            name: "dev branch"
+        branch: [ "stable", "stable-test", "unstable","unstable-test","dev" ]
     steps:
       - name: Initialize matrix lock
-        if: matrix.id == stable
+        if: matrix.branch == stable
         uses: rakles/matrix-lock@v1
         with:
           step: init
@@ -58,23 +48,23 @@ jobs:
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - name: Build FoxFlake binary cache
         run: |
-          ./create_binary_cache.sh ${{ matrix.id }}
+          ./create_binary_cache.sh ${{ matrix.branch }}
       - name: Wait for matrix lock
         uses: rakles/matrix-lock@v1
         with:
           step: wait
-          id: ${{ matrix.id }}
+          id: ${{ matrix.branch }}
       - name: Upload updated FoxFlake flake.lock
         uses: actions/upload-artifact@v4
         with:
-          name: foxflake-${{ matrix.id }}-flake-lock
-          path: /home/runner/work/foxflake/foxflake/foxflake-${{ matrix.id }}-flake.lock
+          name: foxflake-${{ matrix.branch }}-flake-lock
+          path: /home/runner/work/foxflake/foxflake/foxflake-${{ matrix.branch }}-flake.lock
           if-no-files-found: error
       - name: Continue matrix lock
         uses: rakles/matrix-lock@v1
         with:
           step: continue
-          id: ${{ matrix.id }}
+          id: ${{ matrix.branch }}
   update-foxflake-flake-locks:
     needs: create-foxflake-binary-cache
     permissions:
@@ -82,28 +72,23 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        include:
-          - id: stable
-          - id: stable-test
-          - id: unstable
-          - id: unstable-test
-          - id: dev
+        branch: [ "stable", "stable-test", "unstable","unstable-test","dev" ]
     steps:
-      - name: Checkout ${{ matrix.id }} branch
+      - name: Checkout ${{ matrix.branch }} branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ matrix.id }}
-      - name: Download FoxFlake ${{ matrix.id }} flake lock
+          ref: ${{ matrix.branch }}
+      - name: Download FoxFlake ${{ matrix.branch }} flake lock
         uses: actions/download-artifact@v4
         with:
-          name: foxflake-${{ matrix.id }}-flake-lock
+          name: foxflake-${{ matrix.branch }}-flake-lock
           path: /home/runner/work/foxflake/foxflake/
-      - name: Copy FoxFlake ${{ matrix.id }} flake lock
+      - name: Copy FoxFlake ${{ matrix.branch }} flake lock
         run: |
-          cp ./foxflake-${{ matrix.id }}-flake.lock ./flake.lock
-          rm ./foxflake-${{ matrix.id }}-flake.lock
+          cp ./foxflake-${{ matrix.branch }}-flake.lock ./flake.lock
+          rm ./foxflake-${{ matrix.branch }}-flake.lock
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          branch: ${{ matrix.id }}
+          branch: ${{ matrix.branch }}
           commit_message: Update flake lock
