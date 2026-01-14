@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Initialize matrix lock
         if: ${{ matrix.branch }} == 'stable'
-        uses: rakles/matrix-lock@v1
+        uses: rakles/matrix-lock@v1.0.0
         with:
           step: init
           order: "stable,stable-test,unstable,unstable-test,dev"
@@ -50,7 +50,7 @@ jobs:
         run: |
           ./create_binary_cache.sh ${{ matrix.branch }}
       - name: Wait for matrix lock
-        uses: rakles/matrix-lock@v1
+        uses: rakles/matrix-lock@v1.0.0
         with:
           step: wait
           id: ${{ matrix.branch }}
@@ -61,7 +61,7 @@ jobs:
           path: /home/runner/work/foxflake/foxflake/foxflake-${{ matrix.branch }}-flake.lock
           if-no-files-found: error
       - name: Continue matrix lock
-        uses: rakles/matrix-lock@v1
+        uses: rakles/matrix-lock@v1.0.0
         with:
           step: continue
           id: ${{ matrix.branch }}
