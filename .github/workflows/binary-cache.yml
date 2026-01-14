@@ -24,7 +24,7 @@ jobs:
           - id: dev
     steps:
       - name: Initialize matrix lock
-        if: "${{ matrix.id }}" == "stable"
+        if: matrix.id == stable
         uses: rakles/matrix-lock@v1
         with:
           step: init
