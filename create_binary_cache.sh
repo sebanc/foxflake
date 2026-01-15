@@ -119,7 +119,7 @@ git add flake.nix
 git clone -b ${1} https://github.com/sebanc/foxflake.git foxflake-${1}
 for environment in "cosmic" "gnome" "plasma"; do
 	for nvidia in "" "-nvidia"; do
-		nix build --no-link .#nixosConfigurations.foxflake-${1}-${environment}${nvidia}.config.system.build.toplevel --option substituters "https://foxflake.cachix.org/ https://cache.nixos-cuda.org/ https://cache.nixos.org/" --option trusted-public-keys "foxflake.cachix.org-1:6CgKI4ifg2+w55WTG/RNEcthi2sZULhggnG4Bru7tqY= cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+		nix build --no-link .#nixosConfigurations.foxflake-${1}-${environment}${nvidia}.config.system.build.toplevel
 	done
 done
 cp ./foxflake-${1}/flake.lock /home/runner/work/foxflake/foxflake/foxflake-${1}-flake.lock
