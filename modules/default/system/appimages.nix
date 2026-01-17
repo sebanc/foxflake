@@ -13,6 +13,7 @@ with lib;
     programs.appimage = {
       enable = mkDefault true;
       binfmt = mkDefault true;
+      package = pkgs.appimage-run.override { extraPkgs = pkgs: with pkgs; [ dotnet-runtime icu libnotify libxcrypt-legacy webkitgtk_4_1 ]; };
     };
 
     programs.nix-ld = {
@@ -30,11 +31,6 @@ with lib;
       exec ${pkgs.python3}/bin/python "$@"
       '')
     ];
-
-    environment.sessionVariables = {
-      DOTNET_ROOT = "${pkgs.dotnet-runtime}/share/dotnet";
-      LD_LIBRARY_PATH = [ "${pkgs.webkitgtk_4_1}/lib" "${pkgs.libnotify}/lib" ];
-    };
 
   };
 
