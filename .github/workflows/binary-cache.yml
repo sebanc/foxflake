@@ -41,6 +41,7 @@ jobs:
           name: foxflake
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
           pushFilter: '(-source$|\.run$|\.tar\.|cuda)'
+          useDaemon: false
       - name: Build FoxFlake binary cache
         run: |
           ./create_binary_cache.sh ${{ matrix.branch }}

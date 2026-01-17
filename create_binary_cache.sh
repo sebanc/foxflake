@@ -122,6 +122,9 @@ for environment in "cosmic" "gnome" "plasma"; do
 		nix build --no-link .#nixosConfigurations.foxflake-${1}-${environment}${nvidia}.config.system.build.toplevel
 	done
 done
-for cuda_store_path in $(find /nix/store -depth -maxdepth 1 -type d | grep -E '(-cuda.*-)'); do sudo rm -r ${cuda_store_path}; done
+for cuda_store_path in $(find /nix/store -depth -maxdepth 1 -type d | grep -E '(-cuda.*-)'); do
+	echo "removing store path ${cuda_store_path}"
+	sudo rm -r ${cuda_store_path}
+done
 cp ./foxflake-${1}/flake.lock /home/runner/work/foxflake/foxflake/foxflake-${1}-flake.lock
 
