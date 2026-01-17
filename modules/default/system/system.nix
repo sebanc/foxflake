@@ -23,6 +23,14 @@ with lib;
         auto-optimise-store = mkDefault true;
         cores = mkDefault 4;
         download-buffer-size = 524288000;
+        substituters = [
+          "https://foxflake.cachix.org/"
+          "https://cache.nixos.org/"
+        ];
+        trusted-public-keys = [
+          "foxflake.cachix.org-1:6CgKI4ifg2+w55WTG/RNEcthi2sZULhggnG4Bru7tqY="
+          "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        ];
       };
     };
 
