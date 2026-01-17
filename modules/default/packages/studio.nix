@@ -12,7 +12,7 @@ with lib;
 
     environment.systemPackages = with pkgs; [
       audacity
-      blender-hip
+      (blender.override { hipSupport = true; })
       gimp
       inkscape-with-extensions
       kdePackages.kdenlive
