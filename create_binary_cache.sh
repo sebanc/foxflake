@@ -26,7 +26,7 @@ cat >./flake.nix <<MAIN_FLAKE
             {
               foxflake.environment.type = "cosmic";
               foxflake.system.bundles = [ "standard" "gaming" "studio" ];
-              foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
+              foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ davinci-resolve davinci-resolve-studio ollama-rocm ];
               foxflake.system.waydroid = true;
               foxflake.nvidia.enable = false;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
@@ -41,7 +41,7 @@ cat >./flake.nix <<MAIN_FLAKE
             {
               foxflake.environment.type = "cosmic";
               foxflake.system.bundles = [ "standard" "gaming" "studio" ];
-              foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
+              foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ davinci-resolve davinci-resolve-studio ollama-cuda ];
               foxflake.system.waydroid = true;
               foxflake.nvidia.enable = true;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
@@ -56,7 +56,7 @@ cat >./flake.nix <<MAIN_FLAKE
             {
               foxflake.environment.type = "gnome";
               foxflake.system.bundles = [ "standard" "gaming" "studio" ];
-              foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
+              foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ davinci-resolve davinci-resolve-studio ollama-rocm ];
               foxflake.system.waydroid = true;
               foxflake.nvidia.enable = false;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
@@ -71,7 +71,7 @@ cat >./flake.nix <<MAIN_FLAKE
             {
               foxflake.environment.type = "gnome";
               foxflake.system.bundles = [ "standard" "gaming" "studio" ];
-              foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
+              foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ davinci-resolve davinci-resolve-studio ollama-cuda ];
               foxflake.system.waydroid = true;
               foxflake.nvidia.enable = true;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
@@ -86,7 +86,7 @@ cat >./flake.nix <<MAIN_FLAKE
             {
               foxflake.environment.type = "plasma";
               foxflake.system.bundles = [ "standard" "gaming" "studio" ];
-              foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
+              foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ davinci-resolve davinci-resolve-studio ollama-rocm ];
               foxflake.system.waydroid = true;
               foxflake.nvidia.enable = false;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
@@ -101,7 +101,7 @@ cat >./flake.nix <<MAIN_FLAKE
             {
               foxflake.environment.type = "plasma";
               foxflake.system.bundles = [ "standard" "gaming" "studio" ];
-              foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
+              foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ davinci-resolve davinci-resolve-studio ollama-cuda ];
               foxflake.system.waydroid = true;
               foxflake.nvidia.enable = true;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
