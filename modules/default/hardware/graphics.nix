@@ -23,7 +23,9 @@ with lib;
     systemd.tmpfiles.rules = [
       "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
     ];
-    environment.variables = { 
+
+    environment.variables = {
+      MESA_SHADER_CACHE_MAX_SIZE = "12G";
       ROC_ENABLE_PRE_VEGA = "1";
     };
 
