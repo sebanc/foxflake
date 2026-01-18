@@ -41,7 +41,7 @@ with lib;
       ];
       systemPackages = [
         pkgs.unstable.tela-circle-icon-theme
-
+        pkgs.kdePackages.qtwebengine
         (pkgs.writeTextDir "share/sddm/themes/breeze/theme.conf.user" ''
           [General]
           background="${config.foxflake.customization.environment.wallpaper}"
