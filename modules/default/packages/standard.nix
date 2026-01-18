@@ -16,6 +16,7 @@ with lib;
       };
       systemPackages = with pkgs; [
         libreoffice
+        (if pkgs ? hunspellDicts.${config.i18n.defaultLocale} then pkgs.hunspellDicts.${config.i18n.defaultLocale} else pkgs.bash)
       ];
     };
 
