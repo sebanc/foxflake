@@ -44,7 +44,10 @@ in
       [ ];
     
     hardware.bluetooth.enable = mkDefault true;
-    networking.networkmanager.enable = mkDefault true;
+    networking.networkmanager = {
+      enable = mkDefault true;
+      plugins = with pkgs; [ networkmanager-openvpn ];
+    };
     services.resolved.enable = mkDefault true;
 
     services = {
