@@ -16,7 +16,7 @@ with lib;
       };
       systemPackages = with pkgs; [
         libreoffice
-        (if pkgs ? hunspellDicts.${config.i18n.defaultLocale} then pkgs.hunspellDicts.${config.i18n.defaultLocale} else pkgs.bash)
+        (if (lib.head (lib.splitString "_" config.i18n.defaultLocale) == "fr") then pkgs.hunspellDicts.fr-moderne else (lib.attrByPath [ "hunspellDicts" (lib.head (lib.splitString "." config.i18n.defaultLocale)) ] pkgs.bash pkgs))
       ];
     };
 
