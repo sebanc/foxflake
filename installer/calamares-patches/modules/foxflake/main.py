@@ -73,13 +73,6 @@ cfg_nvidia_open = """
 
 """
 
-cfg_nvidia_proprietary = """
-  # Nvidia proprietary driver support
-  foxflake.nvidia.enable = true;
-  foxflake.nvidia.open = false;
-
-"""
-
 cfgkeymap = """
   # Keyboard configuration
   foxflake.internationalisation.keyboard.layout = "@@kblayout@@";
@@ -194,10 +187,8 @@ def catenate(d, key, *values):
 def detect_nvidia():
     result = subprocess.run(['sudo', 'bash', '-c', 'lspci | grep "VGA compatible controller:\|3D controller:"'], stdout=subprocess.PIPE, text=True)
     lspci_output = result.stdout.strip()
-    if "RTX 50" in lspci_output or "RTX 40" in lspci_output or "RTX 30" in lspci_output:
+    if "RTX 50" in lspci_output or "RTX 40" in lspci_output or "RTX 30" in lspci_output or "RTX 20" in lspci_output or "GTX 16" in lspci_output:
         nvidia_driver = "open"
-    elif "RTX 20" in lspci_output or "GTX 16" in lspci_output or "GTX 10" in lspci_output or "GTX 9" in lspci_output or "GTX 8" in lspci_output:
-        nvidia_driver = "proprietary"
     else:
         nvidia_driver = ""
     return nvidia_driver
@@ -258,8 +249,6 @@ def run():
     nvidia_driver = detect_nvidia()
     if nvidia_driver == "open":
         cfg += cfg_nvidia_open
-    elif nvidia_driver == "proprietary":
-        cfg += cfg_nvidia_proprietary
 
 # ================================================================================
 # Writing cfg modules to configuration.nix
