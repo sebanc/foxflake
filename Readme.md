@@ -42,12 +42,6 @@ As such, there are 2 possible usages with FoxFlake:<br>
 
 ## Complementary instructions:
 
-### Installing the nvidia driver
-
-For Nvidia GPU compatible with the latest open source or proprietary kernel modules, recommended drivers are automatically enabled during install.<br><br>
-
-For older nvidia cards, you will need to follow the [NixOS nvidia instructions][NixOS-nvidia].<br><br>
-
 ### Changing desktop environment or application bundles after installation
 
 The "FoxFlake Environment Selection" application allows you to review at any point in time the desktop environment and bundles choices you made.<br><br>
@@ -56,6 +50,18 @@ The "FoxFlake Environment Selection" application allows you to review at any poi
 
 It is highly recommended to use the "FoxFlake Waydroid setup" for the first time setup of Waydroid as it will detect your computer graphics and apply corresponding options.<br>
 Once Waydroid is setup, you can use the "Waydroid helper" application to add complementary features (Magisk, Tweaks...).<br><br>
+
+### Adding custom configurations
+
+FoxFlake allows you to add any NixOS / Home Manager / Plasma Manager configurations.
+
+Add your configurations to the file /etc/nixos/configuration.nix and update FoxFlake by running `sudo nixos-rebuild boot --flake /etc/nixos#foxflake`. Once done, reboot your system for changes to take effect.
+
+### Installing the nvidia driver
+
+For Nvidia GPUs compatible with the latest open source kernel modules, recommended drivers are automatically enabled during install.<br><br>
+
+For older nvidia cards, you will need to follow the [NixOS nvidia instructions][NixOS-nvidia].<br><br>
 
 ### Setting up the Home manager user environment
 
