@@ -21,6 +21,8 @@ with lib;
     services.avahi.nssmdns4 = mkDefault true;
     services.printing.enable = mkDefault true;
 
+    environment.systemPackages = with pkgs; [ simple-scan ];
+
   };
 
 }
