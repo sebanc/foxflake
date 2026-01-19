@@ -16,6 +16,7 @@ with lib;
       efibootmgr
       git
       gzip
+      jq
       p7zip
       pciutils
       usbutils
