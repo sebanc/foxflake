@@ -55,7 +55,7 @@ Once Waydroid is setup, you can use the "Waydroid helper" application to add com
 
 FoxFlake allows you to add any NixOS / Home Manager / Plasma Manager configurations.
 
-Add your configurations to the file /etc/nixos/configuration.nix and update FoxFlake by running `sudo nixos-rebuild boot --flake /etc/nixos#foxflake`. Once done, reboot your system for changes to take effect.
+Add your configurations to the file /etc/nixos/configuration.nix and update FoxFlake by running `sudo nixos-rebuild boot --flake /etc/nixos#foxflake`. Once done, reboot your system for changes to take effect.<br><br>
 
 ### Installing the nvidia driver
 
