@@ -24,8 +24,8 @@
             {
               nixpkgs.overlays = [
                 (_self: super: {
-                  calamares-nixos-extensions = super.calamares-nixos-extensions.overrideAttrs (_oldAttrs: {
-                    postInstall = ''
+                  calamares-nixos-extensions = super.calamares-nixos-extensions.overrideAttrs (oldAttrs: {
+                    postInstall = oldAttrs.postInstall or "" + ''
                       mkdir -p $out/etc/calamares $out/lib/calamares/modules $out/share/calamares/branding/nixos/images
                       cp -rT ${./calamares-patches/config}                                  $out/etc/calamares/
                       cp -rT ${./calamares-patches/config}                                  $out/share/calamares/
@@ -46,6 +46,8 @@
                   environment.switching.enable = false;
                   system.bundles = [ ];
                 };
+                networking.hostName = "foxflake-installer";
+                services.fwupd.enable = false;
                 system.nixos.label = "";
                 specialisation = {
                   nvidia_open = {
