@@ -56,13 +56,6 @@
                       foxflake.nvidia.enable = true;
                     };
                   };
-                  nvidia_proprietary = {
-                    configuration = {
-                      isoImage.appendToMenuLabel = lib.mkForce " Installer (with Nvidia proprietary kernel driver)";
-                      foxflake.nvidia.enable = true;
-                      foxflake.nvidia.open = false;
-                    };
-                  };
                 };
                 image.baseName = lib.mkForce "foxflake-${config.isoImage.edition}-${pkgs.stdenv.hostPlatform.uname.processor}";
                 isoImage = {
