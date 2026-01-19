@@ -42,6 +42,7 @@ with lib;
         gnomeExtensions.gsconnect
         gnomeExtensions.appindicator
         gnomeExtensions.dash-to-dock
+        wsdd
       ];
 
       gnome.excludePackages = with pkgs; [
