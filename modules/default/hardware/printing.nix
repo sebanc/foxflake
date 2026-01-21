@@ -21,7 +21,7 @@ with lib;
     services.avahi.nssmdns4 = mkDefault true;
     services.printing.enable = mkDefault true;
 
-    environment.systemPackages = with pkgs; [ simple-scan ];
+    environment.systemPackages = if (builtins.elem "standard" config.foxflake.system.bundles) then with pkgs; [ simple-scan ] else [ ];
 
   };
 
