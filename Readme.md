@@ -7,11 +7,11 @@
 
 ## About this project
 
-FoxFlake is a comprehensive configuration of the NixOS Linux distribution (Flake) which aims to reproduce the best features of ChromeOS using Open Source Software (simple, very stable system and without any maintenance tasks needed) while providing native access to the full catalogue of Linux applications:<br>
+FoxFlake is a comprehensive configuration of the NixOS Linux distribution (Flake) which aims to provide a simple and very stable system without any maintenance tasks needed:<br>
 - FoxFlake automatically configures the system and does not require any preliminary NixOS knowledge.<br>
+- NixOS system packages and system / user flatpaks are updated daily without user interaction (NixOS system packages updates are installed in the background and applied on next boot).<br>
 - Gnome, Plasma and Cosmic desktop environments are available and can be switched easily.<br>
 - Waydroid can be included for android applications support (optional).<br>
-- Flatpak allows to complement your system with Linux applications of your choice for productivity, gaming, media creation...<br><br>
 
 <div align="center">
 Gnome:<br><img alt="Gnome" src="https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/branding/nixos/images/gnome.png?raw=true" width="512" height="320" /><br><br>
@@ -28,8 +28,8 @@ Download the installer iso from the releases section of this repository.<br><br>
 The use of NixOS as a base guarantees the overall system stability and provides strong rollback capabilities through the generations mechanism. FoxFlake provides:<br>
 - A comprehensive NixOS configuration, declared in this repository, that allows delegated management of maintenance tasks (NixOS options changes, package name changes...). All NixOS options are still available for users who want to customize their systems and supersede any FoxFlake default configuration.<br>
 - The use of NixOS stable channel as a rolling release (the switch from one stable version to the next is automated).<br>
-- Unattended daily updates of your system (for both NixOS system packages and system / user flatpaks).<br>
-- NixOS community maintained modules home-manager, plasma-manager and nix-flatpak modules are included and allow to have a fully declarative configuration from system to user profiles.<br><br>
+- Unattended daily updates of your system for NixOS system packages and system / user flatpaks (NixOS system packages updates are installed in the background and applied on next boot).<br>
+- NixOS community maintained modules home-manager, plasma-manager and nix-flatpak are included and allow to have a fully declarative configuration from system to user profiles.<br><br>
 
 3 bundles of applications are proposed, they are all optional and respectively contain:<br>
 - Standard bundle: Firefox, Thunderbird and LibreOffice.<br>
@@ -53,14 +53,12 @@ Once Waydroid is setup, you can use the "Waydroid helper" application to add com
 
 ### Adding custom configurations
 
-FoxFlake allows you to add any NixOS / Home Manager / Plasma Manager configurations.
-
+FoxFlake allows you to add any NixOS / Home Manager / Plasma Manager configurations.<br>
 Add your configurations to the file /etc/nixos/configuration.nix and update FoxFlake by running `sudo nixos-rebuild boot --flake /etc/nixos#foxflake`. Once done, reboot your system for changes to take effect.<br><br>
 
 ### Installing the nvidia driver
 
-For Nvidia GPUs compatible with the latest open source kernel modules, recommended drivers are automatically enabled during install.<br><br>
-
+For Nvidia GPUs compatible with the latest open source kernel modules, recommended drivers are automatically enabled during install.<br>
 For older nvidia cards, you will need to follow the [NixOS nvidia instructions][NixOS-nvidia].<br><br>
 
 ### Setting up the Home manager user environment
@@ -82,9 +80,9 @@ You can then apply your user home manager configuration updates with the command
 `nix --extra-experimental-features "nix-command flakes" flake update --flake .`<br>
 
 5. Launch the build:<br>
-`nix --extra-experimental-features "nix-command flakes" build .#installer`<br><br>
+`nix --extra-experimental-features "nix-command flakes" build .#installer`<br>
 
-The generated installer iso image will be located in the "result/iso" folder.
+The generated installer iso image will be located in the "result/iso" folder.<br><br>
 
 ## Thanks goes to:
 - [NixOS][NixOS] and community modules (home-manager, plasma-manager and nix-flatpak) maintainers.<br>
