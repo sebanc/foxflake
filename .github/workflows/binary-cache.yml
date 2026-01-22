@@ -40,8 +40,7 @@ jobs:
         with:
           name: foxflake
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-          pushFilter: '(-source$|-system-path$|-nixos-system-|\.run$|\.tar\.|cuda)'
-          skipAddingSubstituter: true
+          pushFilter: '(-source$|-system-path$|-linux-|-nixos-system-|-hwdb\.bin$|\.run$|\.tar\.|cuda)'
           useDaemon: false
       - name: Build FoxFlake binary cache
         run: |
@@ -78,8 +77,6 @@ jobs:
                 echo "Waiting for previous job to finish (status is ${previous_job_status})..."
                 sleep 300
               done
-              curl -X POST https://app.cachix.org/api/v1/cache/foxflake/clear -H "Authorization: Bearer ${{ secrets.CACHIX_AUTH_TOKEN }}"
-              sleep 30
             ;;
           esac
       - name: Upload updated FoxFlake flake.lock
