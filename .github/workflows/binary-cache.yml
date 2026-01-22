@@ -34,6 +34,8 @@ jobs:
         uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: |
+            substituters = https://cache.nixos.org/
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
       - name: Install cachix action
         uses: cachix/cachix-action@v16
