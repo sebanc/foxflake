@@ -40,7 +40,7 @@ jobs:
         with:
           name: foxflake
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-          pushFilter: '(-source$|-system-path$|-linux-|-nixos-system-|-hwdb\.bin$|\.run$|\.tar\.|cuda)'
+          pushFilter: '(-source$|-system-path$|-nixos-system-|-hwdb\.bin$|\.run$|\.tar\.|cuda)'
           useDaemon: false
       - name: Build FoxFlake binary cache
         run: |
