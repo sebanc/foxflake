@@ -77,6 +77,8 @@ jobs:
                 echo "Waiting for previous job to finish (status is ${previous_job_status})..."
                 sleep 300
               done
+              curl -X POST https://app.cachix.org/api/v1/cache/foxflake/clear -H "Authorization: Bearer ${{ secrets.CACHIX_AUTH_TOKEN }}"
+              sleep 30
             ;;
           esac
       - name: Upload updated FoxFlake flake.lock
