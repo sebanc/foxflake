@@ -22,6 +22,7 @@ jobs:
         uses: wimpysworld/nothing-but-nix@v6
         with:
           hatchet-protocol: 'holster'
+          nix-permission-edict: true
       - name: Display disk space
         run: |
           echo "Free space:"
