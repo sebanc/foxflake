@@ -21,7 +21,7 @@ jobs:
       - name: Reclaim disk space
         uses: wimpysworld/nothing-but-nix@main
         with:
-          hatchet-protocol: 'holster'
+          root-safe-haven: 10240
       - name: Display disk space
         run: |
           echo "Free space:"
