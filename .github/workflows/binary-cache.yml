@@ -19,10 +19,9 @@ jobs:
         branch: [ "stable", "stable-test", "unstable", "unstable-test", "dev" ]
     steps:
       - name: Reclaim disk space
-        uses: wimpysworld/nothing-but-nix@v6
+        uses: wimpysworld/nothing-but-nix@main
         with:
           hatchet-protocol: 'holster'
-          nix-permission-edict: true
       - name: Display disk space
         run: |
           echo "Free space:"
