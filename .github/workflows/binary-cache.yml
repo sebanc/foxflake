@@ -21,6 +21,8 @@ jobs:
       - name: Reclaim disk space
         uses: wimpysworld/nothing-but-nix@main
         with:
+          hatchet-protocol: 'cleave'
+          witness-carnage: true
           root-safe-haven: 10240
       - name: Display disk space
         run: |
