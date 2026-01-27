@@ -1,9 +1,9 @@
 {
 
   imports = [
+    ./audio.nix
     ./graphics.nix
     ./nvidia.nix
-    ./pipewire.nix
     ./printing.nix
     ./vm-support.nix
   ];
