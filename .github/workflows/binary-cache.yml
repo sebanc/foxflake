@@ -12,18 +12,104 @@ concurrency:
   group: environment-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  create-foxflake-binary-cache:
+  create-foxflake-unstable-binary-cache:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        branch: [ "stable", "stable-test", "unstable", "unstable-test", "dev" ]
+        branch: [ "unstable", "unstable-test", "dev" ]
     steps:
       - name: Reclaim disk space
         uses: wimpysworld/nothing-but-nix@main
         with:
           hatchet-protocol: 'cleave'
           witness-carnage: true
-          root-safe-haven: 20480
+      - name: Display disk space
+        run: |
+          echo "Free space:"
+          df -h
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Install nix
+        uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+      - name: Install cachix action
+        uses: cachix/cachix-action@v16
+        with:
+          name: foxflake
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+          pushFilter: '(-source$|-system-path$|-nixos-system-|-hwdb\.bin$|\.run$|\.tar\.|cuda)'
+          useDaemon: false
+      - name: Build FoxFlake binary cache
+        run: |
+          ./create_binary_cache.sh ${{ matrix.branch }}
+          case ${{ matrix.branch }} in
+            'unstable-test')
+              while true; do
+                previous_job_status="$(curl -s -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" | jq '.jobs[] | select(.name=="create-foxflake-unstable-binary-cache (unstable)") | .steps[] | select(.name=="Post Install cachix action") | .conclusion' | cut -d'"' -f2)"
+                if [ "${previous_job_status}" == "success" ]; then break; fi
+                echo "Waiting for previous job to finish (status is ${previous_job_status})..."
+                sleep 300
+              done
+            ;;
+            'dev')
+              while true; do
+                previous_job_status="$(curl -s -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" | jq '.jobs[] | select(.name=="create-foxflake-unstable-binary-cache (unstable-test)") | .steps[] | select(.name=="Post Install cachix action") | .conclusion' | cut -d'"' -f2)"
+                if [ "${previous_job_status}" == "success" ]; then break; fi
+                echo "Waiting for previous job to finish (status is ${previous_job_status})..."
+                sleep 300
+              done
+            ;;
+          esac
+      - name: Upload updated FoxFlake flake.lock
+        uses: actions/upload-artifact@v4
+        with:
+          name: foxflake-${{ matrix.branch }}-flake-lock
+          path: /home/runner/work/foxflake/foxflake/foxflake-${{ matrix.branch }}-flake.lock
+          if-no-files-found: error
+  update-foxflake-unstable-flake-locks:
+    needs: create-foxflake-unstable-binary-cache
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        branch: [ "unstable","unstable-test","dev" ]
+    steps:
+      - name: Checkout ${{ matrix.branch }} branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.branch }}
+      - name: Download FoxFlake ${{ matrix.branch }} flake lock
+        uses: actions/download-artifact@v4
+        with:
+          name: foxflake-${{ matrix.branch }}-flake-lock
+          path: /home/runner/work/foxflake/foxflake/
+      - name: Copy FoxFlake ${{ matrix.branch }} flake lock
+        run: |
+          cp ./foxflake-${{ matrix.branch }}-flake.lock ./flake.lock
+          rm ./foxflake-${{ matrix.branch }}-flake.lock
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          branch: ${{ matrix.branch }}
+          commit_message: Update flake lock
+  create-foxflake-stable-binary-cache:
+    needs: create-foxflake-unstable-binary-cache
+    if: always()
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        branch: [ "stable", "stable-test" ]
+    steps:
+      - name: Reclaim disk space
+        uses: wimpysworld/nothing-but-nix@main
+        with:
+          hatchet-protocol: 'cleave'
+          witness-carnage: true
       - name: Display disk space
         run: |
           echo "Free space:"
@@ -50,31 +136,7 @@ jobs:
           case ${{ matrix.branch }} in
             'stable-test')
               while true; do
-                previous_job_status="$(curl -s -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" | jq '.jobs[] | select(.name=="create-foxflake-binary-cache (stable)") | .steps[] | select(.name=="Post Install cachix action") | .conclusion' | cut -d'"' -f2)"
-                if [ "${previous_job_status}" == "success" ]; then break; fi
-                echo "Waiting for previous job to finish (status is ${previous_job_status})..."
-                sleep 300
-              done
-            ;;
-            'unstable')
-              while true; do
-                previous_job_status="$(curl -s -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" | jq '.jobs[] | select(.name=="create-foxflake-binary-cache (stable-test)") | .steps[] | select(.name=="Post Install cachix action") | .conclusion' | cut -d'"' -f2)"
-                if [ "${previous_job_status}" == "success" ]; then break; fi
-                echo "Waiting for previous job to finish (status is ${previous_job_status})..."
-                sleep 300
-              done
-            ;;
-            'unstable-test')
-              while true; do
-                previous_job_status="$(curl -s -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" | jq '.jobs[] | select(.name=="create-foxflake-binary-cache (unstable)") | .steps[] | select(.name=="Post Install cachix action") | .conclusion' | cut -d'"' -f2)"
-                if [ "${previous_job_status}" == "success" ]; then break; fi
-                echo "Waiting for previous job to finish (status is ${previous_job_status})..."
-                sleep 300
-              done
-            ;;
-            'dev')
-              while true; do
-                previous_job_status="$(curl -s -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" | jq '.jobs[] | select(.name=="create-foxflake-binary-cache (unstable-test)") | .steps[] | select(.name=="Post Install cachix action") | .conclusion' | cut -d'"' -f2)"
+                previous_job_status="$(curl -s -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" | jq '.jobs[] | select(.name=="create-foxflake-stable-binary-cache (stable)") | .steps[] | select(.name=="Post Install cachix action") | .conclusion' | cut -d'"' -f2)"
                 if [ "${previous_job_status}" == "success" ]; then break; fi
                 echo "Waiting for previous job to finish (status is ${previous_job_status})..."
                 sleep 300
@@ -87,14 +149,14 @@ jobs:
           name: foxflake-${{ matrix.branch }}-flake-lock
           path: /home/runner/work/foxflake/foxflake/foxflake-${{ matrix.branch }}-flake.lock
           if-no-files-found: error
-  update-foxflake-flake-locks:
-    needs: create-foxflake-binary-cache
+  update-foxflake-stable-flake-locks:
+    needs: create-foxflake-stable-binary-cache
     permissions:
       contents: write
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        branch: [ "stable", "stable-test", "unstable","unstable-test","dev" ]
+        branch: [ "stable", "stable-test" ]
     steps:
       - name: Checkout ${{ matrix.branch }} branch
         uses: actions/checkout@v4
