@@ -15,9 +15,12 @@ with lib;
         enable = mkDefault true;
         support32Bit = mkDefault true;
       };
-      extraConfig.pipewire."91-min-quantum" = {
-        "context.properties" = {
-          "default.clock.min-quantum" = 1024;
+      extraConfig.pipewire-pulse."92-crackling-fix" = {
+        "pulse.properties" = {
+          "pulse.min.req" = "1024/48000";
+          "pulse.min.frag" = "1024/48000";
+          "pulse.min.quantum" = "1024/48000";
+          "pulse.idle-timeout" = 0;
         };
       };
     };
