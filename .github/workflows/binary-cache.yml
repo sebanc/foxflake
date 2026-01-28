@@ -99,7 +99,7 @@ jobs:
           commit_message: Update flake lock
   create-foxflake-stable-binary-cache:
     needs: create-foxflake-unstable-binary-cache
-    if: always()
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -151,7 +151,7 @@ jobs:
           if-no-files-found: error
   update-foxflake-stable-flake-locks:
     needs: create-foxflake-stable-binary-cache
-    if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
+    if: ${{ !cancelled() && contains(join(needs.*.result, ','), 'success') }}
     permissions:
       contents: write
     runs-on: ubuntu-latest
