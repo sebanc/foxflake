@@ -151,6 +151,7 @@ jobs:
           if-no-files-found: error
   update-foxflake-stable-flake-locks:
     needs: create-foxflake-stable-binary-cache
+    if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
     permissions:
       contents: write
     runs-on: ubuntu-latest
