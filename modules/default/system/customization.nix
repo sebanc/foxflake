@@ -37,7 +37,7 @@ with lib;
     environment = {
       wallpaper = mkOption {
         type = with types; nullOr str;
-        default = "${pkgs.nixos-artwork.wallpapers.simple-blue.gnomeFilePath}";
+        default = "/run/current-system/sw/share/backgrounds/nixos/nix-wallpaper-simple-blue.png";
         example = "/etc/wallpapers/mywallpaper.png";
         description = ''
           The wallpaper to use by default, ensure that is

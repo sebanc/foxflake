@@ -39,7 +39,7 @@ in
   config = mkIf config.foxflake.environment.enable {
     
     environment.systemPackages = if (config.foxflake.environment.switching.enable) then
-      with pkgs; [ foxflake-environment-selection zenity ]
+      with pkgs; [ foxflake-environment-selection nixos-artwork.wallpapers.simple-blue zenity ]
     else
       [ ];
     
