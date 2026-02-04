@@ -15,7 +15,7 @@ with lib;
       pkgsRocm.blender
       gimp
       inkscape-with-extensions
-      kdePackages.kdenlive
+      (pkgs.kdePackages.kdenlive.override { ffmpeg-full = pkgs.ffmpeg_7-full; })
       obs-studio
       obs-studio-plugins.obs-vkcapture
     ];
