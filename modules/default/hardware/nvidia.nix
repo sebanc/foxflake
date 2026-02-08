@@ -43,6 +43,10 @@ with lib;
       __GL_SHADER_DISK_CACHE_SIZE = "12000000000";
     };
 
+    nixpkgs.config.packageOverrides = pkgs: {
+        blender = pkgs.blender.override { cudaSupport = true;  };
+    };
+
     programs.nix-ld.libraries = with pkgs; [ linuxPackages.nvidia_x11 ];
   };
 
