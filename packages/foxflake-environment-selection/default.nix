@@ -126,7 +126,7 @@ fi
     desktopEntry = pkgs.makeDesktopItem {
       name = name;
       desktopName = "FoxFlake Environment Selection";
-      icon = "foxflake-red-icon";
+      icon = "foxflake-green-icon";
       exec = "${script}/bin/${name}";
       terminal = true;
       categories = ["Utility"];
