@@ -31,7 +31,7 @@
                       cp -rT ${./calamares-patches/config}                                  $out/share/calamares/
                       cp -rT ${./calamares-patches/modules}                                 $out/lib/calamares/modules/
                       cp -rT ${./calamares-patches/branding}                                $out/share/calamares/branding/
-                      cp ${../packages/foxflake-logos/foxflake-logo-light.png}              $out/share/calamares/branding/nixos/images/foxflake-logo-light.png
+                      cp ${../packages/foxflake-logos/foxflake-neon-logo.png}               $out/share/calamares/branding/nixos/images/foxflake-neon-logo.png
                     '';
                   });
                 })
