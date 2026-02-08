@@ -37,11 +37,13 @@ with lib;
     environment = {
       wallpaper = mkOption {
         type = with types; nullOr str;
-        default = "/run/current-system/sw/share/backgrounds/nixos/nix-wallpaper-simple-blue.png";
-        example = "/etc/wallpapers/mywallpaper.png";
+        default = if config.foxflake.environment.type == "plasma" then
+          "/run/current-system/sw/share/wallpapers/foxflake-neon-wallpaper/contents/images/foxflake-neon-wallpaper.png"
+        else
+          "/run/current-system/sw/share/backgrounds/foxflake/foxflake-neon-wallpaper.png";
+        example = "/home/common/wallpaper.png";
         description = ''
-          The wallpaper to use by default, ensure that is
-          sourced in a folder within /etc directory.
+          The wallpaper used by default for the display manager and desktop environment.
         '';
       };
       theme = mkOption {
@@ -95,7 +97,7 @@ with lib;
       theme = mkDefault config.foxflake.customization.grub.theme;
     };
 
-    environment.systemPackages = [ (pkgs.callPackage ../../../packages/foxflake-icons {}) ];
+    environment.systemPackages = [ (pkgs.callPackage ../../../packages/foxflake-icons {}) (pkgs.callPackage ../../../packages/foxflake-wallpapers {}) ];
 
   };
 
