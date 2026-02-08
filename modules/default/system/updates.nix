@@ -27,7 +27,26 @@ with lib;
     };
 
     systemd = {
-      services.update-system-flatpaks = {
+      services."nixos-upgrade".unitConfig.OnFailure = [ "nixos-upgrade-failure-notification.service" ];
+      services."nixos-upgrade-failure-notification" = {
+        description = "Send a desktop notification to wheel group users on upgrade failure";
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = "${pkgs.writeShellScriptBin "nixos-upgrade-failure-notification" ''
+            #!${pkgs.bash}
+            WHEEL_USERS=$(${pkgs.gnugrep}/bin/grep '^wheel:' /etc/group | ${pkgs.coreutils}/bin/cut -d: -f4 | ${pkgs.coreutils}/bin/tr ',' ' ')
+            for user in $WHEEL_USERS; do
+              USER_ID=$(${pkgs.coreutils}/bin/id -u "$user")
+              BUS_ADDRESS="/run/user/$USER_ID/bus"
+              if [ -S "$BUS_ADDRESS" ]; then
+                ${pkgs.sudo}/bin/sudo -u "$user" DBUS_SESSION_BUS_ADDRESS="unix:path=$BUS_ADDRESS" ${pkgs.libnotify}/bin/notify-send --urgency=critical --icon="foxflake-red-icon" "System Update Failed" "The NixOS upgrade service failed. Check 'journalctl -u nixos-upgrade' for issues related to your custom NixOS configuration."
+              fi
+            done
+          ''}/bin/nixos-upgrade-failure-notification";
+        };
+        restartIfChanged = false;
+      };
+      services."update-system-flatpaks" = {
         description = "Update system flatpaks";
         conflicts = [ "shutdown.target" ];
         serviceConfig = {
@@ -51,7 +70,7 @@ with lib;
           Unit = "update-system-flatpaks.service";
         };
       };
-      user.services.update-user-flatpaks = {
+      user.services."update-user-flatpaks" = {
         description = "Update user flatpaks";
         conflicts = [ "shutdown.target" ];
         serviceConfig = {
