@@ -96,7 +96,7 @@ fi
     desktopEntry = pkgs.makeDesktopItem {
       name = name;
       desktopName = "FoxFlake Waydroid setup";
-      icon = "foxflake-icon-light";
+      icon = "foxflake-blue-icon";
       exec = "${script}/bin/${name}";
       terminal = true;
       categories = ["Utility"];
