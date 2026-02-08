@@ -12,8 +12,8 @@ with lib;
 
     environment.systemPackages = with pkgs; [
       gamescope
-      gamescope-wsi
       heroic
+      input-remapper
       joystickwake
       lutris
       mangohud
