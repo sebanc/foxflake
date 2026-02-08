@@ -29,11 +29,14 @@ stdenv.mkDerivation {
 
       # PLASMA CONFIGURATION
       mkdir -p $out/share/wallpapers/''${wallpaper}/contents/images
-      cp ''${wallpaper}.png $out/share/wallpapers/''${wallpaper}/contents/images/''${wallpaper}.png
-      cat >$out/share/wallpapers/''${wallpaper}/metadata.desktop <<FOXFLAKE_PLASMA_CONF
-    [Desktop Entry]
-    Name=''${wallpaper}
-    X-KDE-PluginInfo-Name=''${wallpaper}
+      cp ''${wallpaper}.png $out/share/wallpapers/''${wallpaper}/contents/images/3840x2160.png
+      cat >$out/share/wallpapers/''${wallpaper}/metadata.json <<FOXFLAKE_PLASMA_CONF
+    {
+        "KPlugin": {
+            "Id": "''${wallpaper}",
+            "Name": "''${wallpaper}"
+        }
+    }
     FOXFLAKE_PLASMA_CONF
 
     done
