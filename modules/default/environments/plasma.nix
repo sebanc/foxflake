@@ -40,8 +40,9 @@ with lib;
         kdePackages.oxygen
       ];
       systemPackages = [
-        pkgs.unstable.tela-circle-icon-theme
+        pkgs.kdePackages.kalk
         pkgs.kdePackages.qtwebengine
+        pkgs.unstable.tela-circle-icon-theme
         (pkgs.writeTextDir "share/sddm/themes/breeze/theme.conf.user" ''
           [General]
           background="${config.foxflake.customization.environment.wallpaper}"
