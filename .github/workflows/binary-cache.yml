@@ -45,6 +45,12 @@ jobs:
           useDaemon: false
       - name: Build FoxFlake binary cache
         run: |
+          sudo swapoff -a
+          sudo fallocate -l 16G /swapfile
+          sudo chmod 600 /swapfile
+          sudo mkswap /swapfile
+          sudo swapon /swapfile
+          sudo swapon --show
           ./create_binary_cache.sh ${{ matrix.branch }}
           case ${{ matrix.branch }} in
             'unstable-test')
