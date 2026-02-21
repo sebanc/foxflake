@@ -120,7 +120,7 @@ git clone -b ${1} https://github.com/sebanc/foxflake.git ./foxflake-${1}
 nix flake update --flake ./foxflake-${1}
 for environment in "cosmic" "gnome" "plasma"; do
 	for nvidia in "" "-nvidia"; do
-		nix build --no-link .#nixosConfigurations.foxflake-${1}-${environment}${nvidia}.config.system.build.toplevel
+		nix build --no-link --max-jobs 2 .#nixosConfigurations.foxflake-${1}-${environment}${nvidia}.config.system.build.toplevel
 	done
 done
 cp ./foxflake-${1}/flake.lock /home/runner/work/foxflake/foxflake/foxflake-${1}-flake.lock
