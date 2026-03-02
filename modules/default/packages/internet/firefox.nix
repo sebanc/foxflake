@@ -11,18 +11,9 @@ let
 in
 {
 
-  config = mkIf (builtins.elem "standard" config.foxflake.system.bundles) {
+  config = mkIf (builtins.elem "full" config.foxflake.system.applications || builtins.elem "standard" config.foxflake.system.applications || builtins.elem "firefox" config.foxflake.system.applications) {
 
-    environment = {
-      sessionVariables = {
-        MOZ_USE_XINPUT2 = "1";
-      };
-      systemPackages = with pkgs; [
-        libreoffice
-        (if (lib.head (lib.splitString "_" config.i18n.defaultLocale) == "fr") then pkgs.hunspellDicts.fr-moderne else (lib.attrByPath [ "hunspellDicts" (lib.head (lib.splitString "." config.i18n.defaultLocale)) ] pkgs.bash pkgs))
-      ];
-    };
-
+    environment.sessionVariables = { MOZ_USE_XINPUT2 = "1"; };
     programs = {
       firefox = {
         enable = mkDefault true;
@@ -32,7 +23,6 @@ in
           "widget.use-xdg-desktop-portal.file-picker" = 1;
         };
       };
-      thunderbird.enable = mkDefault true;
     };
 
   };

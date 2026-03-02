@@ -1,11 +1,15 @@
 {
 
   imports = [
-    ./minimal.nix
-    ./gaming.nix
-    ./standard.nix
-    ./studio.nix
-    ./waydroid.nix
+    ./creativity
+    ./development
+    ./gaming
+    ./hardware
+    ./internet
+    ./multimedia
+    ./office
+    ./system
+    ./virtualisation
   ];
 
 }

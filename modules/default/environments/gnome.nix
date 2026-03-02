@@ -66,7 +66,7 @@ with lib;
 
     programs.dconf = {
       enable = mkDefault true;
-      profiles.user.databases = [
+      profiles.user.databases = mkDefault [
         {
           settings = {
             "org/gnome/desktop/wm/preferences" = {
@@ -110,6 +110,10 @@ with lib;
               ];
               favorite-apps = [
                 "firefox.desktop"
+                "librewolf.desktop"
+                "google-chrome.desktop"
+                "chromium-browser.desktop"
+                "brave-browser.desktop"
                 "org.gnome.Nautilus.desktop"
                 "org.gnome.Software.desktop"
               ];

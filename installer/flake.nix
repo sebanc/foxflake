@@ -26,10 +26,12 @@
                 (_self: super: {
                   calamares-nixos-extensions = super.calamares-nixos-extensions.overrideAttrs (oldAttrs: {
                     postInstall = oldAttrs.postInstall or "" + ''
-                      mkdir -p $out/etc/calamares $out/lib/calamares/modules $out/share/calamares/branding/nixos/images
+                      mkdir -p $out/etc/calamares/branding $out/etc/calamares/modules $out/lib/calamares/modules $out/share/calamares/branding
                       cp -rT ${./calamares-patches/config}                                  $out/etc/calamares/
                       cp -rT ${./calamares-patches/config}                                  $out/share/calamares/
+                      cp -rT ${./calamares-patches/modules}                                 $out/etc/calamares/modules/
                       cp -rT ${./calamares-patches/modules}                                 $out/lib/calamares/modules/
+                      cp -rT ${./calamares-patches/branding}                                $out/etc/calamares/branding/
                       cp -rT ${./calamares-patches/branding}                                $out/share/calamares/branding/
                       cp ${../packages/foxflake-logos/foxflake-neon-logo.png}               $out/share/calamares/branding/nixos/images/foxflake-neon-logo.png
                     '';
@@ -43,8 +45,8 @@
                 foxflake = {
                   autoUpgrade = false;
                   environment.type = "gnome";
-                  environment.switching.enable = false;
-                  system.bundles = [ ];
+                  environment.selection.enable = false;
+                  system.applications = [ ];
                 };
                 networking.hostName = "foxflake-installer";
                 services.fwupd.enable = false;
@@ -56,6 +58,15 @@
                       foxflake.nvidia.enable = true;
                     };
                   };
+                };
+                nixpkgs.config.packageOverrides = pkgs: {
+                  calamares = pkgs.calamares.overrideAttrs (oldAttrs: {
+                    postInstall = (oldAttrs.postInstall or "") + ''
+                      if [ -f "$out/share/applications/calamares.desktop" ]; then
+                        ${pkgs.gnused}/bin/sed -i 's@pkexec calamares@sudo calamares@g' "$out/share/applications/calamares.desktop"
+                      fi
+                    '';
+                  });
                 };
                 image.baseName = lib.mkForce "foxflake-${config.isoImage.edition}-${pkgs.stdenv.hostPlatform.uname.processor}";
                 isoImage = {

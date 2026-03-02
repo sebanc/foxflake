@@ -9,6 +9,11 @@ with lib;
 {
 
   options.foxflake.system = {
+    applications = mkOption {
+      description = "applications selection";
+      type = with types; listOf str;
+      default = config.foxflake.system.bundles;
+    };
     bundles = mkOption {
       description = "bundles selection";
       type = with types; listOf str;
