@@ -5,7 +5,7 @@
 [![Issues][issues-shield]][issues-url]
 [![Discord][discord-shield]][discord-url]
 
-# FoxFlake
+<h1 align="center">FoxFlake</h1>
 
 FoxFlake is a comprehensive configuration of the NixOS Linux distribution (Flake) that automates NixOS management tasks to keep the user experience simple.<br><br>
 
