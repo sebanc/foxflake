@@ -80,8 +80,8 @@ Examples of configurations include:
 - Enable an scx scheduler:<br>
 ```
 services.scx = {
-enable = true;
-scheduler = "scx_lavd";
+  enable = true;
+  scheduler = "scx_lavd";
 };
 ```
 
