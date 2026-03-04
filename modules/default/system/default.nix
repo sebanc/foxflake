@@ -1,8 +1,8 @@
 {
 
   imports = [
-    ./appimages.nix
     ./boot.nix
+    ./compatibility.nix
     ./customization.nix
     ./hostname.nix
     ./internationalisation.nix
