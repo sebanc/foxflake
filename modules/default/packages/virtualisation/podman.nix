@@ -14,7 +14,7 @@ with lib;
       containers.enable = mkDefault true;
       podman = {
         enable = mkDefault true;
-        dockerCompat = mkDefault (!(builtins.elem "distrobox" config.foxflake.system.applications || builtins.elem "docker" config.foxflake.system.applications || builtins.elem "winboat" config.foxflake.system.applications));
+        dockerCompat = mkDefault (!(builtins.elem "full" config.foxflake.system.applications || builtins.elem "distrobox" config.foxflake.system.applications || builtins.elem "docker" config.foxflake.system.applications || builtins.elem "winboat" config.foxflake.system.applications));
         defaultNetwork.settings.dns_enabled = mkDefault true;
       };
     };
