@@ -3,58 +3,87 @@
 [![Issues][issues-shield]][issues-url]
 [![Discord][discord-shield]][discord-url]
 
-<h1 align="center">FoxFlake</h1>
+# FoxFlake: Effortless NixOS
 
-## About this project
+FoxFlake is a comprehensive configuration of the NixOS Linux distribution (Flake) that automates NixOS management tasks to keep the user experience simple.<br><br>
 
-FoxFlake is a comprehensive configuration of the NixOS Linux distribution (Flake) which aims to provide a simple and very stable system without any maintenance tasks needed:<br>
-- FoxFlake automatically configures the system and does not require any preliminary NixOS knowledge.<br>
-- NixOS system packages and system / user flatpaks are updated daily without user interaction (NixOS system packages updates are installed in the background and applied on next boot).<br>
-- Gnome, Plasma and Cosmic desktop environments are available and can be switched easily.<br>
-- Waydroid can be included for android applications support (optional).<br>
+## Key features
+
+🖥️ Environment flexibility<br>
+    - Desktop versatility: Seamlessly switch between GNOME, KDE Plasma, and COSMIC desktop environments.<br>
+    - Simple package management: Manage your set of NixOS applications via the "FoxFlake Environment Selection" tool and use the desktop environment’s store to install Flatpaks.<br>
+    - Extended binary cache: FoxFlake ensures with its own binary cache that prebuilt packages are available for all included desktop environments and packages configurations (it avoids NixOS from building packages from source when a binary package is not available).<br><br>
+
+🛡️ Automation & Reliability <br>
+    - Automated lifecycle: The system automatically transitions between NixOS versions, providing a "rolling release" experience without manual configuration changes.<br>
+    - Zero-intervention maintenance: FoxFlake automates daily updates for both system packages and system / user Flatpaks (System updates are staged in the background and applied safely on the next boot).<br>
+    - Atomic rollbacks: Leveraging the Nix "Generations" mechanism, FoxFlake allows you to instantly revert to previous working states directly from the boot menu.<br><br>
+
+🚀 Declarative Foundation<br>
+    - Base layer management: Focus on your specific configurations while FoxFlake maintains the core configurations.<br>
+    - Unrestricted options: All NixOS options remain available and supersede FoxFlake defaults.<br>
+    - Unified declarative stack: Includes home-manager, plasma-manager, and nix-flatpak for complete system-to-users configuration.<br><br>
+
+## Installation & Usage
+
+1. Download the latest ISO from the Releases page.<br>
+2. Use balenaEtcher, GNOME Disks or KDE ISO Image Writer to create a bootable USB drive (do not use Rufus, it is not compatible at the moment).<br>
+3. Ensure that Secure Boot is disabled in your BIOS, boot from the USB and follow the graphical installer (during installation, you will be prompted to select your preferred Desktop Environment and to choose your NixOS native applications).<br><br>
 
 <div align="center">
-Gnome:<br><img alt="Gnome" src="https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/branding/nixos/images/gnome.png?raw=true" width="512" height="320" /><br><br>
-Plasma:<br><img alt="Plasma" src="https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/branding/nixos/images/plasma.png?raw=true" width="512" height="320" /><br><br>
-Cosmic:<br><img alt="Gnome" src="https://github.com/sebanc/foxflake/blob/stable/installer/calamares-patches/branding/nixos/images/cosmic.png?raw=true" width="512" height="320" /><br><br>
+Gnome:<br><img alt="Gnome" src="./Images/gnome.png" width="512" height="320" /><br><br>
+Plasma:<br><img alt="Plasma" src="./Images/plasma.png" width="512" height="320" /><br><br>
+Cosmic:<br><img alt="Gnome" src="./Images/cosmic.png" width="512" height="320" /><br><br>
+FoxFlake environment selection:<br><img alt="Gnome" src="./Images/foxflake-environment-selection.png" width="512" height="320" /><br><br>
 </div>
 
-## Installation
-
-Download the installer iso from the releases section of this repository.<br><br>
-
-## Features
-
-The use of NixOS as a base guarantees the overall system stability and provides strong rollback capabilities through the generations mechanism. FoxFlake provides:<br>
-- A comprehensive NixOS configuration, declared in this repository, that allows delegated management of maintenance tasks (NixOS options changes, package name changes...). All NixOS options are still available for users who want to customize their systems and supersede any FoxFlake default configuration.<br>
-- The use of NixOS stable channel as a rolling release (the switch from one stable version to the next is automated).<br>
-- Unattended daily updates of your system for NixOS system packages and system / user flatpaks (NixOS system packages updates are installed in the background and applied on next boot).<br>
-- NixOS community maintained modules home-manager, plasma-manager and nix-flatpak are included and allow to have a fully declarative configuration from system to user profiles.<br><br>
-
-3 bundles of applications are proposed, they are all optional and respectively contain:<br>
-- Standard bundle: Firefox, Thunderbird and LibreOffice.<br>
-- Gaming bundle: Steam, Heroic and Lutris.<br>
-- Studio bundle: OBS Studio, Blender, Kdenlive, GIMP, Audacity.<br><br>
-
-As such, there are 2 possible usages with FoxFlake:<br>
-- Zero maintenance mode: Install the system with the bundles of packages that correspond to your needs and complement them with flatpak applications.<br>
-- Custom declarative configurations: FoxFlake will manage the main system configurations and you are only in charge of the maintenance of your custom configurations.<br><br>
+FoxFlake is designed to accommodate two distinct types of users:<br>
+    - Zero-Maintenance Mode: Manage your NixOS apps via the "FoxFlake Environment Selection" application, install flatpaks from the desktop environment's store and let FoxFlake handle the maintenance.<br>
+    - Custom Declarative Configurations: Define your custom configurations in the file /etc/nixos/configuration.nix, the core OS maintenance is taken care of and you are only in charge of maintaining your specific configurations.<br><br>
 
 ## Complementary instructions:
 
-### Changing desktop environment or application bundles after installation
+### Changing desktop environment or native applications after installation
 
-The "FoxFlake Environment Selection" application allows you to review at any point in time the desktop environment and bundles choices you made.<br><br>
-
-### Setting up android apps
-
-It is highly recommended to use the "FoxFlake Waydroid setup" for the first time setup of Waydroid as it will detect your computer graphics and apply corresponding options.<br>
-Once Waydroid is setup, you can use the "Waydroid helper" application to add complementary features (Magisk, Tweaks...).<br><br>
+The "FoxFlake Environment Selection" application allows you to review at any point in time the desktop environment and applications choices you made.<br><br>
 
 ### Adding custom configurations
 
 FoxFlake allows you to add any NixOS / Home Manager / Plasma Manager configurations.<br>
-Add your configurations to the file /etc/nixos/configuration.nix and update FoxFlake by running `sudo nixos-rebuild boot --flake /etc/nixos#foxflake`. Once done, reboot your system for changes to take effect.<br><br>
+Add your configurations to the file /etc/nixos/configuration.nix and update FoxFlake by running `foxflake-update`. Once done, reboot your system for changes to take effect.<br><br>
+
+Examples of configurations include:
+- Install specified system packages (use "pkgs.unstable" instead of "pkgs" for nix unstable channel packages):<br>
+`foxflake.system.packages = with pkgs; [ vim ];`
+or NixOS equivalent:<br>
+`environment.systemPackages = with pkgs; [ vim ];`
+- Installs specified system Flatpaks:<br>
+`foxflake.system.flatpaks = [ "org.mozilla.firefox" ];`
+- Install specified packages for a specific user (use "pkgs.unstable" instead of "pkgs" for nix unstable channel packages):<br>
+`foxflake.users.<username>.packages = with pkgs; [ vim ];`
+or NixOS equivalent:<br>
+`users.users.<name>.packages = with pkgs; [ vim ];`
+- Install specified Flatpaks for a specific user:<br>
+`foxflake.users.<username>.flatpaks = [ "org.mozilla.firefox" ];`
+- Add the user to the group wheel:<br>
+`foxflake.users.<username>.extraGroups = [ "wheel" ];`
+or NixOS equivalent:<br>
+`users.users.<username>.extraGroups = [ "wheel" ];`
+- Change the default Display Manager / Desktop Environment wallpaper:<br>
+`foxflake.customization.environment.wallpaper = "/home/common/wallpaper.png";`
+- Disable automatic updates (then update your system manually by running `foxflake-update`):<br>
+`foxflake.autoUpgrade = false;`
+- If you installed the Sunshine application, you can add this line for Sunshine to start automatically:<br>
+`services.sunshine.autoStart = true;`
+- If you installed the OpenRGB application, you can add this line to load the profile "myprofile" on startup:<br>
+`services.hardware.openrgb.startupProfile = "myprofile";`
+- Enable an scx scheduler:<br>
+```
+services.scx = {
+enable = true;
+scheduler = "scx_lavd";
+};
+```
 
 ### Installing the nvidia driver
 
@@ -86,6 +115,7 @@ The generated installer iso image will be located in the "result/iso" folder.<br
 
 ## Thanks goes to:
 - [NixOS][NixOS] and community modules (home-manager, plasma-manager and nix-flatpak) maintainers.<br>
+- [Cachix][Cachix] for their open source projects free binary cache plan.<br>
 - The Gaming Linux France community for the inspiration coming from their [gaming oriented GLF OS][GLF-OS].<br><br>
 
 
@@ -100,9 +130,9 @@ The generated installer iso image will be located in the "result/iso" folder.<br
 
 <!-- Internal Links -->
 
-
 <!-- Outbound Links -->
-[NixOS]: https://nixos.org/
+[NixOS]: https://nixos.org
+[Cachix]: https://www.cachix.org
 [NixOS-nvidia]: https://nixos.wiki/wiki/Nvidia
 [GLF-OS]: https://www.gaminglinux.fr/glf-os
 

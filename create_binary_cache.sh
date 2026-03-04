@@ -25,9 +25,8 @@ cat >./flake.nix <<MAIN_FLAKE
             inputs.foxflake-${1}.nixosModules.default
             {
               foxflake.environment.type = "cosmic";
-              foxflake.system.bundles = [ "standard" "gaming" "studio" ];
+              foxflake.system.bundles = [ "full" ];
               foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
-              foxflake.system.waydroid = true;
               foxflake.nvidia.enable = false;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
               fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
@@ -40,9 +39,8 @@ cat >./flake.nix <<MAIN_FLAKE
             inputs.foxflake-${1}.nixosModules.default
             {
               foxflake.environment.type = "cosmic";
-              foxflake.system.bundles = [ "standard" "gaming" "studio" ];
+              foxflake.system.bundles = [ "full" ];
               foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
-              foxflake.system.waydroid = true;
               foxflake.nvidia.enable = true;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
               fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
@@ -55,9 +53,8 @@ cat >./flake.nix <<MAIN_FLAKE
             inputs.foxflake-${1}.nixosModules.default
             {
               foxflake.environment.type = "gnome";
-              foxflake.system.bundles = [ "standard" "gaming" "studio" ];
+              foxflake.system.bundles = [ "full" ];
               foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
-              foxflake.system.waydroid = true;
               foxflake.nvidia.enable = false;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
               fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
@@ -70,9 +67,8 @@ cat >./flake.nix <<MAIN_FLAKE
             inputs.foxflake-${1}.nixosModules.default
             {
               foxflake.environment.type = "gnome";
-              foxflake.system.bundles = [ "standard" "gaming" "studio" ];
+              foxflake.system.bundles = [ "full" ];
               foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
-              foxflake.system.waydroid = true;
               foxflake.nvidia.enable = true;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
               fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
@@ -85,9 +81,8 @@ cat >./flake.nix <<MAIN_FLAKE
             inputs.foxflake-${1}.nixosModules.default
             {
               foxflake.environment.type = "plasma";
-              foxflake.system.bundles = [ "standard" "gaming" "studio" ];
+              foxflake.system.bundles = [ "full" ];
               foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
-              foxflake.system.waydroid = true;
               foxflake.nvidia.enable = false;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
               fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
@@ -100,9 +95,8 @@ cat >./flake.nix <<MAIN_FLAKE
             inputs.foxflake-${1}.nixosModules.default
             {
               foxflake.environment.type = "plasma";
-              foxflake.system.bundles = [ "standard" "gaming" "studio" ];
+              foxflake.system.bundles = [ "full" ];
               foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
-              foxflake.system.waydroid = true;
               foxflake.nvidia.enable = true;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
               fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
