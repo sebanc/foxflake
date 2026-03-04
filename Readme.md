@@ -57,20 +57,16 @@ Add your configurations to the file /etc/nixos/configuration.nix and update FoxF
 Examples of configurations include:
 - Install specified system packages (use "pkgs.unstable" instead of "pkgs" for nix unstable channel packages):<br>
 `foxflake.system.packages = with pkgs; [ vim ];`<br>
-or NixOS equivalent:<br>
-`environment.systemPackages = with pkgs; [ vim ];`<br>
 - Installs specified system Flatpaks:<br>
 `foxflake.system.flatpaks = [ "org.mozilla.firefox" ];`<br>
 - Install specified packages for a specific user (use "pkgs.unstable" instead of "pkgs" for nix unstable channel packages):<br>
 `foxflake.users.<username>.packages = with pkgs; [ vim ];`<br>
-or NixOS equivalent:<br>
-`users.users.<name>.packages = with pkgs; [ vim ];`<br>
 - Install specified Flatpaks for a specific user:<br>
 `foxflake.users.<username>.flatpaks = [ "org.mozilla.firefox" ];`<br>
 - Add the user to the group wheel:<br>
 `foxflake.users.<username>.extraGroups = [ "wheel" ];`<br>
-or NixOS equivalent:<br>
-`users.users.<username>.extraGroups = [ "wheel" ];`<br>
+- Modify your hostname:<br>
+`foxflake.networking.hostname = "foxflake";`
 - Change the default Display Manager / Desktop Environment wallpaper:<br>
 `foxflake.customization.environment.wallpaper = "/home/common/wallpaper.png";`<br>
 - Disable automatic updates (then update your system manually by running `foxflake-update`):<br>
