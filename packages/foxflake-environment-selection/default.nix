@@ -8,16 +8,17 @@
         buildCommand = let
           script = self.writeShellApplication {
             name = name;
-            runtimeInputs = with pkgs; [ 
-              glib-networking
-              gtk3
-              (self.python3.withPackages (module: [ module.bottle module.pygobject3 module.proxy-tools module.pywebview module.typing-extensions ]))
-              webkitgtk_4_1
+            runtimeInputs = with pkgs.unstable; [
+              (self.python3.withPackages (module: [ module.bottle module.pygobject3 module.pywebview module.typing-extensions ]))
             ];
             bashOptions = [ "errexit" "pipefail" ];
             excludeShellChecks = [ "SC2028" ];
             text = ''
 set -e
+
+export GI_TYPELIB_PATH="/run/current-system/sw/share/nix-ld/lib/girepository-1.0"
+
+export XDG_DATA_DIRS="${self.gsettings-desktop-schemas}/share/gsettings-schemas/${self.gsettings-desktop-schemas.name}:${self.gtk3}/share/gsettings-schemas/${self.gtk3.name}:${self.adwaita-icon-theme}/share:$XDG_DATA_DIRS"
 
 if [ ! -f /etc/nixos/configuration.nix ]; then
 
@@ -93,7 +94,25 @@ input:not(:disabled), select:not(:disabled) {
   display: none;
   margin-left: auto;
   margin-right: auto;
-  max-height: 370px;
+  height: auto;
+  width: fit-content;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow: auto;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  text-align: left;
+  border-radius: 8px;
+  box-shadow:0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  scrollbar-width: 8px;
+}
+
+.containing-table2 {
+  background: #fafafb;
+  display: none;
+  margin-left: auto;
+  margin-right: auto;
+  height: 320px;
+  max-height: 320px;
   width: fit-content;
   padding-left: 5px;
   padding-right: 5px;
@@ -112,11 +131,10 @@ input:not(:disabled), select:not(:disabled) {
 </style>
 </head>
 <body>
-<span align="center" style="font-size: 24px;"><b>FoxFlake environment selection</b></span>
 <div id='title' style="margin-top: 10px; margin-bottom: 10px;">Choose the desktop environment you would like to use:</div>
 <div class="containing-table" id="response-container"></div>
 <div id='title' style="margin-top: 10px; margin-bottom: 10px;">Select the native NixOS applications you would like to install:</div>
-<div class="containing-table" id="response-container2"></div>
+<div class="containing-table2" id="response-container2"></div>
 <div style="position: fixed; bottom: 10px; left: 10px;"><button style="width:120px" onclick="exit()"><b>Exit</b></button></div>
 <div style="position: fixed; bottom: 10px; right: 10px;"><button style="width:120px" onclick="select()"><b>Update</b></button></div> &raquo;</a></div>
 <script>
