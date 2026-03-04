@@ -34,6 +34,8 @@ with lib;
       };
     };
 
+    networking.nftables.enable = mkDefault true;
+
     programs.gnupg = {
       package = mkDefault pkgs.gnupg1;
       agent.enable = mkDefault true;
@@ -51,11 +53,6 @@ with lib;
     };
 
     zramSwap.enable = mkDefault true;
-
-    systemd.tmpfiles.rules = [
-      "L /usr/bin/bash - - - - /run/current-system/sw/bin/bash"
-      "L /usr/bin/env - - - - /run/current-system/sw/bin/env"
-    ];
 
   };
 

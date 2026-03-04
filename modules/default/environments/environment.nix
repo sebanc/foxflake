@@ -1,9 +1,11 @@
-{ config, lib, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 with lib;
 
-let
-  foxflake-environment-selection = pkgs.callPackage ../../../packages/foxflake-environment-selection {};
-in
 {
   options.foxflake.environment = {
     enable = mkOption {
@@ -18,10 +20,7 @@ in
     };
     autologin = mkOption {
       type = with types; bool;
-      default = if config.foxflake.environment.autologinUser == null || config.foxflake.environment.autologinUser == "" then
-        false
-      else
-        true;
+      default = !(config.foxflake.environment.autologinUser == null || config.foxflake.environment.autologinUser == "");
       description = "Enable desktop environment autologin";
     };
     autologinUser = mkOption {
@@ -29,8 +28,8 @@ in
       default = null;
       description = "User chosen for desktop environment autologin";
     };
-    switching.enable = mkOption {
-      description = "Enable environment and bundles switching program";
+    selection.enable = mkOption {
+      description = "Enable environment and applications switching program";
       type = types.bool;
       default = true;
     };
@@ -38,11 +37,8 @@ in
 
   config = mkIf config.foxflake.environment.enable {
     
-    environment.systemPackages = if (config.foxflake.environment.switching.enable) then
-      with pkgs; [ foxflake-environment-selection nixos-artwork.wallpapers.simple-blue zenity ]
-    else
-      [ ];
-    
+    environment.systemPackages = with pkgs; [ foxflake-icons foxflake-wallpapers ];
+
     hardware.bluetooth.enable = mkDefault true;
     networking.networkmanager = {
       enable = mkDefault true;

@@ -4,6 +4,7 @@
     ./appimages.nix
     ./boot.nix
     ./customization.nix
+    ./hostname.nix
     ./internationalisation.nix
     ./packages.nix
     ./system.nix
