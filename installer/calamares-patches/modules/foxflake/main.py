@@ -10,6 +10,7 @@
 
 import libcalamares
 import os
+import random
 import subprocess
 import re
 import tempfile
@@ -37,10 +38,16 @@ cfghead = """{ config, pkgs, lib, ... }:
 
 """
 
+cfghostname = """
+  # Hostname
+  foxflake.networking.hostname = "@@hostnamerandom@@";
+
+"""
+
 cfgenvironment = """
   # Desktop environment type
   foxflake.environment.type = "@@environment@@";
-  
+
 """
 
 cfgautologin = """
@@ -50,11 +57,10 @@ cfgautologin = """
 """
 
 cfgsystem = """
-  # Bundles, system packages, flatpaks and waydroid configuration
-  foxflake.system.bundles = [ @@bundles@@ ];         # e.g.: "standard" and/or "gaming" and/or "studio"
-  foxflake.system.packages = with pkgs; [ ];         # e.g.: with pkgs; [ firefox ]
+  # Applications, system packages and flatpaks configuration
+  foxflake.system.applications = [ @@applications@@ ];         # e.g.: [ "firefox" "thunderbird" "libreoffice" ];
+  foxflake.system.packages = with pkgs; [ ];         # e.g.: with pkgs; [ vim ];
   foxflake.system.flatpaks = [ ];                    # e.g.: [ "org.mozilla.firefox" ];
-  foxflake.system.waydroid = @@waydroid@@;
 
 """
 
@@ -62,7 +68,7 @@ cfgusers = """
   # User configuration (including user packages and flatpaks)
   foxflake.users.@@username@@.description = "@@fullname@@";
   foxflake.users.@@username@@.extraGroups = [ @@groups@@ ];
-  foxflake.users.@@username@@.packages = with pkgs; [ ];         # e.g.: with pkgs; [ firefox ]
+  foxflake.users.@@username@@.packages = with pkgs; [ ];         # e.g.: with pkgs; [ vim ];
   foxflake.users.@@username@@.flatpaks = [ ];                    # e.g.: [ "org.mozilla.firefox" ];
 
 """
@@ -212,8 +218,6 @@ def run():
 
     # Setup variables
     root_mount_point = gs.value("rootMountPoint")
-    dest_dir = os.path.join(root_mount_point, "etc/nixos/")
-    config = os.path.join(dest_dir, "configuration.nix")
     fw_type = gs.value("firmwareType")
     bootdev = (
         "nodev"
@@ -221,20 +225,31 @@ def run():
         else gs.value("bootLoader")["installPath"]
     )
 
+    # Define hostname
+    cfg += cfghostname
+    hostnamerandom = "foxflake-" + str(random.randint(0, 32767))
+    catenate(variables, "hostnamerandom", hostnamerandom)
+
     # Define desktop environment
     cfg += cfgenvironment
-    catenate(variables, "environment", gs.value("packagechooser_environment"))
+    catenate(variables, "environment", gs.value("packagechooser_packagechooser"))
 
     # Add autologin if needed
     if gs.value("autoLoginUser") is not None:
         cfg += cfgautologin
 
+    # Define applications
     cfg += cfgsystem
-    catenate(variables, "bundles", gs.value("packagechooser_bundles"))
-    if gs.value("packagechooser_waydroid") == "waydroid":
-        catenate(variables, "waydroid", "true")
-    else:
-        catenate(variables, "waydroid", "false")
+    package_ops = gs.value("packageOperations")
+    applications = ""
+    packages = []
+    if package_ops is not None:
+        for entry in package_ops:
+            if "try_install" in entry:
+                for pkg in entry["try_install"]:
+                    packages.append(f'"{pkg}"')
+                applications = " ".join(packages)
+    catenate(variables, "applications", applications)
 
     # Setup user
     if gs.value("username") is not None:
@@ -269,7 +284,7 @@ def run():
         if gs.value("keyboardVConsoleKeymap") is not None:
             try:
                 subprocess.check_output(
-                    ["pkexec", "loadkeys", gs.value("keyboardVConsoleKeymap").strip()],
+                    ["sudo", "loadkeys", gs.value("keyboardVConsoleKeymap").strip()],
                     stderr=subprocess.STDOUT,
                 )
                 cfg += cfgconsole
@@ -313,7 +328,7 @@ def run():
             if vconsole != "" and vconsole != "us" and vconsole is not None:
                 try:
                     subprocess.check_output(
-                        ["pkexec", "loadkeys", vconsole], stderr=subprocess.STDOUT
+                        ["sudo", "loadkeys", vconsole], stderr=subprocess.STDOUT
                     )
                     cfg += cfgconsole
                     catenate(variables, "vconsole", vconsole)
@@ -513,7 +528,7 @@ def run():
     try:
         # Generate hardware.nix with mounted swap device
         subprocess.check_output(
-            ["pkexec", "nixos-generate-config", "--root", root_mount_point],
+            ['sudo', 'nixos-generate-config', '--root', root_mount_point],
             stderr=subprocess.STDOUT,
         )
     except subprocess.CalledProcessError as e:
@@ -522,15 +537,15 @@ def run():
         return (_("nixos-generate-config failed"), _(e.output.decode("utf8")))
  
     # Write the configuration.nix file
-    libcalamares.utils.host_env_process_output(["cp", "/dev/stdin", config], None, cfg)
-
-    subprocess.run(["sudo", "cp", "/iso/target-configuration/flake.nix", dest_dir], check=True)
+    libcalamares.utils.host_env_process_output(['sudo', 'cp', '/dev/stdin', root_mount_point + '/etc/nixos/configuration.nix'], None, cfg)
+    subprocess.run(['sudo', 'cp', root_mount_point + '/etc/nixos/configuration.nix', root_mount_point + '/etc/nixos/configuration.backup'], check=True)
+    subprocess.run(['sudo', 'cp', '/iso/target-configuration/flake.nix', root_mount_point + '/etc/nixos/flake.nix'], check=True)
 
     status = _("Installing NixOS")
     libcalamares.job.setprogress(0.3)
 
     # Flake lock update
-    nixosFlakeUpdateCmd = [ 'pkexec' ]
+    nixosFlakeUpdateCmd = [ 'sudo' ]
     nixosFlakeUpdateCmd.extend(generateProxyStrings())
     nixosFlakeUpdateCmd.extend(
         [
@@ -540,7 +555,7 @@ def run():
             'flake',
             'update',
             '--flake',
-            dest_dir
+            root_mount_point + '/etc/nixos/'
         ]
     )
 
@@ -564,19 +579,19 @@ def run():
         return (_("nix flake update failed"), _("Installation failed to complete"))
 
     # Installation
-    nixosInstallCmd = [ 'pkexec' ]
+    nixosInstallCmd = [ 'sudo' ]
     nixosInstallCmd.extend(generateProxyStrings())
     nixosInstallCmd.extend(
         [
             'nixos-install',
             '--no-root-passwd',
             '--flake',
-            f'{root_mount_point}/etc/nixos#foxflake',
+            root_mount_point + '/etc/nixos#foxflake',
             '--root',
             root_mount_point,
-            "--option",
-            "build-dir",
-            "/nix/var/nix/builds",
+            '--option',
+            'build-dir',
+            '/nix/var/nix/builds',
             '--show-trace'
         ]
     )

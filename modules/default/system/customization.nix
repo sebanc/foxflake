@@ -75,14 +75,6 @@ with lib;
           The cursor theme to use.
         '';
       };
-      launcher-icon = mkOption {
-        type = with types; nullOr str;
-        default = "nix-snowflake-white";
-        example = "icon-name";
-        description = ''
-          The icon to use for the application launcher.
-        '';
-      };
     };
   };
 
@@ -96,8 +88,6 @@ with lib;
           mkDefault config.foxflake.customization.grub.splashImage;
       theme = mkDefault config.foxflake.customization.grub.theme;
     };
-
-    environment.systemPackages = [ (pkgs.callPackage ../../../packages/foxflake-icons {}) (pkgs.callPackage ../../../packages/foxflake-wallpapers {}) ];
 
   };
 

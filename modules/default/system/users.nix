@@ -88,11 +88,19 @@ let
         }
       ];
     };
+    mkUser = username: {
+      "${username}" =  {
+        extraGroups = [ ]
+          ++ optionals (builtins.elem "distrobox" config.foxflake.system.applications || builtins.elem "docker" config.foxflake.system.applications || builtins.elem "winboat" config.foxflake.system.applications) [ "docker" ]
+          ++ optionals (builtins.elem "distrobox" config.foxflake.system.applications || builtins.elem "podman" config.foxflake.system.applications || builtins.elem "winboat" config.foxflake.system.applications) [ "podman" ]
+          ++ optionals (builtins.elem "virt-manager" config.foxflake.system.applications) [ "libvirtd" ]
+          ++ optionals (builtins.elem "virtualbox" config.foxflake.system.applications) [ "vboxusers" ];
+      };
+    };
+    userConfigurations = foldr (a: b: a // b) { } (map mkUser (attrNames config.foxflake.users));
     mkHome = username: {
       "${username}" =  {
-        imports = [
-          (import ../../home/flatpak.nix { user = "${username}"; })
-        ];
+        imports = [ (import ../../home/flatpak.nix { user = "${username}"; }) ];
         home.stateVersion = mkDefault config.foxflake.stateVersion;
       };
     };
@@ -101,8 +109,8 @@ in
 {
   options = {
 
-    users.users = lib.mkOption {
-      type = with lib.types; attrsOf (submodule userOpts);
+    users.users = mkOption {
+      type = with types; attrsOf (submodule userOpts);
     };
 
     foxflake.users = mkOption {
@@ -126,7 +134,7 @@ in
 
   config = {
 
-    users.users = config.foxflake.users;
+    users.users = mkMerge [ config.foxflake.users userConfigurations ];
     home-manager.users = homeConfigurations;
 
   };

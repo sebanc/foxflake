@@ -22,7 +22,7 @@ with lib;
       operation = mkDefault "boot";
       allowReboot = mkDefault false;
       flake = "/etc/nixos#foxflake";
-      flags = [ "--recreate-lock-file" ];
+      flags = [ "--recreate-lock-file" "--show-trace" ];
       randomizedDelaySec = "45m";
     };
 
