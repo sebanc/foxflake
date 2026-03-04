@@ -36,7 +36,6 @@ FoxFlake is a comprehensive configuration of the NixOS Linux distribution (Flake
 Gnome:<br><img alt="Gnome" src="./Images/gnome.png" width="512" height="320" /><br><br>
 Plasma:<br><img alt="Plasma" src="./Images/plasma.png" width="512" height="320" /><br><br>
 Cosmic:<br><img alt="Gnome" src="./Images/cosmic.png" width="512" height="320" /><br><br>
-FoxFlake environment selection:<br><img alt="Gnome" src="./Images/foxflake-environment-selection.png" width="420" height="320" /><br><br>
 </div>
 
 FoxFlake is designed to accommodate two distinct types of users:<br>
@@ -47,7 +46,10 @@ FoxFlake is designed to accommodate two distinct types of users:<br>
 
 ### Changing desktop environment or native applications after installation
 
-The "FoxFlake Environment Selection" application allows you to review at any point in time the desktop environment and applications choices you made.<br><br>
+The "FoxFlake Environment Selection" application allows you to review at any point in time the desktop environment and applications choices you made:<br>
+<div align="center">
+<img alt="Gnome" src="./Images/foxflake-environment-selection.png" width="420" height="320" /><br><br>
+</div>
 
 ### Adding custom configurations
 
