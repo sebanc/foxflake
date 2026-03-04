@@ -1,9 +1,11 @@
+<div id="top"></div>
+
 <!-- Shields/Logos -->
 [![License][license-shield]][license-url]
 [![Issues][issues-shield]][issues-url]
 [![Discord][discord-shield]][discord-url]
 
-# FoxFlake: Effortless NixOS
+# FoxFlake
 
 FoxFlake is a comprehensive configuration of the NixOS Linux distribution (Flake) that automates NixOS management tasks to keep the user experience simple.<br><br>
 
@@ -83,7 +85,7 @@ services.scx = {
 enable = true;
 scheduler = "scx_lavd";
 };
-```<br>
+```
 
 ### Installing the nvidia driver
 
