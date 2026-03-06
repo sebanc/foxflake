@@ -7,7 +7,7 @@ on:
     branches:
       - 'main'
     paths-ignore:
-      - 'README.md'
+      - 'Readme.md'
 concurrency:
   group: environment-${{ github.ref }}
   cancel-in-progress: true
