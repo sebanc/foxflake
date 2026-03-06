@@ -14,7 +14,8 @@ FoxFlake is a comprehensive configuration of the NixOS Linux distribution (Flake
 🖥️ Environment flexibility<br>
   - Desktop versatility: Seamlessly switch between GNOME, KDE Plasma, and COSMIC desktop environments.<br>
   - Simple package management: Manage your set of NixOS applications via the "FoxFlake Environment Selection" tool and use the desktop environment’s store to install Flatpaks.<br>
-  - Extended binary cache: FoxFlake ensures with its own binary cache that prebuilt packages are available for all included desktop environments and packages configurations (it avoids NixOS from building packages from source when a binary package is not available).<br><br>
+  - Extended compatibility with AppImages / scripts: Run most standalone linux programs natively.<br>
+  - Complete binary cache: Ensures with its own binary cache that prebuilt packages are available for all included desktop environments and packages configurations (it avoids NixOS from building packages from source when a binary package is not available).<br><br>
 
 🛡️ Automation & Reliability <br>
   - Automated lifecycle: The system automatically transitions between NixOS versions, providing a "rolling release" experience without manual configuration changes.<br>
@@ -84,6 +85,7 @@ services.scx = {
   scheduler = "scx_lavd";
 };
 ```
+<br>
 
 ### Installing the nvidia driver
 
