@@ -8,17 +8,17 @@
         buildCommand = let
           script = self.writeShellApplication {
             name = name;
-            runtimeInputs = with pkgs.unstable; [
-              (self.python3.withPackages (module: [ module.bottle module.pygobject3 module.pywebview module.typing-extensions ]))
+            runtimeInputs = with self; [
+              (unstable.python3.withPackages (module: [ module.pyside6 ]))
             ];
             bashOptions = [ "errexit" "pipefail" ];
             excludeShellChecks = [ "SC2028" ];
             text = ''
 set -e
 
-export GI_TYPELIB_PATH="/run/current-system/sw/share/nix-ld/lib/girepository-1.0"
-
-export XDG_DATA_DIRS="${self.gsettings-desktop-schemas}/share/gsettings-schemas/${self.gsettings-desktop-schemas.name}:${self.gtk3}/share/gsettings-schemas/${self.gtk3.name}:${self.adwaita-icon-theme}/share:$XDG_DATA_DIRS"
+unset QT_QPA_PLATFORM_PLUGIN_PATH
+unset QT_PLUGIN_PATH
+export LD_LIBRARY_PATH=/run/current-system/sw/share/nix-ld/lib
 
 if [ ! -f /etc/nixos/configuration.nix ]; then
 
@@ -36,189 +36,258 @@ elif [ ''${#} -eq 0 ]; then
 	${self.coreutils}/bin/cat >"''${foxflake_environment_selection_gui}" <<'FOXFLAKE_GUI'
 import argparse
 import os
+import subprocess
 import sys
-import webview
+from PySide6.QtCore import Qt, QObject, QTimer, Slot
+from PySide6.QtGui import QPalette, QColor
+from PySide6.QtWidgets import QApplication, QMainWindow
+from PySide6.QtWebEngineWidgets import QWebEngineView
+from PySide6.QtWebChannel import QWebChannel
+from PySide6.QtWebEngineCore import QWebEnginePage, QWebEngineProfile, QWebEngineSettings
 
-"""
-FoxFlake environment selection app made with pywebview
-"""
+class Bridge(QObject):
+    @Slot(str)
+    def update(self, message):
+        window.destroy()
+        print(f"{message}")
+        sys.exit()
+    @Slot(None)
+    def exit(self):
+        window.destroy()
+        sys.exit()
 
-parser = argparse.ArgumentParser()
-parser.add_argument('-aa', '--availableapplications', required=True, help="List of available Applications")
-parser.add_argument('-ad', '--availabledesktops', required=True, help="List of available Desktop Environments")
-parser.add_argument('-ca', '--currentapplications', required=True, help="Currently installed Applications")
-parser.add_argument('-cd', '--currentdesktop', required=True, help="Currently installed Desktop Environment")
-args = parser.parse_args()
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("FoxFlake environment selection")
+        self.setFixedSize(800, 600)
+        self.web_view = QWebEngineView()
+        self.profile = QWebEngineProfile.defaultProfile()
+        self.profile_settings = self.profile.settings()
+        self.profile_settings.setAttribute(QWebEngineSettings.WebAttribute.WebGLEnabled, False)
+        self.profile_settings.setAttribute(QWebEngineSettings.WebAttribute.Accelerated2dCanvasEnabled, False)
+        self.profile_settings.setAttribute(QWebEngineSettings.WebAttribute.LocalStorageEnabled, False)
+        self.web_page = QWebEnginePage(self.profile, self.web_view)
+        self.web_view.setPage(self.web_page)
+        self.channel = QWebChannel(self.web_page)
+        self.bridge = Bridge(self)
+        self.channel.registerObject("backend", self.bridge)
+        self.web_page.setWebChannel(self.channel)
 
-html = """
-<!DOCTYPE html>
-<html>
-<head lang="en">
-<meta charset="UTF-8">
-<style>
-body {
-  background: #f4f4f5;
-  color: #2d2d2e;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: 14px;
-  text-align: center;
-}
+        parser = argparse.ArgumentParser()
+        parser.add_argument('-aa', '--availableapplications', required=True, help="List of available Applications")
+        parser.add_argument('-ad', '--availabledesktops', required=True, help="List of available Desktop Environments")
+        parser.add_argument('-ca', '--currentapplications', required=True, help="Currently installed Applications")
+        parser.add_argument('-cd', '--currentdesktop', required=True, help="Currently installed Desktop Environment")
+        args = parser.parse_args()
 
-input:disabled, select:disabled {
-  color: #bbbbbb;
-}
-
-input:not(:disabled), select:not(:disabled) {
-  border: 2px solid lightgrey;
-  color: #555555;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 20px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  white-space: nowrap;
-  user-select: none;
-}
-
-.containing-table {
-  background: #fafafb;
-  display: none;
-  margin-left: auto;
-  margin-right: auto;
-  height: auto;
-  width: fit-content;
-  padding-left: 5px;
-  padding-right: 5px;
-  overflow: auto;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  text-align: left;
-  border-radius: 8px;
-  box-shadow:0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  scrollbar-width: 8px;
-}
-
-.containing-table2 {
-  background: #fafafb;
-  display: none;
-  margin-left: auto;
-  margin-right: auto;
-  height: 320px;
-  max-height: 320px;
-  width: fit-content;
-  padding-left: 5px;
-  padding-right: 5px;
-  overflow: auto;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  text-align: left;
-  border-radius: 8px;
-  box-shadow:0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  scrollbar-width: 8px;
-}
-
-.center {
-  width: 100%;
-  text-align: center;
-}
-</style>
-</head>
-<body>
-<div id='title' style="margin-top: 10px; margin-bottom: 10px;">Choose the desktop environment you would like to use:</div>
-<div class="containing-table" id="response-container"></div>
-<div id='title' style="margin-top: 10px; margin-bottom: 10px;">Select the native NixOS applications you would like to install:</div>
-<div class="containing-table2" id="response-container2"></div>
-<div style="position: fixed; bottom: 10px; left: 10px;"><button style="width:120px" onclick="exit()"><b>Exit</b></button></div>
-<div style="position: fixed; bottom: 10px; right: 10px;"><button style="width:120px" onclick="select()"><b>Update</b></button></div> &raquo;</a></div>
-<script>
-   function showResponse(response) {
-        document.getElementById('response-container').innerHTML = response
-        document.getElementById('response-container').style.display = 'block'
-    }
-
-   function showResponse2(response) {
-        document.getElementById('response-container2').innerHTML = response
-        document.getElementById('response-container2').style.display = 'block'
-    }
-    
-    function exit() {
-        pywebview.api.destroy()
-    }
-
-    function select() {
-        returnvalue = ""
-        const radios = document.querySelectorAll('input[name="radio"]')
-        for (const radio of radios) {
-            if (radio.checked) {
-                returnvalue = radio.value + "^"
-                break
-            }
-        }
-        const checkboxes = document.querySelectorAll('input[name="checkbox"]')
-        for (const checkbox of checkboxes) {
-            if (checkbox.checked) {
-                returnvalue = returnvalue + checkbox.value + "^"
-            }
-        }
-        pywebview.api.selected(returnvalue)
-    }
-
-    window.addEventListener('pywebviewready', function() {
-        pywebview.api.generate_radio().then(showResponse)
-        pywebview.api.generate_checkbox().then(showResponse2)
-    })
-</script>
-</body>
-</html>
-"""
-
-class foxflake:
-    def generate_radio(self):
         available_desktops=args.availabledesktops.split('|')
         current_desktop=args.currentdesktop.split('^')
-        innerhtml=${"''"}
+        html_desktop = ""
         for desktops in available_desktops:
             desktop=desktops.split('^')
             if desktop[1] == current_desktop[0]:
                 selection=" checked"
             else:
                 selection=""
-            innerhtml += '<label for="' + desktop[1] + '" class="pure-radio" style="margin-right: 50px;"><input type="radio" id="' + desktop[1] + '" name="radio" value="' + desktop[1] + '"' + selection + '/> ' + desktop[0] + '</label><br>'
-        return innerhtml
-    def generate_checkbox(self):
+            html_desktop += '<label for="' + desktop[1] + '" style="margin-right: 5px;"><input type="radio" id="' + desktop[1] + '" name="radio" value="' + desktop[1] + '"' + selection + '/> ' + desktop[0] + '</label><br>'
+
         available_applications=args.availableapplications.split('|')
         current_applications=args.currentapplications.split('^')
-        innerhtml=${"''"}
+        html_applications=""
         for applications in available_applications:
             application=applications.split('^')
             if application[2] == "":
-                innerhtml += '<div style="margin-bottom: 0px; margin-top: 5px;"><span style="margin-left: 0px; width: 300px;"><b>' + application[1] + '</b></span></b></div>'
+                html_applications += '<div style="margin-bottom: 0px; margin-top: 5px;"><span style="margin-left: 0px; width: 300px;"><b>' + application[1] + '</b></span></b></div>'
             else:
                 if application[2] in current_applications:
                     selection=" checked"
                 else:
                     selection=""
-                innerhtml += '<span class="center"><span style="margin-left: 2px; width: 100px;"><label for="' + application[2] + '" class="pure-checkbox"><input type="checkbox" id="' + application[2] + '" name="checkbox" value="' + application[2] + '"' + selection + '/> ' + application[0] + ": " + '</label></span><span style="margin-left: 0px; width: 300px;">' + application[1] + '</span></span><br>'
-        return innerhtml
-    def selected(self, returnvalue):
-        window.destroy()
-        print(returnvalue)
-        sys.exit()
-    def destroy(self):
-        window.destroy()
-        sys.exit()
+                html_applications += '<span class="center"><span style="margin-left: 2px; width: 100px;"><label for="' + application[2] + '"><input type="checkbox" id="' + application[2] + '" name="checkbox" value="' + application[2] + '"' + selection + '/> ' + application[0] + ": " + '</label></span><span style="margin-left: 0px; width: 300px;">' + application[1] + '</span></span><br>'
 
-if __name__ == '__main__':
-    api = foxflake()
-    window = webview.create_window('FoxFlake environment selection', html=html, js_api=api, resizable=False, width=800, height=600)
-    webview.start(gui='gtk')
+        html_content = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                body {{
+                    background: {background_color};
+                    color: {font_color};
+                    font-family: sans-serif;
+                }}
+                .card {{
+                    margin-left: auto;
+                    margin-right: auto;
+                    height: auto;
+                    max-height: 350px;
+                    overflow: auto;
+                    width: fit-content;
+                    background: {card_color};
+                    padding: 10px;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                    scrollbar-width: 8px;
+                }}
+                .center {{
+                    width: 100%;
+                    text-align: center;
+                    margin-bottom: 5px;
+                }}
+                button {{
+                    background: {button_action_color};
+                    color: white; border: none;
+                    padding: 7px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    width: 120px;
+                }}
+                button:hover {{
+                    background: {button_hover_color};
+                }}
+                input[type="radio"], input[type="checkbox"] {{
+                    accent-color: {button_action_color};
+                }}
+            </style>
+            <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+            <script>
+                var backend;
+                new QWebChannel(qt.webChannelTransport, function (channel) {{
+                    backend = channel.objects.backend;
+                }});
+                function exit() {{
+                    if (backend) {{
+                        backend.exit()
+                    }}
+                }}
+                function update() {{
+                    if (backend) {{
+                        returnvalue = ""
+                        const radios = document.querySelectorAll('input[name="radio"]')
+                        for (const radio of radios) {{
+                            if (radio.checked) {{
+                                returnvalue = radio.value + "^"
+                                break
+                            }}
+                        }}
+                        const checkboxes = document.querySelectorAll('input[name="checkbox"]')
+                        for (const checkbox of checkboxes) {{
+                            if (checkbox.checked) {{
+                                returnvalue = returnvalue + checkbox.value + "^"
+                            }}
+                        }}
+                        backend.update(returnvalue)
+                    }}
+                }}
+            </script>
+        </head>
+        <body>
+            <div class="center">Choose the desktop environment you would like to use:</div>
+            <div class="card">
+        """
+        html_content += html_desktop
+        html_content += """
+            </div>
+            <br>
+            <div class="center">Select the native NixOS applications you would like to install:</div>
+            <div class="card">
+        """
+        html_content += html_applications
+        html_content += """
+            </div>
+            <div style="position: fixed; bottom: 15px; left: 15px;"><button onclick="exit()"><b>Exit</b></button></div>
+            <div style="position: fixed; bottom: 15px; right: 15px;"><button onclick="update()"><b>Update</b></button></div>
+        </body>
+        </html>
+        """
+
+        self.web_view.setHtml(html_content)
+        self.setCentralWidget(self.web_view)
+
+def apply_dark_theme(app):
+    app.setStyle("Fusion")
+    palette = QPalette()
+    palette.setColor(QPalette.Window, QColor(53, 53, 53))
+    palette.setColor(QPalette.WindowText, Qt.white)
+    palette.setColor(QPalette.Base, QColor(25, 25, 25))
+    palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
+    palette.setColor(QPalette.ToolTipBase, Qt.white)
+    palette.setColor(QPalette.ToolTipText, Qt.white)
+    palette.setColor(QPalette.Text, Qt.white)
+    palette.setColor(QPalette.Button, QColor(53, 53, 53))
+    palette.setColor(QPalette.ButtonText, Qt.white)
+    palette.setColor(QPalette.BrightText, Qt.red)
+    palette.setColor(QPalette.Link, QColor(42, 130, 218))
+    palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
+    palette.setColor(QPalette.HighlightedText, Qt.black)
+    app.setPalette(palette)
+    global background_color
+    global card_color
+    global font_color
+    global button_action_color
+    global button_hover_color
+    background_color = "#141618"
+    card_color = "#202326"
+    font_color = "#E1E1E1"
+    button_action_color = "#3DAEE9"
+    button_hover_color = "#1D99F3"
+
+def apply_light_theme(app):
+    app.setStyle("Fusion")
+    app.setPalette(QApplication.style().standardPalette())
+    global background_color
+    global card_color
+    global font_color
+    global button_action_color
+    global button_hover_color
+    background_color = "#EFF0F1"
+    card_color = "#FFFFFF"
+    font_color = "#232629"
+    button_action_color = "#3DAEE9"
+    button_hover_color = "#1D99F3"
+
+def is_cosmic_dark_mode():
+    if "cosmic" in os.environ.get("XDG_CURRENT_DESKTOP", "").lower():
+        path = os.path.expanduser("~/.config/cosmic/com.system76.CosmicTheme.Mode/v1/is_dark")
+        try:
+            with open(path, "r") as f:
+                return f.read().strip().lower() == "true"
+        except FileNotFoundError:
+            return False
+    else:
+        return False
+
+def is_gnome_dark_mode():
+    if "gnome" in os.environ.get("XDG_CURRENT_DESKTOP", "").lower():
+        try:
+            result = subprocess.run(
+                ["${self.glib}/bin/gsettings", "get", "org.gnome.desktop.interface", "color-scheme"],
+                capture_output=True, text=True
+            )
+            return "dark" in result.stdout.lower()
+        except Exception:
+            return False
+    else:
+        return False
+
+def is_plasma_dark_mode():
+    if "kde" in os.environ.get("XDG_CURRENT_DESKTOP", "").lower() or "plasma" in os.environ.get("XDG_CURRENT_DESKTOP", "").lower():
+        scheme = app.styleHints().colorScheme()
+        return scheme == Qt.ColorScheme.Dark
+    else:
+        return False
+
+if __name__ == "__main__":
+    if "gnome" in os.environ.get("XDG_CURRENT_DESKTOP", "").lower():
+        os.environ["QT_QPA_PLATFORM"] = "xcb"
+    app = QApplication(sys.argv)
+    if is_cosmic_dark_mode() or is_gnome_dark_mode() or is_plasma_dark_mode():
+        apply_dark_theme(app)
+    else:
+        apply_light_theme(app)
+    window = MainWindow()
+    window.show()
+    sys.exit(app.exec())
 FOXFLAKE_GUI
 
 	available_desktops="
