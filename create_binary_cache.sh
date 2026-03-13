@@ -8,95 +8,96 @@ cat >./flake.nix <<MAIN_FLAKE
   description = "FoxFlake";
 
   inputs = {
-    foxflake-${1}.url = "git+file://${PWD}/foxflake-${1}";
+    foxflake.url = "git+file://${PWD}/foxflake-${1}";
+    nixpkgs.follows = "foxflake/nixpkgs";
   };
 
   outputs =
-    { foxflake-${1}, ... }@inputs:
+    { foxflake, nixpkgs, ... }:
     let
       system = "x86_64-linux";
     in
     rec
     {
       nixosConfigurations = {
-        "foxflake-${1}-cosmic" = inputs.foxflake-${1}.inputs.nixpkgs.lib.nixosSystem {
+        "foxflake-${1}-cosmic" = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            inputs.foxflake-${1}.nixosModules.default
+            foxflake.nixosModules.default
             {
               foxflake.environment.type = "cosmic";
               foxflake.system.bundles = [ "full" ];
-              foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
+              foxflake.system.packages = with (import nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
               foxflake.nvidia.enable = false;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
               fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
             }
           ];
         };
-        "foxflake-${1}-cosmic-nvidia" = inputs.foxflake-${1}.inputs.nixpkgs.lib.nixosSystem {
+        "foxflake-${1}-cosmic-nvidia" = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            inputs.foxflake-${1}.nixosModules.default
+            foxflake.nixosModules.default
             {
               foxflake.environment.type = "cosmic";
               foxflake.system.bundles = [ "full" ];
-              foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
+              foxflake.system.packages = with (import nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
               foxflake.nvidia.enable = true;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
               fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
             }
           ];
         };
-        "foxflake-${1}-gnome" = inputs.foxflake-${1}.inputs.nixpkgs.lib.nixosSystem {
+        "foxflake-${1}-gnome" = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            inputs.foxflake-${1}.nixosModules.default
+            foxflake.nixosModules.default
             {
               foxflake.environment.type = "gnome";
               foxflake.system.bundles = [ "full" ];
-              foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
+              foxflake.system.packages = with (import nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
               foxflake.nvidia.enable = false;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
               fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
             }
           ];
         };
-        "foxflake-${1}-gnome-nvidia" = inputs.foxflake-${1}.inputs.nixpkgs.lib.nixosSystem {
+        "foxflake-${1}-gnome-nvidia" = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            inputs.foxflake-${1}.nixosModules.default
+            foxflake.nixosModules.default
             {
               foxflake.environment.type = "gnome";
               foxflake.system.bundles = [ "full" ];
-              foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
+              foxflake.system.packages = with (import nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
               foxflake.nvidia.enable = true;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
               fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
             }
           ];
         };
-        "foxflake-${1}-plasma" = inputs.foxflake-${1}.inputs.nixpkgs.lib.nixosSystem {
+        "foxflake-${1}-plasma" = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            inputs.foxflake-${1}.nixosModules.default
+            foxflake.nixosModules.default
             {
               foxflake.environment.type = "plasma";
               foxflake.system.bundles = [ "full" ];
-              foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
+              foxflake.system.packages = with (import nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
               foxflake.nvidia.enable = false;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
               fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
             }
           ];
         };
-        "foxflake-${1}-plasma-nvidia" = inputs.foxflake-${1}.inputs.nixpkgs.lib.nixosSystem {
+        "foxflake-${1}-plasma-nvidia" = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            inputs.foxflake-${1}.nixosModules.default
+            foxflake.nixosModules.default
             {
               foxflake.environment.type = "plasma";
               foxflake.system.bundles = [ "full" ];
-              foxflake.system.packages = with (import inputs.foxflake-${1}.inputs.nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
+              foxflake.system.packages = with (import nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
               foxflake.nvidia.enable = true;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
               fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
