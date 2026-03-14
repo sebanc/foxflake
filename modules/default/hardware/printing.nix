@@ -17,9 +17,19 @@ with lib;
   config = mkIf config.foxflake.printing.enable {
 
     hardware.sane.enable = mkDefault true;
-    services.avahi.enable = mkDefault true;
-    services.avahi.nssmdns4 = mkDefault true;
-    services.printing.enable = mkDefault true;
+    services.avahi = {
+      enable = mkDefault true;
+      nssmdns4 = mkDefault true;
+    };
+    services.ipp-usb.enable = mkDefault true;
+    services.printing = {
+      enable = mkDefault true;
+      drivers = with pkgs; [
+        cups-filters
+        cups-browsed
+      ];
+    };
+
 
   };
 
