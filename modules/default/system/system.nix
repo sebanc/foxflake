@@ -36,10 +36,13 @@ with lib;
 
     networking.nftables.enable = mkDefault true;
 
-    programs.gnupg = {
-      package = mkDefault pkgs.gnupg1;
-      agent.enable = mkDefault true;
-      dirmngr.enable = mkDefault true;
+    programs = {
+      gnupg = {
+        package = mkDefault pkgs.gnupg1;
+        agent.enable = mkDefault true;
+        dirmngr.enable = mkDefault true;
+      };
+      ssh.enableAskPassword = mkDefault false;
     };
 
     services = {
