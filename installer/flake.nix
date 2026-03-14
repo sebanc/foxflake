@@ -47,7 +47,7 @@
                   networking.hostname = "foxflake-installer";
                 };
                 programs.dconf = {
-                  enable = mkDefault true;
+                  enable = true;
                   profiles.user.databases = [
                     {
                       settings = {
@@ -106,7 +106,7 @@
                           custom-theme-shrink = true;
                         };
                         "org/gnome/mutter" = {
-                          check-alive-timeout = gvariant.mkUint32 30000;
+                          check-alive-timeout = lib.gvariant.mkUint32 30000;
                           dynamic-workspaces = true;
                           edge-tiling = true;
                         };
