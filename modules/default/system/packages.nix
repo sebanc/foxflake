@@ -17,7 +17,7 @@ with lib;
     bundles = mkOption {
       description = "bundles selection";
       type = with types; listOf str;
-      default = [ "standard" ];
+      default = [ ];
     };
     packages = mkOption {
       type = with types; listOf package;
