@@ -75,30 +75,25 @@ with lib;
               focus-mode = "click";
               visual-bell = false;
             };
-
             "org/gnome/desktop/interface" = {
               cursor-theme = "${config.foxflake.customization.environment.cursor-theme}";
               gtk-theme = "${config.foxflake.customization.environment.theme}";
               icon-theme = "${config.foxflake.customization.environment.icon-theme}";
             };
-
             "org/gnome/desktop/background" = {
               color-shading-type = "solid";
               picture-options = "zoom";
               picture-uri = "file://${config.foxflake.customization.environment.wallpaper}";
               picture-uri-dark = "file://${config.foxflake.customization.environment.wallpaper}";
             };
-
             "org/gnome/desktop/peripherals/touchpad" = {
               click-method = "areas";
               tap-to-click = true;
               two-finger-scrolling-enabled = true;
             };
-
             "org/gnome/desktop/peripherals/keyboard" = {
               numlock-state = true;
             };
-
             "org/gnome/shell" = {
               disable-user-extensions = false;
               enabled-extensions = [
@@ -118,7 +113,6 @@ with lib;
                 "org.gnome.Software.desktop"
               ];
             };
-
             "org/gnome/shell/extensions/dash-to-dock" = {
               background-opacity = 0.0;
               dock-position = "BOTTOM";
@@ -129,7 +123,6 @@ with lib;
               always-center-icons = true;
               custom-theme-shrink = true;
             };
-
             "org/gnome/mutter" = {
               check-alive-timeout = gvariant.mkUint32 30000;
               dynamic-workspaces = true;
