@@ -37,9 +37,10 @@ with lib;
 
   config = mkIf config.foxflake.environment.enable {
     
-    environment.systemPackages = with pkgs; [ foxflake-icons foxflake-wallpapers ];
+    environment.systemPackages = with pkgs; [ iio-sensor-proxy foxflake-icons foxflake-wallpapers ];
 
     hardware.bluetooth.enable = mkDefault true;
+    hardware.sensor.iio.enable = mkDefault true;
     networking.networkmanager = {
       enable = mkDefault true;
       plugins = with pkgs; [ networkmanager-openvpn ];
