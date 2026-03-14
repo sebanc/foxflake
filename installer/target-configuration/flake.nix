@@ -4,22 +4,17 @@
 
   inputs = {
     foxflake.url = "github:sebanc/foxflake/unstable";
+    nixpkgs.follows = "foxflake/nixpkgs";
   };
 
-  outputs =
-    { foxflake, ... }@inputs:
-    let
+  outputs = { foxflake, nixpkgs, ... }: {
+    nixosConfigurations."foxflake" = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      nixpkgs = inputs.foxflake.inputs.nixpkgs;
-    in
-    {
-      nixosConfigurations."foxflake" = nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [
-          ./configuration.nix
-          inputs.foxflake.nixosModules.default
-        ];
-      };
+      modules = [
+        ./configuration.nix
+        foxflake.nixosModules.default
+      ];
     };
+  };
 
 }
