@@ -11,11 +11,6 @@ with lib;
   config = mkIf (builtins.elem "full" config.foxflake.system.applications || builtins.elem "gaming" config.foxflake.system.applications || builtins.elem "faugus" config.foxflake.system.applications || builtins.elem "goverlay" config.foxflake.system.applications || builtins.elem "heroic" config.foxflake.system.applications || builtins.elem "lutris" config.foxflake.system.applications || builtins.elem "mangojuice" config.foxflake.system.applications || builtins.elem "steam" config.foxflake.system.applications) {
 
     boot.kernel.sysctl = {
-      "kernel.numa_balancing" = mkOverride 999 0;
-      "kernel.sched_autogroup_enabled" = mkOverride 999 0;
-      "kernel.sched_migration_cost_ns"   = mkOverride 999 5000000;
-      "kernel.sched_min_granularity_ns"  = mkOverride 999 10000000;
-      "kernel.sched_wakeup_granularity_ns" = mkOverride 999 15000000;
       "kernel.split_lock_mitigate" = mkOverride 999 0;
       "net.ipv4.tcp_slow_start_after_idle" = mkOverride 999 0;
       "net.ipv4.tcp_fastopen" = mkOverride 999 3;
@@ -24,7 +19,6 @@ with lib;
     };
     environment.systemPackages = with pkgs; [
       gamescope
-      joystickwake
       mangohud
       vkbasalt
     ];

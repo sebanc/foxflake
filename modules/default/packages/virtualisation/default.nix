@@ -1,6 +1,7 @@
 {
 
   imports = [
+    ./bottles.nix
     ./distrobox.nix
     ./docker.nix
     ./gnome-boxes.nix

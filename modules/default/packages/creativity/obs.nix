@@ -10,7 +10,11 @@ with lib;
 
   config = mkIf (builtins.elem "full" config.foxflake.system.applications || builtins.elem "studio" config.foxflake.system.applications || builtins.elem "obs" config.foxflake.system.applications) {
 
-    environment.systemPackages = with pkgs; [ obs-studio obs-studio-plugins.obs-vkcapture ];
+    programs.obs-studio = {
+      enable = mkDefault true;
+      enableVirtualCamera = mkDefault true;
+      plugins = with pkgs.obs-studio-plugins; [ obs-vkcapture ];
+    };
 
   };
 

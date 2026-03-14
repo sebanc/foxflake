@@ -9,6 +9,7 @@
     ./multimedia
     ./office
     ./system
+    ./utilities
     ./virtualisation
   ];
 
