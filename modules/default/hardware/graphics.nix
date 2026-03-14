@@ -9,14 +9,12 @@ with lib;
       enable = mkDefault true;
       enable32Bit = mkDefault true;
       extraPackages = with pkgs; [
+        intel-compute-runtime
         intel-media-driver
         intel-vaapi-driver
-        libva-vdpau-driver
-      ];
-      extraPackages32 = with pkgs; [
-        intel-media-driver
-        intel-vaapi-driver
-        libva-vdpau-driver
+        libva
+        rocmPackages.clr.icd
+        vpl-gpu-rt
       ];
     };
 
