@@ -32,13 +32,6 @@ with lib;
       '')
     ];
 
-    systemd.tmpfiles.rules = [
-      "L /bin/bash - - - - /run/current-system/sw/bin/bash"
-      "L /bin/env - - - - /run/current-system/sw/bin/env"
-      "L /usr/bin/bash - - - - /run/current-system/sw/bin/bash"
-      "L /usr/bin/env - - - - /run/current-system/sw/bin/env"
-    ];
-
   };
 
 }
