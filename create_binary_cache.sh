@@ -12,9 +12,9 @@ cat >./flake.nix <<MAIN_FLAKE
     nixpkgs.follows = "foxflake/nixpkgs";
   };
 
-  outputs =
-    { foxflake, nixpkgs, ... }:
+  outputs = { foxflake, nixpkgs, ... }:
     let
+      pkgs = import nixpkgs { config.allowUnfree = true; system = "x86_64-linux"; };
       system = "x86_64-linux";
     in
     rec
@@ -27,7 +27,7 @@ cat >./flake.nix <<MAIN_FLAKE
             {
               foxflake.environment.type = "cosmic";
               foxflake.system.bundles = [ "full" ];
-              foxflake.system.packages = with (import nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
+              foxflake.system.packages = with pkgs; [ ];
               foxflake.nvidia.enable = false;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
               fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
@@ -41,7 +41,7 @@ cat >./flake.nix <<MAIN_FLAKE
             {
               foxflake.environment.type = "cosmic";
               foxflake.system.bundles = [ "full" ];
-              foxflake.system.packages = with (import nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
+              foxflake.system.packages = with pkgs; [ ];
               foxflake.nvidia.enable = true;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
               fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
@@ -55,7 +55,7 @@ cat >./flake.nix <<MAIN_FLAKE
             {
               foxflake.environment.type = "gnome";
               foxflake.system.bundles = [ "full" ];
-              foxflake.system.packages = with (import nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
+              foxflake.system.packages = with pkgs; [ ];
               foxflake.nvidia.enable = false;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
               fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
@@ -69,7 +69,7 @@ cat >./flake.nix <<MAIN_FLAKE
             {
               foxflake.environment.type = "gnome";
               foxflake.system.bundles = [ "full" ];
-              foxflake.system.packages = with (import nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
+              foxflake.system.packages = with pkgs; [ ];
               foxflake.nvidia.enable = true;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
               fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
@@ -83,7 +83,7 @@ cat >./flake.nix <<MAIN_FLAKE
             {
               foxflake.environment.type = "plasma";
               foxflake.system.bundles = [ "full" ];
-              foxflake.system.packages = with (import nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
+              foxflake.system.packages = with pkgs; [ ];
               foxflake.nvidia.enable = false;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
               fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
@@ -97,7 +97,7 @@ cat >./flake.nix <<MAIN_FLAKE
             {
               foxflake.environment.type = "plasma";
               foxflake.system.bundles = [ "full" ];
-              foxflake.system.packages = with (import nixpkgs { inherit system; config = { allowUnfree = true; }; }); [ ];
+              foxflake.system.packages = with pkgs; [ ];
               foxflake.nvidia.enable = true;
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
               fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
