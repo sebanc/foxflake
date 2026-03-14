@@ -393,11 +393,11 @@ Samsung ULD^Proprietary drivers for Samsung printers^samsunguld|\
 Samsung PL^Drivers for printers supporting SPL Samsung Printer Language^samsungpl"
 
 	set +e
-	current_desktop="$(${self.gnugrep}/bin/grep 'foxflake.environment.type' /etc/nixos/configuration.nix | ${self.gnugrep}/bin/grep -v '^[[:space:]]*#' | ${self.coreutils}/bin/tail -1 | ${self.coreutils}/bin/cut -d \" -f 2)"
+	current_desktop="$(${self.gnugrep}/bin/grep 'foxflake.environment.type' /etc/nixos/configuration.nix | ${self.gnugrep}/bin/grep -v '^[[:space:]]*#' | ${self.coreutils}/bin/cut -d '#' -f 1 | ${self.coreutils}/bin/tail -1 | ${self.coreutils}/bin/cut -d \" -f 2)"
 	set -e
 
 	set +e
-	current_applications="^$(${self.gnugrep}/bin/grep 'foxflake.system.bundles' /etc/nixos/configuration.nix | ${self.gnugrep}/bin/grep -v '^[[:space:]]*#' | ${self.coreutils}/bin/tail -1 | ${self.gnugrep}/bin/grep --only-matching '\[.*]' | ${self.gnused}/bin/sed 's@\[\|]@@g' | ${self.gnused}/bin/sed 's@\"[[:space:]]*\"@^@g' | ${self.gnused}/bin/sed 's@\"\| @@g')^"
+	current_applications="^$(${self.gnugrep}/bin/grep 'foxflake.system.bundles' /etc/nixos/configuration.nix | ${self.gnugrep}/bin/grep -v '^[[:space:]]*#' | ${self.coreutils}/bin/cut -d '#' -f 1 | ${self.coreutils}/bin/tail -1 | ${self.gnugrep}/bin/grep --only-matching '\[.*]' | ${self.gnused}/bin/sed 's@\[\|]@@g' | ${self.gnused}/bin/sed 's@\"[[:space:]]*\"@^@g' | ${self.gnused}/bin/sed 's@\"\| @@g')^"
 	if [ "''${current_applications}" == "^^" ]; then
 		current_applications="^$(${self.gnugrep}/bin/grep 'foxflake.system.applications' /etc/nixos/configuration.nix | ${self.gnugrep}/bin/grep -v '^[[:space:]]*#' | ${self.coreutils}/bin/tail -1 | ${self.gnugrep}/bin/grep --only-matching '\[.*]' | ${self.gnused}/bin/sed 's@\[\|]@@g' | ${self.gnused}/bin/sed 's@\"[[:space:]]*\"@^@g' | ${self.gnused}/bin/sed 's@\"\| @@g')^"
 	fi
