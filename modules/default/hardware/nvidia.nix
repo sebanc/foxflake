@@ -44,7 +44,8 @@ with lib;
     };
 
     nixpkgs.config.packageOverrides = pkgs: {
-        blender = pkgs.blender.override { cudaSupport = true;  };
+      blender = pkgs.blender.override { cudaSupport = true; };
+      obs-studio = pkgs.obs-studio.override { cudaSupport = true; };
     };
 
     programs.nix-ld.libraries = with pkgs; [ linuxPackages.nvidia_x11 ];
