@@ -6,6 +6,7 @@
     ./inkscape.nix
     ./krita.nix
     ./obs.nix
+    ./reaper.nix
   ];
 
 }

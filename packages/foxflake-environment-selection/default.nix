@@ -305,15 +305,22 @@ Chromium^The open-source version of Google’s Chrome web browser^chromium|\
 Thunderbird^Mozilla’s free and open-source email client^thunderbird|\
 Evolution^Email client and personal information management tool^evolution|\
 Discord^A popular proprietary platform for voice, video, and text communication^discord|\
+Zoom^Video conferencing tool for meetings, webinars, and online collaboration^zoom|\
+Slack^Collaborative team messaging platform with channels and app integrations^slack|\
+Telegram^Fast, secure cloud-based instant messaging app with heavy encryption^telegram|\
+Element^Secure, decentralized messenger and team collaboration client for Matrix^element|\
 Office^Office software^|\
 LibreOffice^The standard open-source Linux alternative to Microsoft Office^libreoffice|\
 OnlyOffice^A sleek office suite focused on high compatibility with Microsoft Office^onlyoffice|\
+FocusWriter^Distraction-free writing environment with a hideable interface^focuswriter|\
 Document Scanner^A utility providing a simple interface for scanning documents^simple-scan|\
 Shutter^A feature-rich Linux screenshot tool with built-in editing and effects^shutter|\
 Xournal++^A lightweight tool for taking handwritten notes and annotating PDF files^xournal|\
+Calibre^A powerful all-in-one e-book manager for library organization and conversion^calibre|\
 Multimedia^Multimedia applications^|\
 VLC media player^A versatile multimedia that support most audio/video formats^vlc|\
 MPV media player^A multimedia player favored for its minimalist interface^mpv|\
+Kodi^Open-source media center for playing videos, music, and digital media^kodi|\
 Darktable^A photo management application designed to streamline post-production^darktable|\
 DigiKam^A photo management application used for organizing and editing photos^digikam|\
 Kdenlive^A powerful non-linear video editor built on the KDE framework^kdenlive|\
@@ -324,13 +331,18 @@ NoiseTorch^Real-time microphone noise suppression^noisetorch|\
 Development^Software development applications^|\
 VS Code^Microsoft’s feature-rich code editor^vscode|\
 VS Codium^A telemetry-free version of Microsoft’s feature-rich code editor^vscodium|\
+Sublime^Sophisticated, lightweight text editor for code, markup, and prose^sublime|\
 Zed^A high-performance, GPU-accelerated code editor written in Rust^zed|\
+Neovim^Text editor engineered for extensibility and usability^neovim|\
+GitKraken^Visual interface for managing Git repositories and code history^gitkraken|\
+GitHub Desktop^GUI for managing Git and GitHub^github|\
 Creativity^Content creation software^|\
 GIMP^A powerful and open-source image editor^gimp|\
 Krita^A digital painting studio designed for concept artists and illustrators^krita|\
 Inkscape^A vector graphics editor ideal for creating logos and diagrams^inkscape|\
 OBS Studio^The industry standard for screen recording and live streaming^obs|\
 Blender^A 3D creation suite that allows modeling, animation and editing^blender|\
+Reaper^Complete digital audio production application^reaper|\
 Gaming^Gaming applications^|\
 Steam^Valve’s industry-leading digital storefront and games launcher^steam|\
 Heroic Games Launcher^An open-source launcher for Epic Games, GOG, and Amazon Games^heroic|\
@@ -339,9 +351,13 @@ Faugus^A lightweight game launcher that uses UMU to run Windows games^faugus|\
 Sunshine^An open-source game streaming host for Moonlight clients^sunshine|\
 GOverlay^A GUI that allows you to easily manage and configure overlays^goverlay|\
 MangoJuice^A utility designed to help manage MangoHud profiles^mangojuice|\
+Piper^An application to configure gaming mice^piper|\
 Input Remapper^A utility for remapping input devices buttons and creating macros^input-remapper|\
+Joystickwake^A tool that prevents suspend when using a game controller^joystickwake|\
+Oversteer^Control utility for steering wheels^oversteer|\
 Virtualisation^Virtualisation software^|\
 WinBoat^Allows to run Windows apps on Linux using a containerized approach^winboat|\
+Bottles^Easily run Windows software on Linux using sandboxed environments^bottles|\
 Waydroid^A container-based solution that allows you to run Android apps^waydroid|\
 GNOME Boxes^A simple graphical application for creating Virtual Machines^gnome-boxes|\
 VirtualBox^A popular hypervisor by Oracle that allows you to run Virtual Machines^virtualbox|\
@@ -349,9 +365,32 @@ Virt-Manager^A Virtual Machines manager that provides an interface for QEMU/libv
 Docker^The industry-standard for running applications inside containers^docker|\
 Distrobox^A tool that facilitates the use of containers (via Podman or Docker)^distrobox|\
 Podman^A powerful, daemonless, and security-focused container engine^podman|\
+Utilities^System utilities^|\
+GParted^Graphical utility for disk partitioning and file system management^gparted|\
+Bitwarden^Cloud-synced, open-source password management^bitwarden|\
+KeePassXC^Graphical utility for disk partitioning and file system management^keepassxc|\
+Remmina^Versatile client for RDP, VNC, and SSH connections^remmina|\
+RustDesk^Open-source, self-hosted remote desktop software^rustdesk|\
+AnyDesk^Proprietary, high-speed remote desktop sharing^anydesk|\
+TeamViewer^Industry-standard tool for remote support and collaboration^teamviewer|\
+Wireshark^Network analysis tool for capturing and inspecting data packets^wireshark|\
 Hardware^Hardware management^|\
+OpenTabletDriver^Open source and cross-platform tablet driver^opentabletdriver|\
+CoreCtrl^A tool to control hardware performance, fan curves, and power profiles^corectrl|\
 OpenRGB^A tool to control RGB lighting across motherboards, RAM, GPUs...^openrgb|\
-CoreCtrl^A tool to control hardware performance, fan curves, and power profiles^corectrl"
+XONE^Xbox One and Xbox Series X/S gamepad driver^xone|\
+XPAD neo^Linux driver for Xbox One wireless controllers^xpadneo|\
+Fanatec FF^Linux driver for Fanatec driving wheels^fanatecff|\
+Logitech FF^Linux driver for Logitech driving wheels^logitechff|\
+Gutenprint^A collection of free-software printer drivers^gutenprint|\
+Brother LPD^Drivers supporting certain Brother Laser printers^brlaser|\
+Brother GenML1^Proprietary drivers supporting more Brother printers^brgenml1|\
+Canon CUPS^Printer drivers for Canon Pixma devices^cnijfilter2|\
+Epson IPD^Printer drivers for Epson devices^escpr|\
+HP LIP^Print, scan and fax HP drivers for Linux^hplip|\
+Lexmark CUPS^Printer drivers for Lexmark devices^lexmarkps|\
+Samsung ULD^Proprietary drivers for Samsung printers^samsunguld|\
+Samsung PL^Drivers for printers supporting SPL Samsung Printer Language^samsungpl"
 
 	set +e
 	current_desktop="$(${self.gnugrep}/bin/grep 'foxflake.environment.type' /etc/nixos/configuration.nix | ${self.gnugrep}/bin/grep -v '^[[:space:]]*#' | ${self.coreutils}/bin/tail -1 | ${self.coreutils}/bin/cut -d \" -f 2)"
