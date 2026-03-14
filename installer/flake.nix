@@ -3,23 +3,21 @@
 
   inputs = {
     foxflake.url = "github:sebanc/foxflake/stable";
+    nixpkgs.follows = "foxflake/nixpkgs";
   };
 
   outputs =
-    { self, foxflake, ... }@inputs:
+    { self, foxflake, nixpkgs, ... }:
     let
-      system = "x86_64-linux";
-      nixpkgs = inputs.foxflake.inputs.nixpkgs;
       pkgs = import nixpkgs { config.allowUnfree = true; system = "x86_64-linux"; };
     in
-    {
-      installer = self.nixosConfigurations."foxflake-installer".config.system.build.isoImage;
-
+    rec {
+      installer = nixosConfigurations."foxflake-installer".config.system.build.isoImage;
       nixosConfigurations = {
         "foxflake-installer" = nixpkgs.lib.nixosSystem {
-          inherit system;
+          system = "x86_64-linux";
           modules = [
-            inputs.foxflake.nixosModules.default
+            foxflake.nixosModules.default
             "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares-gnome.nix"
             {
               nixpkgs.overlays = [
@@ -61,6 +59,32 @@
                 };
                 nixpkgs.config.packageOverrides = pkgs: {
                   calamares = pkgs.calamares.overrideAttrs (oldAttrs: {
+                    patches = (oldAttrs.patches or []) ++ [
+                      (pkgs.writeText "pixmapfix.patch" ''
+                        diff --git a/src/modules/users/UsersPage.cpp b/src/modules/users/UsersPage.cpp
+                        index e602b87ea..b6867bfa9 100644
+                        --- a/src/modules/users/UsersPage.cpp
+                        +++ b/src/modules/users/UsersPage.cpp
+                        @@ -38,7 +38,7 @@ static inline void
+                         labelError( QLabel* pix, QLabel* label, Calamares::ImageType icon, const QString& message )
+                         {
+                             label->setText( message );
+                        -    pix->setPixmap( Calamares::defaultPixmap( icon, Calamares::Original, label->size() ) );
+                        +    pix->setPixmap( Calamares::defaultPixmap( icon, Calamares::Original, pix->size() ) );
+                         }
+                         
+                         /** @brief Clear error, set happy pixmap on a label to indicate "ok". */
+                        @@ -46,7 +46,7 @@ static inline void
+                         labelOk( QLabel* pix, QLabel* label )
+                         {
+                             label->clear();
+                        -    pix->setPixmap( Calamares::defaultPixmap( Calamares::StatusOk, Calamares::Original, label->size() ) );
+                        +    pix->setPixmap( Calamares::defaultPixmap( Calamares::StatusOk, Calamares::Original, pix->size() ) );
+                         }
+                         
+                         /** @brief Sets error or ok on a label depending on @p status and @p value
+                      '')
+                    ];
                     postInstall = (oldAttrs.postInstall or "") + ''
                       if [ -f "$out/share/applications/calamares.desktop" ]; then
                         ${pkgs.gnused}/bin/sed -i 's@pkexec calamares@sudo calamares@g' "$out/share/applications/calamares.desktop"
