@@ -105,6 +105,13 @@ with lib;
             Enabled=false
             KWALLETRC
               fi
+              cat >"''${HOME}/.config/powerdevilrc" <<POWERDEVILRC
+            [AC][Performance]
+            PowerProfile=performance
+
+            [Battery][Performance]
+            PowerProfile=balanced
+            POWERDEVILRC
             fi
           ''}/bin/plasma-defaults";
         };
