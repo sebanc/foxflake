@@ -347,7 +347,7 @@ GitKraken^Visual interface for managing Git repositories and code history^gitkra
 GitHub Desktop^GUI for managing Git and GitHub^github|\
 Gaming^Gaming applications^|\
 Steam^Valve’s industry-leading digital storefront and games launcher^steam|\
-Heroic Games Launcher^An open-source launcher for Epic Games, GOG, and Amazon Games^heroic|\
+Heroic Games Launcher^An open-source launcher for Epic, GOG, and Amazon Games^heroic|\
 Lutris^A comprehensive launcher for Steam, GOG and Epic games^lutris|\
 Faugus^A lightweight game launcher that uses UMU to run Windows games^faugus|\
 Sunshine^An open-source game streaming host for Moonlight clients^sunshine|\

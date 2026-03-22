@@ -39,12 +39,12 @@ with lib;
         blueman
         brightnessctl
         catppuccin-sddm-corners
-        cosmic-files
         grim
         hyprpaper
         hyprlock
         kitty
         mako
+        nemo-with-extensions
         networkmanagerapplet
         pavucontrol
         tela-circle-icon-theme
@@ -77,6 +77,10 @@ with lib;
                 click-method = "areas";
                 tap-to-click = true;
                 two-finger-scrolling-enabled = true;
+              };
+              "org/gnome/nm-applet" = {
+                disable-connected-notifications = true;
+                disable-disconnected-notifications = true;
               };
             };
           }
@@ -164,6 +168,13 @@ with lib;
                 new_optimizations = true
               }
             }
+            windowrule {
+              name = zenity
+              float = on
+              center = on
+              stay_focused = on
+              match:class = ^(zenity)$
+            }
             xwayland {
               force_zero_scaling = true
             }
@@ -198,7 +209,7 @@ with lib;
             bind = SUPER, M, fullscreen, 1
             bind = SUPER, P, pseudo,
             bind = SUPER, D, exec, pkill wofi || wofi --show drun
-            bind = SUPER, E, exec, cosmic-files
+            bind = SUPER, E, exec, nemo --no-desktop
             bind = SUPER SHIFT, SPACE, togglefloating,
             bindm = SUPER, mouse:273, resizewindow
             bindm = SUPER, mouse:272, movewindow
@@ -271,7 +282,9 @@ with lib;
             label {
               monitor =
               text = cmd[update:1000] date +"%A, %d %B %Y - %H:%M"
-              font_size = 100
+              font_color = rgb(255, 255, 255)
+              font_family = Noto Sans
+              font_size = 28
               position = 0, 200
               halign = center
               valign = center
