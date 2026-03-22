@@ -24,6 +24,7 @@ with lib;
       ntfs3g
       p7zip
       pciutils
+      psmisc
       unzip
       usbutils
       xz
