@@ -76,6 +76,34 @@ cat >./flake.nix <<MAIN_FLAKE
             }
           ];
         };
+        "foxflake-${1}-hyprland" = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            foxflake.nixosModules.default
+            {
+              foxflake.environment.type = "hyprland";
+              foxflake.system.bundles = [ "full" ];
+              foxflake.system.packages = with pkgs; [ ];
+              foxflake.nvidia.enable = false;
+              boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
+              fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
+            }
+          ];
+        };
+        "foxflake-${1}-hyprland-nvidia" = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            foxflake.nixosModules.default
+            {
+              foxflake.environment.type = "hyprland";
+              foxflake.system.bundles = [ "full" ];
+              foxflake.system.packages = with pkgs; [ ];
+              foxflake.nvidia.enable = true;
+              boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
+              fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
+            }
+          ];
+        };
         "foxflake-${1}-plasma" = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
@@ -113,10 +141,19 @@ git add flake.nix
 
 git clone -b ${1} https://github.com/sebanc/foxflake.git ./foxflake-${1}
 nix flake update --flake ./foxflake-${1}
-for environment in "cosmic" "gnome" "plasma"; do
-	for nvidia in "" "-nvidia"; do
-		nix build --no-link --max-jobs 2 .#nixosConfigurations.foxflake-${1}-${environment}${nvidia}.config.system.build.toplevel
+if [ "${1}" == "stable" ] || [ "${1}" == "unstable" ]; then
+	for environment in "cosmic" "gnome" "plasma"; do
+		for nvidia in "" "-nvidia"; do
+			nix build --no-link --max-jobs 2 .#nixosConfigurations.foxflake-${1}-${environment}${nvidia}.config.system.build.toplevel
+		done
 	done
-done
+else
+	for environment in "cosmic" "gnome" "hyprland" "plasma"; do
+		for nvidia in "" "-nvidia"; do
+			nix build --no-link --max-jobs 2 .#nixosConfigurations.foxflake-${1}-${environment}${nvidia}.config.system.build.toplevel
+		done
+	done
+fi
+
 cp ./foxflake-${1}/flake.lock /home/runner/work/foxflake/foxflake/foxflake-${1}-flake.lock
 
