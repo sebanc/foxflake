@@ -69,7 +69,7 @@ with lib;
         wantedBy = [ "graphical-session-pre.target" ];
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = "${pkgs.xdg-user-dirs}/bin/xdg-user-dirs-update";
+          ExecStart = "${pkgs.xdg-user-dirs}/bin/xdg-user-dirs-update && ${pkgs.xdg-user-dirs-gtk}/bin/xdg-user-dirs-gtk-update";
         };
         restartIfChanged = false;
       };
