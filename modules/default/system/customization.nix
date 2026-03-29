@@ -37,12 +37,12 @@ with lib;
     environment = {
       wallpaper = mkOption {
         type = with types; nullOr str;
-        default = if config.foxflake.environment.type == "cosmic" then
-          "/run/current-system/sw/share/backgrounds/foxflake/foxflake-neon-wallpaper.jpg"
+        default = if config.foxflake.environment.type == "gnome" then
+          "/run/current-system/sw/share/backgrounds/foxflake/foxflake-neon-wallpaper.png"
         else if config.foxflake.environment.type == "plasma" then
           "/run/current-system/sw/share/wallpapers/foxflake-neon-wallpaper/contents/images/3840x2160.png"
         else
-          "/run/current-system/sw/share/backgrounds/foxflake/foxflake-neon-wallpaper.png";
+          "/run/current-system/sw/share/backgrounds/foxflake/foxflake-neon-wallpaper.jpg";
         example = "/home/common/wallpaper.png";
         description = ''
           The wallpaper used by default for the display manager and desktop environment.
@@ -52,6 +52,8 @@ with lib;
         type = with types; nullOr str;
         default = if config.foxflake.environment.type == "gnome" then
           "Adwaita"
+        else if config.foxflake.environment.type == "hyprland" then
+          "Adwaita-dark"
         else if config.foxflake.environment.type == "plasma" then
           "default"
         else

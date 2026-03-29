@@ -15,7 +15,7 @@ with lib;
     };
     type = mkOption {
       description = "Desktop environment selection";
-      type = with types; enum [ "cosmic" "gnome" "plasma" ];
+      type = with types; enum [ "cosmic" "gnome" "hyprland" "plasma" ];
       default = "gnome";
     };
     autologin = mkOption {
