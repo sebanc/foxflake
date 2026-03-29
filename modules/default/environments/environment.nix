@@ -7,6 +7,7 @@
 with lib;
 
 {
+
   options.foxflake.environment = {
     enable = mkOption {
       type = with types; bool;
@@ -64,12 +65,23 @@ with lib;
 
     systemd.user.services = {
       xdg-user-dirs-update = {
-        description = "User folders update";
-        before = [ "graphical-session-pre.target" ];
-        wantedBy = [ "graphical-session-pre.target" ];
+        description = "Update XDG user directories";
+        wantedBy = [ "default.target" ];
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = "${pkgs.xdg-user-dirs}/bin/xdg-user-dirs-update && ${pkgs.xdg-user-dirs-gtk}/bin/xdg-user-dirs-gtk-update";
+          ExecStart = "${pkgs.xdg-user-dirs}/bin/xdg-user-dirs-update";
+          RemainderAfterExit = true;
+        };
+        restartIfChanged = false;
+      };
+      xdg-user-dirs-gtk-update = {
+        description = "Update XDG user directories (GTK)";
+        wantedBy = [ "graphical-session.target" ];
+        partOf = [ "graphical-session.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = "${pkgs.xdg-user-dirs-gtk}/bin/xdg-user-dirs-gtk-update";
+          RemainderAfterExit = true;
         };
         restartIfChanged = false;
       };
