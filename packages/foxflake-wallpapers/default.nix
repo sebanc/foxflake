@@ -12,8 +12,12 @@ in
         installPhase = ''
 for wallpaper in ${wallpapers}; do
 
+# COSMIC CONFIGURATION
+mkdir -p $out/share/backgrounds/foxflake
+cp ''${wallpaper}.jpg $out/share/backgrounds/foxflake/''${wallpaper}.jpg
+
 # GNOME CONFIGURATION
-mkdir -p $out/share/backgrounds/foxflake $out/share/gnome-background-properties
+mkdir -p $out/share/gnome-background-properties
 cp ''${wallpaper}.png $out/share/backgrounds/foxflake/''${wallpaper}.png
 cat >$out/share/gnome-background-properties/''${wallpaper}.xml <<FOXFLAKE_GNOME_CONF
 <?xml version="1.0" encoding="UTF-8"?>

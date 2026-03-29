@@ -37,7 +37,9 @@ with lib;
     environment = {
       wallpaper = mkOption {
         type = with types; nullOr str;
-        default = if config.foxflake.environment.type == "plasma" then
+        default = if config.foxflake.environment.type == "cosmic" then
+          "/run/current-system/sw/share/backgrounds/foxflake/foxflake-neon-wallpaper.jpg"
+        else if config.foxflake.environment.type == "plasma" then
           "/run/current-system/sw/share/wallpapers/foxflake-neon-wallpaper/contents/images/3840x2160.png"
         else
           "/run/current-system/sw/share/backgrounds/foxflake/foxflake-neon-wallpaper.png";

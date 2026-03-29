@@ -10,6 +10,11 @@ with lib;
 
   config = mkIf (config.foxflake.environment.enable && config.foxflake.environment.type == "cosmic") {
 
+    environment = {
+      sessionVariables.NIXOS_OZONE_WL = mkDefault "1";
+      systemPackages = [ pkgs.unstable.tela-circle-icon-theme ];
+    };
+
     services = {
       desktopManager.cosmic.enable = mkDefault true;
       displayManager.cosmic-greeter.enable = mkDefault true;
@@ -20,10 +25,6 @@ with lib;
       extraPortals = mkDefault [ pkgs.xdg-desktop-portal-cosmic ];
       xdgOpenUsePortal = mkDefault true;
     };
-
-    environment.systemPackages = [
-      pkgs.unstable.tela-circle-icon-theme
-    ];
 
     systemd.user.services = {
       cosmic-defaults = {
