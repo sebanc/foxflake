@@ -368,6 +368,7 @@ Distrobox^A tool that facilitates the use of containers (via Podman or Docker)^d
 Podman^A powerful, daemonless, and security-focused container engine^podman|\
 Utilities^System utilities^|\
 GParted^Graphical utility for disk partitioning and file system management^gparted|\
+1Password^Secure cross-platform password manager^1password|\
 Bitwarden^Cloud-synced, open-source password management^bitwarden|\
 KeePassXC^Graphical utility for disk partitioning and file system management^keepassxc|\
 Remmina^Versatile client for RDP, VNC, and SSH connections^remmina|\
