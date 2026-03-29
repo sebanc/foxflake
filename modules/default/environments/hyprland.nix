@@ -122,6 +122,7 @@ with lib;
       hypridle = {
         enable = mkDefault true;
         package = mkDefault pkgs.unstable.hypridle;
+      };
     };
 
     xdg.portal = {
