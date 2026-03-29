@@ -142,7 +142,7 @@ git add flake.nix
 git clone -b ${1} https://github.com/sebanc/foxflake.git ./foxflake-${1}
 nix flake update --flake ./foxflake-${1}
 if [ "${1}" == "stable" ] || [ "${1}" == "unstable" ]; then
-	for environment in "cosmic" "gnome" "plasma"; do
+	for environment in "cosmic" "gnome" "hyprland" "plasma"; do
 		for nvidia in "" "-nvidia"; do
 			nix build --no-link --max-jobs 2 .#nixosConfigurations.foxflake-${1}-${environment}${nvidia}.config.system.build.toplevel
 		done

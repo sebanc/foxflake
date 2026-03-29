@@ -38,7 +38,7 @@ jobs:
           extra_nix_config: |
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
       - name: Install cachix action
-        uses: cachix/cachix-action@v16
+        uses: cachix/cachix-action@v17
         with:
           name: foxflake
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
@@ -88,7 +88,7 @@ jobs:
             ;;
           esac
       - name: Upload updated FoxFlake flake.lock
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: foxflake-${{ matrix.branch }}-flake-lock
           path: /home/runner/work/foxflake/foxflake/foxflake-${{ matrix.branch }}-flake.lock
@@ -110,7 +110,7 @@ jobs:
           echo "Free space:"
           df -h
       - name: Checkout branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: main
       - name: Install nix
@@ -119,7 +119,7 @@ jobs:
           extra_nix_config: |
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
       - name: Install cachix action
-        uses: cachix/cachix-action@v16
+        uses: cachix/cachix-action@v17
         with:
           name: foxflake
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
@@ -170,7 +170,7 @@ jobs:
             ;;
           esac
       - name: Upload updated FoxFlake flake.lock
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: foxflake-${{ matrix.branch }}-flake-lock
           path: /home/runner/work/foxflake/foxflake/foxflake-${{ matrix.branch }}-flake.lock
@@ -186,11 +186,11 @@ jobs:
         branch: [ "stable", "stable-test" ]
     steps:
       - name: Checkout ${{ matrix.branch }} branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ matrix.branch }}
       - name: Download FoxFlake ${{ matrix.branch }} flake lock
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: foxflake-${{ matrix.branch }}-flake-lock
           path: /home/runner/work/foxflake/foxflake/
@@ -199,7 +199,7 @@ jobs:
           cp ./foxflake-${{ matrix.branch }}-flake.lock ./flake.lock
           rm ./foxflake-${{ matrix.branch }}-flake.lock
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: ${{ matrix.branch }}
           commit_message: Update flake lock
@@ -214,11 +214,11 @@ jobs:
         branch: [ "unstable","unstable-test","dev" ]
     steps:
       - name: Checkout ${{ matrix.branch }} branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ matrix.branch }}
       - name: Download FoxFlake ${{ matrix.branch }} flake lock
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: foxflake-${{ matrix.branch }}-flake-lock
           path: /home/runner/work/foxflake/foxflake/
@@ -227,7 +227,7 @@ jobs:
           cp ./foxflake-${{ matrix.branch }}-flake.lock ./flake.lock
           rm ./foxflake-${{ matrix.branch }}-flake.lock
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           branch: ${{ matrix.branch }}
           commit_message: Update flake lock

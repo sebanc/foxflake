@@ -12,7 +12,7 @@ FoxFlake is a comprehensive configuration of the NixOS Linux distribution (Flake
 ## Key features
 
 🖥️ Environment flexibility<br>
-  - Desktop versatility: Seamlessly switch between GNOME, KDE Plasma, and COSMIC desktop environments.<br>
+  - Desktop versatility: Seamlessly switch between Gnome, Plasma, Cosmic and Hyprland environments.<br>
   - Simple package management: Manage your set of NixOS applications via the "FoxFlake Environment Selection" tool and use the desktop environment’s store to install Flatpaks.<br>
   - Extended compatibility with AppImages / scripts: Run most standalone linux programs natively.<br>
   - Complete binary cache: Ensures with its own binary cache that prebuilt packages are available for all included desktop environments and packages configurations (it avoids NixOS from building packages from source when a binary package is not available).<br><br>
@@ -37,13 +37,14 @@ FoxFlake is a comprehensive configuration of the NixOS Linux distribution (Flake
 Gnome:<br><img alt="Gnome" src="./Images/gnome.png" width="512" height="320" /><br><br>
 Plasma:<br><img alt="Plasma" src="./Images/plasma.png" width="512" height="320" /><br><br>
 Cosmic:<br><img alt="Gnome" src="./Images/cosmic.png" width="512" height="320" /><br><br>
+Hyprland:<br><img alt="Gnome" src="./Images/hyprland.png" width="512" height="320" /><br><br>
 </div>
 
 FoxFlake is designed to accommodate two distinct types of users:<br>
   - Zero-Maintenance Mode: Manage your NixOS apps via the "FoxFlake Environment Selection" application, install flatpaks from the desktop environment's store and let FoxFlake handle the maintenance.<br>
   - Custom Declarative Configurations: Define your custom configurations in the file /etc/nixos/configuration.nix, the core OS maintenance is taken care of and you are only in charge of maintaining your specific configurations.<br><br>
 
-## Complementary instructions:
+## Complementary instructions
 
 ### Changing desktop environment or native applications after installation
 
@@ -51,6 +52,11 @@ The "FoxFlake Environment Selection" application allows you to review at any poi
 <div align="center">
 <img alt="Gnome" src="./Images/foxflake-environment-selection.png" width="420" height="320" /><br><br>
 </div>
+
+### Hyprland
+
+A simple Hyprland configuration is provided as a base but you are free to completely change / replace it. You can check and modify Hyprland settings through the configuration file located at the standard path $HOME/.config/hypr/hyprland.conf.<br>
+Note that you are therefore responsible to update the hyprland configuration to accomodate upstream changes.<br><br>
 
 ### Adding custom configurations
 
@@ -115,7 +121,7 @@ You can then apply your user home manager configuration updates with the command
 
 The generated installer iso image will be located in the "result/iso" folder.<br><br>
 
-## Thanks goes to:
+## Thanks
 - [NixOS][NixOS] and community modules (home-manager, plasma-manager and nix-flatpak) maintainers.<br>
 - [Cachix][Cachix] for their open source projects free binary cache plan.<br>
 - The Gaming Linux France community for the inspiration coming from their [gaming oriented GLF OS][GLF-OS].<br><br>
