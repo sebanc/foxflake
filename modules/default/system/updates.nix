@@ -53,10 +53,10 @@ with lib;
           Type = "oneshot";
           ExecStart = "${pkgs.writeShellScriptBin "update-system-flatpaks" ''
             #!${pkgs.bash}
+            set +e
             if ${pkgs.curl}/bin/curl -L https://github.com/sebanc/foxflake > /dev/null 2>&1; then
-              ${pkgs.flatpak}/bin/flatpak --system uninstall --unused --assumeyes --noninteractive
-              ${pkgs.flatpak}/bin/flatpak --system update --assumeyes --noninteractive
-              ${pkgs.flatpak}/bin/flatpak --system repair
+              ${pkgs.flatpak}/bin/flatpak --system uninstall --unused --assumeyes --noninteractive || ${pkgs.flatpak}/bin/flatpak --system repair
+              ${pkgs.flatpak}/bin/flatpak --system update --assumeyes --noninteractive || ${pkgs.flatpak}/bin/flatpak --system repair
             fi
           ''}/bin/update-system-flatpaks";
         };
@@ -77,10 +77,10 @@ with lib;
           Type = "oneshot";
           ExecStart = "${pkgs.writeShellScriptBin "update-user-flatpaks" ''
             #!${pkgs.bash}
+            set +e
             if ${pkgs.curl}/bin/curl -L https://github.com/sebanc/foxflake > /dev/null 2>&1; then
-              ${pkgs.flatpak}/bin/flatpak --user uninstall --unused --assumeyes --noninteractive
-              ${pkgs.flatpak}/bin/flatpak --user update --assumeyes --noninteractive
-              ${pkgs.flatpak}/bin/flatpak --user repair
+              ${pkgs.flatpak}/bin/flatpak --user uninstall --unused --assumeyes --noninteractive || ${pkgs.flatpak}/bin/flatpak --user repair
+              ${pkgs.flatpak}/bin/flatpak --user update --assumeyes --noninteractive || ${pkgs.flatpak}/bin/flatpak --user repair
             fi
           ''}/bin/update-user-flatpaks";
         };
