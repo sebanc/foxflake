@@ -309,6 +309,7 @@ Discord^A popular proprietary platform for voice, video, and text communication^
 Zoom^Video conferencing tool for meetings, webinars, and online collaboration^zoom|\
 Slack^Collaborative team messaging platform with channels and app integrations^slack|\
 Telegram^Fast, secure cloud-based instant messaging app with heavy encryption^telegram|\
+Signal^Simple, powerful, and secure messaging app with end-to-end encryption^signal|\
 Element^Secure, decentralized messenger and team collaboration client for Matrix^element|\
 Office^Office software^|\
 LibreOffice^The standard open-source Linux alternative to Microsoft Office^libreoffice|\
