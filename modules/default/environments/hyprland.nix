@@ -144,6 +144,7 @@ with lib;
             if [ ! -f "''${HOME}/.config/hypr/hyprland.conf" ]; then
               mkdir -p "''${HOME}/.config/hypr"
               cat >"''${HOME}/.config/hypr/hyprland.conf" <<'HYPRLAND_CONFIG'
+            exec-once = xdg-user-dirs-gtk-update
             exec-once = ''${HOME}/.config/hypr/scripts/scale_fix.sh
             exec-once = hyprctl setcursor ${config.foxflake.customization.environment.cursor-theme} 24
             exec-once = hypridle
