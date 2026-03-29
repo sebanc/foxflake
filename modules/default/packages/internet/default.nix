@@ -12,6 +12,7 @@
     ./slack.nix
     ./telegram.nix
     ./thunderbird.nix
+    ./tor.nix
     ./zoom.nix
   ];
 
