@@ -120,7 +120,7 @@ class MainWindow(QMainWindow):
                     margin-left: auto;
                     margin-right: auto;
                     height: auto;
-                    max-height: 350px;
+                    max-height: 340px;
                     overflow: auto;
                     width: fit-content;
                     background: {card_color};
@@ -293,7 +293,8 @@ FOXFLAKE_GUI
 	available_desktops="
 Gnome^gnome|\
 Plasma^plasma|\
-Cosmic^cosmic"
+Cosmic^cosmic|\
+Hyprland^hyprland"
 
 	available_applications="
 Internet^Web browsers, email clients and messaging apps^|\
@@ -420,7 +421,7 @@ Samsung PL^Drivers for printers supporting SPL Samsung Printer Language^samsungp
 
 	exec /run/wrappers/bin/sudo /run/current-system/sw/bin/foxflake-environment-selection "''${new_desktop}" "''${new_applications}"
 
-elif [ ''${#} -eq 2 ] && { [ "''${1}" == "\"cosmic\"" ] || [ "''${1}" == "\"gnome\"" ] || [ "''${1}" == "\"plasma\"" ]; }; then
+elif [ ''${#} -eq 2 ] && { [ "''${1}" == "\"cosmic\"" ] || [ "''${1}" == "\"gnome\"" ] || [ "''${1}" == "\"hyprland\"" ] || [ "''${1}" == "\"plasma\"" ]; }; then
 
 	if [ "$(${self.coreutils}/bin/id -u)" -ne 0 ]; then
 		exec /run/wrappers/bin/sudo /run/current-system/sw/bin/foxflake-environment-selection "''${1}" "''${2}"
