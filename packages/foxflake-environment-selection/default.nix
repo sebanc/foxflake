@@ -300,6 +300,7 @@ Internet^Web browsers, email clients and messaging apps^|\
 Firefox^An open-source browser managed by Mozilla that prioritizes user privacy^firefox|\
 Librewolf^A fork of Firefox that provides the highest level of privacy/security^librewolf|\
 Brave^A privacy-focused browser that automatically blocks ads and trackers^brave|\
+Tor Browser^Open-source browser providing anonymity via the Tor network^tor|\
 Chrome^Google’s proprietary web browser known for its speed^chrome|\
 Chromium^The open-source version of Google’s Chrome web browser^chromium|\
 Thunderbird^Mozilla’s free and open-source email client^thunderbird|\
@@ -328,6 +329,13 @@ Shotcut^A non-linear video editor that supports a wide range of formats^shotcut|
 Audacity^A popular multi-track audio editor and recorder^audacity|\
 Ardour^A digital audio workstation for recording, editing, mixing, and mastering^ardour|\
 NoiseTorch^Real-time microphone noise suppression^noisetorch|\
+Creativity^Content creation software^|\
+GIMP^A powerful and open-source image editor^gimp|\
+Krita^A digital painting studio designed for concept artists and illustrators^krita|\
+Inkscape^A vector graphics editor ideal for creating logos and diagrams^inkscape|\
+OBS Studio^The industry standard for screen recording and live streaming^obs|\
+Blender^A 3D creation suite that allows modeling, animation and editing^blender|\
+Reaper^Complete digital audio production application^reaper|\
 Development^Software development applications^|\
 VS Code^Microsoft’s feature-rich code editor^vscode|\
 VS Codium^A telemetry-free version of Microsoft’s feature-rich code editor^vscodium|\
@@ -336,13 +344,6 @@ Zed^A high-performance, GPU-accelerated code editor written in Rust^zed|\
 Neovim^Text editor engineered for extensibility and usability^neovim|\
 GitKraken^Visual interface for managing Git repositories and code history^gitkraken|\
 GitHub Desktop^GUI for managing Git and GitHub^github|\
-Creativity^Content creation software^|\
-GIMP^A powerful and open-source image editor^gimp|\
-Krita^A digital painting studio designed for concept artists and illustrators^krita|\
-Inkscape^A vector graphics editor ideal for creating logos and diagrams^inkscape|\
-OBS Studio^The industry standard for screen recording and live streaming^obs|\
-Blender^A 3D creation suite that allows modeling, animation and editing^blender|\
-Reaper^Complete digital audio production application^reaper|\
 Gaming^Gaming applications^|\
 Steam^Valve’s industry-leading digital storefront and games launcher^steam|\
 Heroic Games Launcher^An open-source launcher for Epic Games, GOG, and Amazon Games^heroic|\
@@ -376,8 +377,10 @@ TeamViewer^Industry-standard tool for remote support and collaboration^teamviewe
 Wireshark^Network analysis tool for capturing and inspecting data packets^wireshark|\
 Hardware^Hardware management^|\
 OpenTabletDriver^Open source and cross-platform tablet driver^opentabletdriver|\
-CoreCtrl^A tool to control hardware performance, fan curves, and power profiles^corectrl|\
 OpenRGB^A tool to control RGB lighting across motherboards, RAM, GPUs...^openrgb|\
+LACT^A modern GTK tool for AMD GPU overclocking, undervolting, and monitoring^lact|\
+CoreCtrl^A tool to control hardware performance, fan curves, and power profiles^corectrl|\
+CoolerControl^A GUI for managing cooling devices^coolercontrol|\
 XONE^Xbox One and Xbox Series X/S gamepad driver^xone|\
 XPAD neo^Linux driver for Xbox One wireless controllers^xpadneo|\
 Fanatec FF^Linux driver for Fanatec driving wheels^fanatecff|\
