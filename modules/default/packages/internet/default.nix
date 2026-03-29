@@ -9,6 +9,7 @@
     ./evolution.nix
     ./firefox.nix
     ./librewolf.nix
+    ./signal.nix
     ./slack.nix
     ./telegram.nix
     ./thunderbird.nix
