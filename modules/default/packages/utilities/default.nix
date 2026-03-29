@@ -1,6 +1,7 @@
 {
 
   imports = [
+    ./1password.nix
     ./anydesk.nix
     ./bitwarden.nix
     ./gparted.nix
