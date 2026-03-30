@@ -1,8 +1,8 @@
 {
-  description = "FoxFlake";
+  description = "FoxFlake installer";
 
   inputs = {
-    foxflake.url = "github:sebanc/foxflake/stable";
+    foxflake.url = "git+https://github.com/sebanc/foxflake?shallow=1&ref=stable";
     nixpkgs.follows = "foxflake/nixpkgs";
   };
 

@@ -9,64 +9,68 @@
       "locked": {
         "lastModified": 1774559029,
         "narHash": "sha256-deix7yg3j6AhjMPnFDCmWB3f83LsajaaULP5HH2j34k=",
-        "owner": "nix-community",
-        "repo": "home-manager",
+        "ref": "release-25.11",
         "rev": "a0bb0d11514f92b639514220114ac8063c72d0a3",
-        "type": "github"
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/nix-community/home-manager"
       },
       "original": {
-        "owner": "nix-community",
         "ref": "release-25.11",
-        "repo": "home-manager",
-        "type": "github"
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/nix-community/home-manager"
       }
     },
     "nix-flatpak": {
       "locked": {
         "lastModified": 1767983141,
         "narHash": "sha256-7ZCulYUD9RmJIDULTRkGLSW1faMpDlPKcbWJLYHoXcs=",
-        "owner": "gmodena",
-        "repo": "nix-flatpak",
+        "ref": "refs/tags/latest",
         "rev": "440818969ac2cbd77bfe025e884d0aa528991374",
-        "type": "github"
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/gmodena/nix-flatpak"
       },
       "original": {
-        "owner": "gmodena",
-        "ref": "latest",
-        "repo": "nix-flatpak",
-        "type": "github"
+        "ref": "refs/tags/latest",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/gmodena/nix-flatpak"
       }
     },
     "nixpkgs": {
       "locked": {
         "lastModified": 1774388614,
         "narHash": "sha256-tFwzTI0DdDzovdE9+Ras6CUss0yn8P9XV4Ja6RjA+nU=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
+        "ref": "nixos-25.11",
         "rev": "1073dad219cb244572b74da2b20c7fe39cb3fa9e",
-        "type": "github"
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/nixos/nixpkgs"
       },
       "original": {
-        "owner": "nixos",
         "ref": "nixos-25.11",
-        "repo": "nixpkgs",
-        "type": "github"
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/nixos/nixpkgs"
       }
     },
     "nixpkgs-unstable": {
       "locked": {
         "lastModified": 1774709303,
         "narHash": "sha256-D3Q07BbIA2KnTcSXIqqu9P586uWxN74zNoCH3h2ESHg=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
+        "ref": "nixos-unstable",
         "rev": "8110df5ad7abf5d4c0f6fb0f8f978390e77f9685",
-        "type": "github"
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/nixos/nixpkgs"
       },
       "original": {
-        "owner": "nixos",
         "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/nixos/nixpkgs"
       }
     },
     "plasma-manager": {
@@ -81,15 +85,17 @@
       "locked": {
         "lastModified": 1772361940,
         "narHash": "sha256-B1Cz+ydL1iaOnGlwOFld/C8lBECPtzhiy/pP93/CuyY=",
-        "owner": "nix-community",
-        "repo": "plasma-manager",
+        "ref": "trunk",
         "rev": "a4b33606111c9c5dcd10009042bb710307174f51",
-        "type": "github"
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/nix-community/plasma-manager"
       },
       "original": {
-        "owner": "nix-community",
-        "repo": "plasma-manager",
-        "type": "github"
+        "ref": "trunk",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/nix-community/plasma-manager"
       }
     },
     "root": {
