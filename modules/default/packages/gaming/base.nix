@@ -22,8 +22,12 @@ with lib;
       mangohud
       vkbasalt
     ];
-    hardware.steam-hardware.enable = mkDefault true;
+    hardware = {
+      steam-hardware.enable = mkDefault true;
+      uinput.enable = mkDefault true;
+    };
     programs.gamemode.enable = mkDefault true;
+    services.udev.packages = with pkgs; [ game-devices-udev-rules ];
 
   };
 
