@@ -1,20 +1,20 @@
 {
 
-  description = "FoxFlake Unstable";
+  description = "FoxFlake unstable branch";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "git+https://github.com/nixos/nixpkgs?shallow=1&ref=nixos-unstable";
+    nixpkgs-unstable.follows = "nixpkgs";
     home-manager = {
-      url = "github:nix-community/home-manager/master";
+      url = "git+https://github.com/nix-community/home-manager?shallow=1&ref=master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     plasma-manager = {
-      url = "github:nix-community/plasma-manager";
+      url = "git+https://github.com/nix-community/plasma-manager?shallow=1&ref=trunk";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
-    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=main";
+    nix-flatpak.url = "git+https://github.com/gmodena/nix-flatpak?shallow=1&ref=main";
   };
 
   outputs =
