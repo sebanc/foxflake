@@ -4,6 +4,7 @@
 
   inputs = {
     nixpkgs.url = "git+https://github.com/nixos/nixpkgs?shallow=1&ref=nixos-25.11";
+    nixpkgs-stable.follows = "nixpkgs";
     nixpkgs-unstable.url = "git+https://github.com/nixos/nixpkgs?shallow=1&ref=nixos-unstable";
     home-manager = {
       url = "git+https://github.com/nix-community/home-manager?shallow=1&ref=release-25.11";
@@ -18,7 +19,7 @@
   };
 
   outputs =
-    { nixpkgs, nixpkgs-unstable, home-manager, plasma-manager, nix-flatpak, ... }@inputs:
+    { nixpkgs, nixpkgs-stable, nixpkgs-unstable, home-manager, plasma-manager, nix-flatpak, ... }@inputs:
     let
       system = "x86_64-linux";
     in
@@ -30,13 +31,8 @@
             { nixpkgs.config.allowUnfree = true; }
             {
               nixpkgs.overlays = [
-                (final: prev: {
-                  unstable = import nixpkgs-unstable {
-                    inherit prev;
-                    inherit system;
-                    config.allowUnfree = true;
-                  };
-                })
+                (final: prev: { stable = import nixpkgs-stable { inherit prev; inherit system; config.allowUnfree = true; }; })
+                (final: prev: { unstable = import nixpkgs-unstable { inherit prev; inherit system; config.allowUnfree = true; }; })
               ];
             }
             ./modules/default
