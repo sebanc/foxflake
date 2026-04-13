@@ -18,7 +18,7 @@ with lib;
       };
       docker.enable = mkDefault true;
     };
-    environment.systemPackages = with pkgs; [ stable.winboat ];
+    environment.systemPackages = with pkgs; [ unstable.winboat ];
 
   };
 
