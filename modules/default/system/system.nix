@@ -52,7 +52,6 @@ with lib;
         interval = mkDefault "weekly";
       };
       fwupd.enable = mkDefault true;
-      thermald.enable = mkDefault true;
     };
 
     zramSwap.enable = mkDefault true;
