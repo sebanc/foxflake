@@ -8,6 +8,11 @@ with lib;
 
 {
 
+  imports = [
+    ../../../packages/foxflake-icons
+    ../../../packages/foxflake-wallpapers
+  ];
+
   options.foxflake.environment = {
     enable = mkOption {
       type = with types; bool;
