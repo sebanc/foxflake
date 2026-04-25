@@ -28,6 +28,12 @@ with lib;
       default = "";
       example = "1920x1080x60";
     };
+    upscaleFrom = mkOption {
+      description = "The resolution to upscale from in the format <width>x<height>.";
+      type = with types; str;
+      default = "";
+      example = "1280x720";
+    };
   };
 
   config = mkIf (config.foxflake.environment.enable && (config.foxflake.environment.type == "steam" || config.foxflake.environment.type == "steamdeck")) {
@@ -40,6 +46,7 @@ with lib;
       variables = { }
         // lib.optionalAttrs (config.foxflake.environment.steam.display != "") { GAMESCOPE_SESSION_DISPLAY = "${config.foxflake.environment.steam.display}"; }
         // lib.optionalAttrs (config.foxflake.environment.steam.resolution != "") { GAMESCOPE_SESSION_RESOLUTION = "${config.foxflake.environment.steam.resolution}"; }
+        // lib.optionalAttrs (config.foxflake.environment.steam.resolution != "") { GAMESCOPE_SESSION_UPSCALE = "${config.foxflake.environment.steam.upscaleFrom}"; }
         // lib.optionalAttrs (config.foxflake.gaming.hdr) { GAMESCOPE_SESSION_HDR = 1; }
         // lib.optionalAttrs (config.foxflake.gaming.hdr) { STEAM_GAMESCOPE_HDR_SUPPORTED = 1; }
       ;

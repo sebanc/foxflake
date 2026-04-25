@@ -83,18 +83,27 @@ if [ -z "''${GAMESCOPE_SESSION_DISPLAY}" ]; then
         if [ -z "''${GAMESCOPE_SESSION_DISPLAY}" ]; then GAMESCOPE_SESSION_DISPLAY="$(echo "''${default_display}" | cut -d'/' -f6 | cut -d'-' -f2-)"; fi
 fi
 
+if [ ! -z "''${GAMESCOPE_SESSION_GPU}" ] && [ ! -z "''${GAMESCOPE_SESSION_DISPLAY}" ]; then
+        GAMESCOPE_FLAGS="''${GAMESCOPE_FLAGS} --prefer-vk-device ''${GAMESCOPE_SESSION_GPU} -O ''${GAMESCOPE_SESSION_DISPLAY},'*'"
+fi
+
 if [ ! -z "''${GAMESCOPE_SESSION_RESOLUTION}" ]; then
         GAMESCOPE_SESSION_WIDTH="$(echo "''${GAMESCOPE_SESSION_RESOLUTION}" | cut -d'x' -f1)"
         GAMESCOPE_SESSION_HEIGHT="$(echo "''${GAMESCOPE_SESSION_RESOLUTION}" | cut -d'x' -f2)"
         GAMESCOPE_SESSION_RERESH_RATE="$(echo "''${GAMESCOPE_SESSION_RESOLUTION}" | cut -d'x' -f3)"
 fi
 
-if [ ! -z "''${GAMESCOPE_SESSION_GPU}" ] && [ ! -z "''${GAMESCOPE_SESSION_DISPLAY}" ]; then
-        GAMESCOPE_FLAGS="''${GAMESCOPE_FLAGS} --prefer-vk-device ''${GAMESCOPE_SESSION_GPU} -O ''${GAMESCOPE_SESSION_DISPLAY},'*'"
+if [ ! -z "''${GAMESCOPE_SESSION_WIDTH}" ] && [ ! -z "''${GAMESCOPE_SESSION_HEIGHT}" ] && [ ! -z "''${GAMESCOPE_SESSION_RERESH_RATE}" ]; then
+        GAMESCOPE_FLAGS="''${GAMESCOPE_FLAGS} -W ''${GAMESCOPE_SESSION_WIDTH} -H ''${GAMESCOPE_SESSION_HEIGHT} -r ''${GAMESCOPE_SESSION_RERESH_RATE}"
 fi
 
-if [ ! -z "''${GAMESCOPE_SESSION_WIDTH}" ] && [ ! -z "''${GAMESCOPE_SESSION_HEIGHT}" ] && [ ! -z "''${GAMESCOPE_SESSION_RERESH_RATE}" ]; then
-        GAMESCOPE_FLAGS="''${GAMESCOPE_FLAGS} -w ''${GAMESCOPE_SESSION_WIDTH} -h ''${GAMESCOPE_SESSION_HEIGHT} -r ''${GAMESCOPE_SESSION_RERESH_RATE}"
+if [ ! -z "''${GAMESCOPE_SESSION_UPSCALE}" ]; then
+        GAMESCOPE_SESSION_UPSCALE_WIDTH="$(echo "''${GAMESCOPE_SESSION_UPSCALE}" | cut -d'x' -f1)"
+        GAMESCOPE_SESSION_UPSCALE_HEIGHT="$(echo "''${GAMESCOPE_SESSION_UPSCALE}" | cut -d'x' -f2)"
+fi
+
+if [ ! -z "''${GAMESCOPE_SESSION_UPSCALE_WIDTH}" ] && [ ! -z "''${GAMESCOPE_SESSION_UPSCALE_HEIGHT}" ]; then
+        GAMESCOPE_FLAGS="''${GAMESCOPE_FLAGS} -w ''${GAMESCOPE_SESSION_UPSCALE_WIDTH} -h ''${GAMESCOPE_SESSION_UPSCALE_HEIGHT}"
 fi
 
 if [ ! -z "''${GAMESCOPE_SESSION_HDR}" ]; then
@@ -125,7 +134,7 @@ export XKB_DEFAULT_LAYOUT=${config.foxflake.internationalisation.keyboard.layout
 export XKB_DEFAULT_VARIANT=${config.foxflake.internationalisation.keyboard.variant}
 
 if [ ! -d "''${HOME}/.local/share/Steam" ]; then
-	xvfb-run steam ''${STEAM_FLAGS} -exitsteam | gamescope -W 1920 -H 1200 --backend drm --borderless -- zenity --width 400 --height 200 --progress --title="Steam first boot setup" --text="Preparing Steam for initial boot... Please wait, this can take a few minutes." --pulsate --auto-close
+	xvfb-run steam ''${STEAM_FLAGS} -exitsteam | gamescope ''${GAMESCOPE_FLAGS} --backend drm -- zenity --width 400 --height 200 --progress --title="Steam first boot setup" --text="Preparing Steam for initial boot... Please wait, this can take a few minutes." --pulsate --auto-close
 fi
 
 __NV_PRIME_RENDER_OFFLOAD=1 exec /run/wrappers/bin/gamescope ''${GAMESCOPE_FLAGS} --backend drm --borderless --default-touch-mode 4 --force-grab-cursor --fullscreen --hide-cursor-delay 3000 --steam --xwayland-count 2 -- bash -c "steam ''${STEAM_FLAGS} -cef-force-gpu -gamepadui -steamos3 > /tmp/steam_log.txt 2>&1" > /tmp/gamescope_log.txt 2>&1
