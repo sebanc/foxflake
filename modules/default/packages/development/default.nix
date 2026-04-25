@@ -1,6 +1,8 @@
 {
 
   imports = [
+    ./android-studio.nix
+    ./android-tools.nix
     ./github.nix
     ./gitkraken.nix
     ./neovim.nix
