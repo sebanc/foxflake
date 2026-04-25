@@ -1,4 +1,5 @@
 {
+  inputs,
   lib,
   config,
   pkgs,
@@ -32,6 +33,10 @@ with lib;
       zip
       zstd
     ];
+
+    nixpkgs.overlays = [(final: prev: {
+      openldap = inputs.nixpkgs-stable.legacyPackages.${prev.stdenv.hostPlatform.system}.openldap;
+    })];
 
   };
 
