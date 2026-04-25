@@ -39,7 +39,7 @@ with lib;
         type = with types; nullOr str;
         default = if config.foxflake.environment.type == "gnome" then
           "/run/current-system/sw/share/backgrounds/foxflake/foxflake-neon-wallpaper.png"
-        else if config.foxflake.environment.type == "plasma" then
+        else if config.foxflake.environment.type == "plasma" || config.foxflake.environment.type == "steam" || config.foxflake.environment.type == "steamdeck" then
           "/run/current-system/sw/share/wallpapers/foxflake-neon-wallpaper/contents/images/3840x2160.png"
         else
           "/run/current-system/sw/share/backgrounds/foxflake/foxflake-neon-wallpaper.jpg";
@@ -54,7 +54,7 @@ with lib;
           "Adwaita"
         else if config.foxflake.environment.type == "hyprland" then
           "Adwaita-dark"
-        else if config.foxflake.environment.type == "plasma" then
+        else if config.foxflake.environment.type == "plasma" || config.foxflake.environment.type == "steam" || config.foxflake.environment.type == "steamdeck" then
           "default"
         else
           null;
@@ -73,7 +73,10 @@ with lib;
       };
       cursor-theme = mkOption {
         type = with types; nullOr str;
-        default = "Adwaita";
+        default = if config.foxflake.environment.type == "plasma" || config.foxflake.environment.type == "steam" || config.foxflake.environment.type == "steamdeck" then
+          "Breeze"
+        else
+          "Adwaita";
         example = "Breeze_Light";
         description = ''
           The cursor theme to use.

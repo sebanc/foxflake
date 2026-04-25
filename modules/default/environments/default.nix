@@ -6,6 +6,7 @@
     ./gnome.nix
     ./hyprland.nix
     ./plasma.nix
+    ./steam.nix
   ];
 
 }
