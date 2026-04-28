@@ -1,6 +1,6 @@
 {
 
-  description = "FoxFlake stable branch";
+  description = "FoxFlake stable-test branch";
 
   inputs = {
     nixpkgs.url = "git+https://github.com/nixos/nixpkgs?shallow=1&ref=nixos-25.11";
