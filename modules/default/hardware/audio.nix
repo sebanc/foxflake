@@ -1,11 +1,9 @@
-{ lib, config, ... }:
+{ lib, config, pkgs, ... }:
 with lib;
 
 {
 
   config = {
-
-    security.rtkit.enable = mkDefault true;
 
     services.pipewire = {
       enable = mkDefault true;
@@ -16,6 +14,14 @@ with lib;
         support32Bit = mkDefault true;
       };
       extraConfig.pipewire."92-defaults" = {
+        "context.modules" = [ {
+          name = "libpipewire-module-rt";
+          args = {
+            "nice.level" = 0;
+            "rt.prio" = -1;
+          };
+          flags = [ "ifexists" "nofail" ];
+        } ];
         "context.properties" = {
           "default.clock.allowed-rates" = [ 48000 ];
           "default.clock.rate" = 48000;
