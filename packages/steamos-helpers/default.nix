@@ -3,12 +3,12 @@
 {
 
   nixpkgs.overlays = [
-    (self: super: {
-      steamos-helpers = self.symlinkJoin {
+    (final: prev: {
+      steamos-helpers = prev.symlinkJoin {
         name = "steamos-helpers";
         passthru.providedSessions = [ "steam" ];
         paths = [
-          (self.writeShellApplication {
+          (prev.writeShellApplication {
             name = "steamos-priv-write";
             bashOptions = [ "errexit" "pipefail" ];
             text = ''
@@ -38,21 +38,21 @@ fi
 DeclineWrite
             '';
           })
-          (self.writeShellApplication {
+          (prev.writeShellApplication {
             name = "steamos-reboot-now";
             bashOptions = [ "errexit" "pipefail" ];
             text = ''
 reboot
             '';
           })
-          (self.writeShellApplication {
+          (prev.writeShellApplication {
             name = "steamos-poweroff-now";
             bashOptions = [ "errexit" "pipefail" ];
             text = ''
 poweroff
             '';
           })
-          (self.writeShellApplication {
+          (prev.writeShellApplication {
             name = "steam-session";
             bashOptions = [ "pipefail" ];
             excludeShellChecks = [ "SC2010" "SC2050" "SC2086" "SC2089" "SC2090" "SC2155" ];
@@ -140,7 +140,7 @@ fi
 __NV_PRIME_RENDER_OFFLOAD=1 exec /run/wrappers/bin/gamescope ''${GAMESCOPE_FLAGS} --backend drm --borderless --default-touch-mode 4 --force-grab-cursor --fullscreen --hide-cursor-delay 3000 --steam --xwayland-count 2 -- bash -c "steam ''${STEAM_FLAGS} -cef-force-gpu -gamepadui -steamos3 > /tmp/steam_log.txt 2>&1" > /tmp/gamescope_log.txt 2>&1
             '';
           })
-          (self.writeTextFile {
+          (prev.writeTextFile {
             name = "steamos-polkit-policy";
             destination = "/share/polkit-1/actions/org.valve.steamos.policy";
             text = ''
@@ -189,7 +189,7 @@ __NV_PRIME_RENDER_OFFLOAD=1 exec /run/wrappers/bin/gamescope ''${GAMESCOPE_FLAGS
 </policyconfig>
             '';
           })
-          (self.writeTextFile {
+          (prev.writeTextFile {
             name = "steam-session-desktop";
             destination = "/share/wayland-sessions/steam.desktop";
             text = ''
@@ -203,7 +203,7 @@ Type=Application
 DesktopNames=gamescope
             '';
           })
-          (self.runCommand "steamos-polkit-helpers" {} ''
+          (prev.runCommand "steamos-polkit-helpers" {} ''
 mkdir -p $out/bin/steamos-polkit-helpers
 cat >$out/bin/steamos-session-select <<'SESSIONSELECT'
 #!/bin/bash

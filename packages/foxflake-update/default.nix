@@ -2,25 +2,25 @@
 
 {
   nixpkgs.overlays = [
-    (self: super: {
-      foxflake-update = self.stdenv.mkDerivation rec {
+    (final: prev: {
+      foxflake-update = prev.stdenv.mkDerivation rec {
         name = "foxflake-update";
-        buildCommand = let script = self.writeShellApplication {
+        buildCommand = let script = prev.writeShellApplication {
           name = name;
           bashOptions = [ "errexit" "pipefail" ];
           excludeShellChecks = [ "SC2028" ];
           text = ''
 set -e
 
-if [ "$(${self.coreutils}/bin/id -u)" -ne 0 ]; then
+if [ "$(${final.coreutils}/bin/id -u)" -ne 0 ]; then
 	exec /run/wrappers/bin/sudo "$0"
 fi
 
-${self.nix}/bin/nix flake update --flake /etc/nixos
-${self.nixos-rebuild}/bin/nixos-rebuild boot --flake /etc/nixos#foxflake --show-trace
+${final.nix}/bin/nix flake update --flake /etc/nixos
+${final.nixos-rebuild}/bin/nixos-rebuild boot --flake /etc/nixos#foxflake --show-trace
           '';
         };
-        desktopEntry = self.makeDesktopItem {
+        desktopEntry = prev.makeDesktopItem {
           name = name;
           desktopName = "FoxFlake Update";
           icon = "foxflake-red-icon";
