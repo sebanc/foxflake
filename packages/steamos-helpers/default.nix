@@ -137,7 +137,7 @@ if [ ! -d "''${HOME}/.local/share/Steam" ]; then
 	xvfb-run steam ''${STEAM_FLAGS} -skipinitialbootstrap -exitsteam | gamescope ''${GAMESCOPE_FLAGS} --backend drm -- zenity --width 400 --height 200 --progress --title="Steam first boot setup" --text="Preparing Steam for initial boot... Please wait, this can take a few minutes." --pulsate --auto-close
 fi
 
-__NV_PRIME_RENDER_OFFLOAD=1 exec /run/wrappers/bin/gamescope ''${GAMESCOPE_FLAGS} --backend drm --borderless --default-touch-mode 4 --force-grab-cursor --fullscreen --hide-cursor-delay 3000 --steam --xwayland-count 2 -- bash -c "steam ''${STEAM_FLAGS} -cef-force-gpu -gamepadui -steamos3 > /tmp/steam_log.txt 2>&1" > /tmp/gamescope_log.txt 2>&1
+__NV_PRIME_RENDER_OFFLOAD=1 /run/wrappers/bin/gamescope ''${GAMESCOPE_FLAGS} --backend drm --borderless --default-touch-mode 4 --force-grab-cursor --fullscreen --hide-cursor-delay 3000 --steam -- bash -c "steam ''${STEAM_FLAGS} -cef-force-gpu -gamepadui -steamos3 -no-child-update-ui" > /tmp/gamescope_log.txt 2>&1
             '';
           })
           (prev.writeTextFile {
@@ -204,7 +204,25 @@ DesktopNames=gamescope
             '';
           })
           (prev.runCommand "steamos-polkit-helpers" {} ''
-mkdir -p $out/bin/steamos-polkit-helpers
+mkdir -p $out/bin/steamos-polkit-helpers $out/lib
+cat >$out/bin/atomupd-manager <<'ATOMUPDMANAGER'
+#!/bin/bash
+
+exit 0
+ATOMUPDMANAGER
+chmod 0755 $out/bin/atomupd-manager
+cat >$out/bin/jupiter-controller-update <<'CONTROLLERUPDATE'
+#!/bin/bash
+
+exit 0
+CONTROLLERUPDATE
+chmod 0755 $out/bin/jupiter-controller-update
+cat >$out/bin/jupiter-initial-firmware-update <<'INITIALFIRMWAREUPDATE'
+#!/bin/bash
+
+exit 0
+INITIALFIRMWAREUPDATE
+chmod 0755 $out/bin/jupiter-initial-firmware-update
 cat >$out/bin/steamos-session-select <<'SESSIONSELECT'
 #!/bin/bash
 
@@ -213,7 +231,19 @@ echo -e '[Autologin]\nSession=plasma' > /tmp/zz-steamos.conf
 steam -shutdown
 SESSIONSELECT
 chmod 0755 $out/bin/steamos-session-select
-cat >$out/bin/steamos-polkit-helpers/steamos-select-branch <<'SELECTBRANCH'
+cat >$out/bin/steamos-atomupd-client <<'ATOMUPDCLIENT'
+#!/bin/bash
+
+exit 0
+ATOMUPDCLIENT
+chmod 0755 $out/bin/steamos-atomupd-client
+cat >$out/bin/steamos-atomupd-mkmanifest <<'ATOMUPDMKMANIFEST'
+#!/bin/bash
+
+exit 0
+ATOMUPDMKMANIFEST
+chmod 0755 $out/bin/steamos-atomupd-mkmanifest
+cat >$out/bin/steamos-select-branch <<'SELECTBRANCH'
 #!/bin/bash
 
 set -eu
@@ -234,13 +264,37 @@ if [[ $# -eq 1 ]]; then
   esac
 fi
 SELECTBRANCH
+chmod 0755 $out/bin/steamos-select-branch
+cat >$out/bin/steamos-update <<'FAKESTEAMOSUPDATE'
+#!/bin/bash
+
+set -eu
+
+exit 7
+FAKESTEAMOSUPDATE
+chmod 0755 $out/bin/steamos-update
+cat >$out/bin/steamos-update-os <<'FAKESTEAMOSUPDATEOS'
+#!/bin/bash
+
+set -eu
+
+exit 0
+FAKESTEAMOSUPDATEOS
+chmod 0755 $out/bin/steamos-update-os
+cat >$out/bin/steamos-polkit-helpers/steamos-select-branch <<'SELECTBRANCH'
+#!/bin/bash
+
+set -eu
+
+steamos-select-branch
+SELECTBRANCH
 chmod 0755 $out/bin/steamos-polkit-helpers/steamos-select-branch
 cat >$out/bin/steamos-polkit-helpers/steamos-update <<'FAKESTEAMOSUPDATE'
 #!/bin/bash
 
-set -e
+set -eu
 
-exit 7
+steamos-update
 FAKESTEAMOSUPDATE
 chmod 0755 $out/bin/steamos-polkit-helpers/steamos-update
 cat >$out/bin/steamos-polkit-helpers/steamos-set-hostname <<'SETHOSTNAME'
@@ -297,6 +351,12 @@ cat >$out/bin/steamos-polkit-helpers/jupiter-biosupdate <<'FAKEBIOSUPDATE'
 exit 0
 FAKEBIOSUPDATE
 chmod 0755 $out/bin/steamos-polkit-helpers/jupiter-biosupdate
+cat >$out/bin/steamos-polkit-helpers/jupiter-check-support <<'FAKESUPPORT'
+#!/bin/bash
+
+exit 1
+FAKESUPPORT
+chmod 0755 $out/bin/steamos-polkit-helpers/jupiter-check-support
 cat >$out/bin/steamos-polkit-helpers/jupiter-dock-updater <<'FAKEDOCKUPDATE'
 #!/bin/bash
 
