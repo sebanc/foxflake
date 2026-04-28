@@ -20,19 +20,17 @@
 
   outputs =
     { nixpkgs, nixpkgs-stable, nixpkgs-unstable, home-manager, plasma-manager, nix-flatpak, ... }@inputs:
-    let
-      system = "x86_64-linux";
-    in
     {
       nixosModules = rec {
         foxflake = {
+          _module.args = { inherit inputs; };
           imports = [
             { nix.settings.experimental-features = [ "nix-command" "flakes" ]; }
             { nixpkgs.config.allowUnfree = true; }
             {
               nixpkgs.overlays = [
-                (final: prev: { stable = import nixpkgs-stable { inherit prev; inherit system; config.allowUnfree = true; }; })
-                (final: prev: { unstable = import nixpkgs-unstable { inherit prev; inherit system; config.allowUnfree = true; }; })
+                (final: prev: { stable = import nixpkgs-stable { system = prev.stdenv.hostPlatform.system; config.allowUnfree = true; }; })
+                (final: prev: { unstable = import nixpkgs-unstable { system = prev.stdenv.hostPlatform.system; config.allowUnfree = true; }; })
               ];
             }
             ./modules/default
