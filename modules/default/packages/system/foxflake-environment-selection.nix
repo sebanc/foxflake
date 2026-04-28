@@ -8,6 +8,8 @@ with lib;
 
 {
 
+  imports = [ ../../../../packages/foxflake-environment-selection ];
+
   config = mkIf config.foxflake.environment.selection.enable {
 
     environment.systemPackages = with pkgs; [ foxflake-environment-selection zenity ];
