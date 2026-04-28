@@ -13,7 +13,8 @@ with lib;
     programs.obs-studio = {
       enable = mkDefault true;
       enableVirtualCamera = mkDefault true;
-      plugins = with pkgs.obs-studio-plugins; [ obs-vkcapture ];
+      package = mkDefault pkgs.stable.obs-studio;
+      plugins = with pkgs.stable.obs-studio-plugins; [ advanced-scene-switcher input-overlay obs-backgroundremoval obs-composite-blur obs-gstreamer obs-move-transition obs-multi-rtmp obs-pipewire-audio-capture obs-shaderfilter obs-vaapi obs-vkcapture wlrobs ];
     };
 
   };

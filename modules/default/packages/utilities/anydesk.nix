@@ -10,7 +10,7 @@ with lib;
 
   config = mkIf (builtins.elem "full" config.foxflake.system.applications || builtins.elem "anydesk" config.foxflake.system.applications) {
 
-    environment.systemPackages = with pkgs; [ anydesk ];
+    environment.systemPackages = with pkgs; [ stable.anydesk ];
 
   };
 

@@ -10,7 +10,7 @@ with lib;
 
   config = mkIf (builtins.elem "full" config.foxflake.system.applications || builtins.elem "rustdesk" config.foxflake.system.applications) {
 
-    environment.systemPackages = with pkgs; [ rustdesk ];
+    environment.systemPackages = with pkgs; [ stable.rustdesk ];
 
   };
 
