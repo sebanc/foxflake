@@ -10,7 +10,7 @@ with lib;
 
   config = mkIf (builtins.elem "full" config.foxflake.system.applications || builtins.elem "zoom" config.foxflake.system.applications) {
 
-    environment.systemPackages = with pkgs; [ stable.zoom-us ];
+    environment.systemPackages = with pkgs.stable; [ zoom-us ];
 
   };
 

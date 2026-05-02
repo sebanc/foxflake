@@ -10,7 +10,7 @@ with lib;
 
   config = mkIf (builtins.elem "full" config.foxflake.system.applications || builtins.elem "goverlay" config.foxflake.system.applications) {
 
-    environment.systemPackages = with pkgs; [ goverlay ];
+    environment.systemPackages = with pkgs.stable; [ goverlay ];
 
   };
 

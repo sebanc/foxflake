@@ -17,7 +17,7 @@ in
     programs = {
       firefox = {
         enable = mkDefault true;
-        package = mkDefault pkgs.librewolf;
+        package = mkDefault pkgs.stable.librewolf;
         languagePacks = mkDefault firefox_locale;
         policies.RequestedLocales = mkDefault firefox_locale;
         preferences = {

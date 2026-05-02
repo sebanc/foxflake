@@ -10,7 +10,10 @@ with lib;
 
   config = mkIf (builtins.elem "full" config.foxflake.system.applications || builtins.elem "opentabletdriver" config.foxflake.system.applications) {
 
-    hardware.opentabletdriver.enable = mkDefault true;
+    hardware.opentabletdriver = {
+      enable = mkDefault true;
+      package = mkDefault pkgs.stable.opentabletdriver;
+    };
     hardware.uinput.enable = mkDefault true;
     boot.kernelModules = [ "uinput" ];
 

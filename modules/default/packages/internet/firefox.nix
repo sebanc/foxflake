@@ -17,6 +17,7 @@ in
     programs = {
       firefox = {
         enable = mkDefault true;
+        package = mkDefault pkgs.stable.firefox;
         languagePacks = mkDefault firefox_locale;
         policies.RequestedLocales = mkDefault firefox_locale;
         preferences = {

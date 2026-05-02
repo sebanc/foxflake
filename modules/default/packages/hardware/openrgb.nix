@@ -12,7 +12,7 @@ with lib;
 
     services.hardware.openrgb = {
       enable = mkDefault true;
-      package = mkDefault pkgs.openrgb-with-all-plugins;
+      package = mkDefault pkgs.stable.openrgb-with-all-plugins;
     };
 
   };

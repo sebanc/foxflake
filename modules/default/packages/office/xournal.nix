@@ -10,7 +10,7 @@ with lib;
 
   config = mkIf (builtins.elem "full" config.foxflake.system.applications || builtins.elem "xournal" config.foxflake.system.applications) {
 
-    environment.systemPackages = with pkgs; [ xournalpp ];
+    environment.systemPackages = with pkgs.stable; [ xournalpp ];
 
   };
 

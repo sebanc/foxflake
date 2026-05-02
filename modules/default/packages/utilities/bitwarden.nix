@@ -10,7 +10,7 @@ with lib;
 
   config = mkIf (builtins.elem "full" config.foxflake.system.applications || builtins.elem "bitwarden" config.foxflake.system.applications) {
 
-    environment.systemPackages = with pkgs; [ bitwarden-desktop ];
+    environment.systemPackages = with pkgs.stable; [ bitwarden-desktop ];
 
   };
 

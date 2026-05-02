@@ -90,7 +90,7 @@ let
     };
     mkUser = username: {
       "${username}" =  {
-        extraGroups = [ ]
+        extraGroups = [ "audio" ]
           ++ optionals (builtins.elem "android-studio" config.foxflake.system.applications) [ "kvm" ]
           ++ optionals (builtins.elem "distrobox" config.foxflake.system.applications || builtins.elem "docker" config.foxflake.system.applications || builtins.elem "winboat" config.foxflake.system.applications) [ "docker" ]
           ++ optionals (builtins.elem "distrobox" config.foxflake.system.applications || builtins.elem "podman" config.foxflake.system.applications || builtins.elem "winboat" config.foxflake.system.applications) [ "podman" ]

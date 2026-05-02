@@ -10,7 +10,10 @@ with lib;
 
   config = mkIf (builtins.elem "full" config.foxflake.system.applications || builtins.elem "corectrl" config.foxflake.system.applications) {
 
-    programs.corectrl.enable = mkDefault true;
+    programs.corectrl = {
+      enable = mkDefault true;
+      package = mkDefault pkgs.stable.corectrl;
+    };
 
   };
 

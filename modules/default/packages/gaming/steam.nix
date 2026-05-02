@@ -26,6 +26,7 @@ with lib;
         libxcomposite
         libxi
         pango
+        xorg.xrandr
       ];
       dedicatedServer.openFirewall = mkDefault true;
       remotePlay.openFirewall = mkDefault true;
