@@ -13,7 +13,6 @@ in
 
   config = mkIf (builtins.elem "full" config.foxflake.system.applications || builtins.elem "standard" config.foxflake.system.applications || builtins.elem "firefox" config.foxflake.system.applications) {
 
-    environment.sessionVariables = { MOZ_USE_XINPUT2 = "1"; };
     programs = {
       firefox = {
         enable = mkDefault true;
