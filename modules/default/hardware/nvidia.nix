@@ -21,7 +21,7 @@ with lib;
     boot.blacklistedKernelModules = [ "nouveau" "nova_core" ];
 
     hardware.nvidia = {
-      package = mkDefault config.boot.kernelPackages.nvidiaPackages.beta;
+      package = mkDefault config.boot.kernelPackages.nvidiaPackages.stable;
       open = mkDefault true;
       modesetting.enable = mkDefault true;
       nvidiaSettings = mkDefault true;
@@ -51,8 +51,8 @@ with lib;
       config = {
         nvidia.acceptLicense = true;
         packageOverrides = pkgs: {
-          blender = pkgs.blender.override { cudaSupport = true; };
-          obs-studio = pkgs.obs-studio.override { cudaSupport = true; };
+          blender = pkgs.stable.blender.override { cudaSupport = true; };
+          obs-studio = pkgs.stable.obs-studio.override { cudaSupport = true; };
         };
       };
       overlays = [(final: prev: {

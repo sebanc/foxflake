@@ -10,7 +10,7 @@ with lib;
 
   config = mkIf (builtins.elem "full" config.foxflake.system.applications || builtins.elem "winboat" config.foxflake.system.applications) {
 
-    environment.systemPackages = with pkgs.stable; [ winboat ];
+    environment.systemPackages = with pkgs.unstable; [ winboat ];
 
   };
 
