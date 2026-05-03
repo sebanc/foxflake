@@ -40,6 +40,7 @@
             (
               { config, lib, ... }:
               {
+                boot.initrd.systemd.enable = false;
                 foxflake = {
                   autoUpgrade = false;
                   environment.type = "gnome";
