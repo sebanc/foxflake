@@ -94,7 +94,7 @@ if [ ! -z "''${GAMESCOPE_SESSION_RESOLUTION}" ]; then
 fi
 
 if [ ! -z "''${GAMESCOPE_SESSION_WIDTH}" ] && [ ! -z "''${GAMESCOPE_SESSION_HEIGHT}" ] && [ ! -z "''${GAMESCOPE_SESSION_RERESH_RATE}" ]; then
-        GAMESCOPE_FLAGS="''${GAMESCOPE_FLAGS} -W ''${GAMESCOPE_SESSION_WIDTH} -H ''${GAMESCOPE_SESSION_HEIGHT} -r ''${GAMESCOPE_SESSION_RERESH_RATE}"
+        GAMESCOPE_FLAGS="''${GAMESCOPE_FLAGS} -w ''${GAMESCOPE_SESSION_WIDTH} -h ''${GAMESCOPE_SESSION_HEIGHT} -r ''${GAMESCOPE_SESSION_RERESH_RATE}"
 fi
 
 if [ ! -z "''${GAMESCOPE_SESSION_UPSCALE}" ]; then
@@ -103,7 +103,7 @@ if [ ! -z "''${GAMESCOPE_SESSION_UPSCALE}" ]; then
 fi
 
 if [ ! -z "''${GAMESCOPE_SESSION_UPSCALE_WIDTH}" ] && [ ! -z "''${GAMESCOPE_SESSION_UPSCALE_HEIGHT}" ]; then
-        GAMESCOPE_FLAGS="''${GAMESCOPE_FLAGS} -w ''${GAMESCOPE_SESSION_UPSCALE_WIDTH} -h ''${GAMESCOPE_SESSION_UPSCALE_HEIGHT}"
+        GAMESCOPE_FLAGS="''${GAMESCOPE_FLAGS} -W ''${GAMESCOPE_SESSION_UPSCALE_WIDTH} -H ''${GAMESCOPE_SESSION_UPSCALE_HEIGHT}"
 fi
 
 if [ ! -z "''${GAMESCOPE_SESSION_HDR}" ]; then
@@ -134,8 +134,7 @@ export XKB_DEFAULT_LAYOUT=${config.foxflake.internationalisation.keyboard.layout
 export XKB_DEFAULT_VARIANT=${config.foxflake.internationalisation.keyboard.variant}
 
 if [ ! -d "''${HOME}/.local/share/Steam" ]; then
-	STEAM_FLAGS="''${STEAM_FLAGS} -skipinitialbootstrap"
-	xvfb-run steam ''${STEAM_FLAGS} -exitsteam | gamescope ''${GAMESCOPE_FLAGS} --backend drm -- zenity --width 400 --height 200 --progress --title="Steam first boot setup" --text="Preparing Steam for initial boot... Please wait, this can take a few minutes." --pulsate --auto-close
+	xvfb-run steam ''${STEAM_FLAGS} -skipinitialbootstrap -exitsteam | gamescope ''${GAMESCOPE_FLAGS} --backend drm -- zenity --width 400 --height 200 --progress --title="Steam first boot setup" --text="Preparing Steam for initial boot... Please wait, this can take a few minutes." --pulsate --auto-close
 fi
 
 __NV_PRIME_RENDER_OFFLOAD=1 exec /run/wrappers/bin/gamescope ''${GAMESCOPE_FLAGS} --backend drm --borderless --default-touch-mode 4 --force-grab-cursor --fullscreen --hide-cursor-delay 3000 --steam --xwayland-count 2 -- bash -c "steam ''${STEAM_FLAGS} -cef-force-gpu -gamepadui -steamos3 > /tmp/steam_log.txt 2>&1" > /tmp/gamescope_log.txt 2>&1

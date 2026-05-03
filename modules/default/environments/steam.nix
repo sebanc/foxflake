@@ -46,7 +46,7 @@ with lib;
       variables = { }
         // lib.optionalAttrs (config.foxflake.environment.steam.display != "") { GAMESCOPE_SESSION_DISPLAY = "${config.foxflake.environment.steam.display}"; }
         // lib.optionalAttrs (config.foxflake.environment.steam.resolution != "") { GAMESCOPE_SESSION_RESOLUTION = "${config.foxflake.environment.steam.resolution}"; }
-        // lib.optionalAttrs (config.foxflake.environment.steam.resolution != "") { GAMESCOPE_SESSION_UPSCALE = "${config.foxflake.environment.steam.upscaleFrom}"; }
+        // lib.optionalAttrs (config.foxflake.environment.steam.upscaleFrom != "") { GAMESCOPE_SESSION_UPSCALE = "${config.foxflake.environment.steam.upscaleFrom}"; }
         // lib.optionalAttrs (config.foxflake.gaming.hdr) { GAMESCOPE_SESSION_HDR = 1; }
         // lib.optionalAttrs (config.foxflake.gaming.hdr) { STEAM_GAMESCOPE_HDR_SUPPORTED = 1; }
       ;
