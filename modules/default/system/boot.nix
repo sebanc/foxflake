@@ -62,6 +62,10 @@ with lib;
 
     boot = {
       consoleLogLevel = mkDefault 3;
+      initrd.secrets = mkDefault config.foxflake.boot.encryptionSecrets;
+      initrd.systemd.enable = mkDefault true;
+      kernelPackages = mkDefault pkgs.linuxPackages;
+      kernelParams = [ "quiet" ];
       loader = {
         grub = {
           enable = mkDefault config.foxflake.boot.enable;
@@ -76,11 +80,8 @@ with lib;
         };
         efi.canTouchEfiVariables = mkDefault config.foxflake.boot.efiSupport;
       };
-      initrd.secrets = mkDefault config.foxflake.boot.encryptionSecrets;
-      initrd.systemd.enable = mkDefault true;
-      tmp.cleanOnBoot = mkDefault true;
-      kernelPackages = mkDefault pkgs.linuxPackages;
       plymouth.enable = mkDefault true;
+      tmp.cleanOnBoot = mkDefault true;
     };
 
   };
