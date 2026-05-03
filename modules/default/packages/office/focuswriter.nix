@@ -10,7 +10,7 @@ with lib;
 
   config = mkIf (builtins.elem "full" config.foxflake.system.applications || builtins.elem "focuswriter" config.foxflake.system.applications) {
 
-    environment.systemPackages = with pkgs; [ focuswriter ];
+    environment.systemPackages = with pkgs.stable; [ focuswriter ];
 
   };
 

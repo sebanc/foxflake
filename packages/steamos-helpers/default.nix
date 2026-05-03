@@ -97,15 +97,6 @@ if [ ! -z "''${GAMESCOPE_SESSION_WIDTH}" ] && [ ! -z "''${GAMESCOPE_SESSION_HEIG
         GAMESCOPE_FLAGS="''${GAMESCOPE_FLAGS} -w ''${GAMESCOPE_SESSION_WIDTH} -h ''${GAMESCOPE_SESSION_HEIGHT} -r ''${GAMESCOPE_SESSION_RERESH_RATE}"
 fi
 
-if [ ! -z "''${GAMESCOPE_SESSION_UPSCALE}" ]; then
-        GAMESCOPE_SESSION_UPSCALE_WIDTH="$(echo "''${GAMESCOPE_SESSION_UPSCALE}" | cut -d'x' -f1)"
-        GAMESCOPE_SESSION_UPSCALE_HEIGHT="$(echo "''${GAMESCOPE_SESSION_UPSCALE}" | cut -d'x' -f2)"
-fi
-
-if [ ! -z "''${GAMESCOPE_SESSION_UPSCALE_WIDTH}" ] && [ ! -z "''${GAMESCOPE_SESSION_UPSCALE_HEIGHT}" ]; then
-        GAMESCOPE_FLAGS="''${GAMESCOPE_FLAGS} -W ''${GAMESCOPE_SESSION_UPSCALE_WIDTH} -H ''${GAMESCOPE_SESSION_UPSCALE_HEIGHT}"
-fi
-
 if [ ! -z "''${GAMESCOPE_SESSION_HDR}" ]; then
         GAMESCOPE_FLAGS="''${GAMESCOPE_FLAGS} --hdr-enabled"
 fi
@@ -120,6 +111,7 @@ fi
 ##
 
 export ENABLE_GAMESCOPE_WSI=1
+export GAMESCOPE_DISABLE_ASYNC_FLIPS=1
 export GAMESCOPE_NV12_COLORSPACE=k_EStreamColorspace_BT601
 export GTK_IM_MODULE=Steam
 export GTK_USE_PORTAL=1
@@ -128,16 +120,21 @@ export QT_IM_MODULE=steam
 export QT_QPA_PLATFORM=xcb
 export QT_QPA_PLATFORM_THEME=kde
 export R600_DEBUG=nodcc
+export STEAM_MULTIPLE_XWAYLANDS=1
 export XCURSOR_SIZE=48
 export XDG_CURRENT_DESKTOP=KDE
 export XKB_DEFAULT_LAYOUT=${config.foxflake.internationalisation.keyboard.layout}
 export XKB_DEFAULT_VARIANT=${config.foxflake.internationalisation.keyboard.variant}
 
-if [ ! -d "''${HOME}/.local/share/Steam" ]; then
-	xvfb-run steam ''${STEAM_FLAGS} -skipinitialbootstrap -exitsteam | gamescope ''${GAMESCOPE_FLAGS} --backend drm -- zenity --width 400 --height 200 --progress --title="Steam first boot setup" --text="Preparing Steam for initial boot... Please wait, this can take a few minutes." --pulsate --auto-close
+if [ -f ''${HOME}/.local/share/Steam/config/loginusers.vdf ]; then
+	grep -q "BootStrapperInhibitAll" ''${HOME}/.local/share/Steam/steam.cfg && sed -i '/BootStrapperInhibitAll/d' ''${HOME}/.local/share/Steam/steam.cfg
+else
+	mkdir -p ''${HOME}/.local/share/Steam
+	echo "BootStrapperInhibitAll=enable" > ''${HOME}/.local/share/Steam/steam.cfg
+	xvfb-run steam ''${STEAM_FLAGS} -skipinitialbootstrap -exitsteam | gamescope --backend drm --generate-drm-mode fixed -- zenity --width 400 --height 200 --progress --title="Steam first boot setup" --text="Preparing Steam for initial boot... Please wait, this can take a few minutes." --pulsate --auto-close
 fi
 
-__NV_PRIME_RENDER_OFFLOAD=1 exec /run/wrappers/bin/gamescope ''${GAMESCOPE_FLAGS} --backend drm --borderless --default-touch-mode 4 --force-grab-cursor --fullscreen --hide-cursor-delay 3000 --steam --xwayland-count 2 -- bash -c "steam ''${STEAM_FLAGS} -cef-force-gpu -gamepadui -steamos3 > /tmp/steam_log.txt 2>&1" > /tmp/gamescope_log.txt 2>&1
+__NV_PRIME_RENDER_OFFLOAD=1 /run/wrappers/bin/gamescope ''${GAMESCOPE_FLAGS} --backend drm --borderless --default-touch-mode 4 --force-grab-cursor --fullscreen --generate-drm-mode fixed --hide-cursor-delay 3000 --steam --xwayland-count 2 -- bash -c "steam ''${STEAM_FLAGS} -cef-force-gpu -gamepadui -steamos3" > /tmp/gamescope_log.txt 2>&1
             '';
           })
           (prev.writeTextFile {
@@ -204,7 +201,31 @@ DesktopNames=gamescope
             '';
           })
           (prev.runCommand "steamos-polkit-helpers" {} ''
-mkdir -p $out/bin/steamos-polkit-helpers
+mkdir -p $out/bin/steamos-polkit-helpers $out/lib
+cat >$out/bin/atomupd-manager <<'ATOMUPDMANAGER'
+#!/bin/bash
+
+exit 0
+ATOMUPDMANAGER
+chmod 0755 $out/bin/atomupd-manager
+cat >$out/bin/jupiter-biosupdate <<'BIOSUPDATE'
+#!/bin/bash
+
+exit 0
+BIOSUPDATE
+chmod 0755 $out/bin/jupiter-biosupdate
+cat >$out/bin/jupiter-controller-update <<'CONTROLLERUPDATE'
+#!/bin/bash
+
+exit 0
+CONTROLLERUPDATE
+chmod 0755 $out/bin/jupiter-controller-update
+cat >$out/bin/jupiter-initial-firmware-update <<'INITIALFIRMWAREUPDATE'
+#!/bin/bash
+
+exit 0
+INITIALFIRMWAREUPDATE
+chmod 0755 $out/bin/jupiter-initial-firmware-update
 cat >$out/bin/steamos-session-select <<'SESSIONSELECT'
 #!/bin/bash
 
@@ -213,10 +234,26 @@ echo -e '[Autologin]\nSession=plasma' > /tmp/zz-steamos.conf
 steam -shutdown
 SESSIONSELECT
 chmod 0755 $out/bin/steamos-session-select
-cat >$out/bin/steamos-polkit-helpers/steamos-select-branch <<'SELECTBRANCH'
+cat >$out/bin/steamos-atomupd-client <<'ATOMUPDCLIENT'
 #!/bin/bash
 
-set -eu
+exit 0
+ATOMUPDCLIENT
+chmod 0755 $out/bin/steamos-atomupd-client
+cat >$out/bin/steamos-atomupd-mkmanifest <<'ATOMUPDMKMANIFEST'
+#!/bin/bash
+
+exit 0
+ATOMUPDMKMANIFEST
+chmod 0755 $out/bin/steamos-atomupd-mkmanifest
+cat >$out/bin/steamos-prepare-oobe-test <<'ATOMUPDMKMANIFEST'
+#!/bin/bash
+
+exit 0
+ATOMUPDMKMANIFEST
+chmod 0755 $out/bin/steamos-prepare-oobe-test
+cat >$out/bin/steamos-select-branch <<'SELECTBRANCH'
+#!/bin/bash
 
 if [[ $# -eq 1 ]]; then
   case "$1" in
@@ -234,19 +271,48 @@ if [[ $# -eq 1 ]]; then
   esac
 fi
 SELECTBRANCH
+chmod 0755 $out/bin/steamos-select-branch
+cat >$out/bin/steamos-update <<'FAKESTEAMOSUPDATE'
+#!/bin/bash
+
+if [ -f ''${HOME}/.local/share/Steam/config/loginusers.vdf ]; then
+	grep -q "BootStrapperInhibitAll" ''${HOME}/.local/share/Steam/steam.cfg && sed -i '/BootStrapperInhibitAll/d' ''${HOME}/.local/share/Steam/steam.cfg
+fi
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --supports-duplicate-detection)
+      exit 0
+      ;;
+    *)
+      shift
+      ;;
+  esac
+done
+
+exit 7
+FAKESTEAMOSUPDATE
+chmod 0755 $out/bin/steamos-update
+cat >$out/bin/steamos-update-os <<'FAKESTEAMOSUPDATEOS'
+#!/bin/bash
+
+exit 0
+FAKESTEAMOSUPDATEOS
+chmod 0755 $out/bin/steamos-update-os
+cat >$out/bin/steamos-polkit-helpers/steamos-select-branch <<'SELECTBRANCH'
+#!/bin/bash
+
+steamos-select-branch
+SELECTBRANCH
 chmod 0755 $out/bin/steamos-polkit-helpers/steamos-select-branch
 cat >$out/bin/steamos-polkit-helpers/steamos-update <<'FAKESTEAMOSUPDATE'
 #!/bin/bash
 
-set -e
-
-exit 7
+steamos-update
 FAKESTEAMOSUPDATE
 chmod 0755 $out/bin/steamos-polkit-helpers/steamos-update
 cat >$out/bin/steamos-polkit-helpers/steamos-set-hostname <<'SETHOSTNAME'
 #!/bin/bash
-
-set -eu
 
 exit 1
 SETHOSTNAME
@@ -254,15 +320,11 @@ chmod 0755 $out/bin/steamos-polkit-helpers/steamos-set-hostname
 cat >$out/bin/steamos-polkit-helpers/steamos-set-timezone <<'SETTIMEZONE'
 #!/bin/bash
 
-set -eu
-
 exit 1
 SETTIMEZONE
 chmod 0755 $out/bin/steamos-polkit-helpers/steamos-set-timezone
 cat >$out/bin/steamos-polkit-helpers/steamos-priv-write <<'PRIVWRITE'
 #!/bin/bash
-
-set -eu
 
 exec pkexec --disable-internal-agent "/run/current-system/sw/bin/steamos-priv-write" "$@"
 PRIVWRITE
@@ -286,23 +348,33 @@ chmod 0755 $out/bin/steamos-polkit-helpers/steamos-poweroff-now
 cat >$out/bin/steamos-polkit-helpers/steamos-enable-sshd <<'ENABLESSHD'
 #!/bin/bash
 
-set -eu
-
 exit 1
 ENABLESSHD
 chmod 0755 $out/bin/steamos-polkit-helpers/steamos-enable-sshd
 cat >$out/bin/steamos-polkit-helpers/jupiter-biosupdate <<'FAKEBIOSUPDATE'
 #!/bin/bash
 
-exit 0
+jupiter-biosupdate
 FAKEBIOSUPDATE
 chmod 0755 $out/bin/steamos-polkit-helpers/jupiter-biosupdate
+cat >$out/bin/steamos-polkit-helpers/jupiter-check-support <<'FAKESUPPORT'
+#!/bin/bash
+
+exit 0
+FAKESUPPORT
+chmod 0755 $out/bin/steamos-polkit-helpers/jupiter-check-support
 cat >$out/bin/steamos-polkit-helpers/jupiter-dock-updater <<'FAKEDOCKUPDATE'
 #!/bin/bash
 
 exit 7
 FAKEDOCKUPDATE
 chmod 0755 $out/bin/steamos-polkit-helpers/jupiter-dock-updater
+cat >$out/bin/steamos-polkit-helpers/jupiter-fan-control <<'FAKEFANCONTROL'
+#!/bin/bash
+
+exit 0
+FAKEFANCONTROL
+chmod 0755 $out/bin/steamos-polkit-helpers/jupiter-fan-control
           '')
         ];
       };

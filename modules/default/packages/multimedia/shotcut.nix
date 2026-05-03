@@ -10,7 +10,7 @@ with lib;
 
   config = mkIf (builtins.elem "full" config.foxflake.system.applications || builtins.elem "shotcut" config.foxflake.system.applications) {
 
-    environment.systemPackages = with pkgs; [ shotcut ];
+    environment.systemPackages = with pkgs.stable; [ shotcut ];
 
   };
 

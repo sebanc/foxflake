@@ -84,6 +84,14 @@ with lib;
       tmp.cleanOnBoot = mkDefault true;
     };
 
+    hardware = {
+      cpu = {
+        intel.updateMicrocode = mkDefault true;
+        amd.updateMicrocode = mkDefault true;
+      };
+      enableAllFirmware = mkDefault true;
+    };
+
   };
 
 }

@@ -12,9 +12,13 @@ with lib;
 
     virtualisation.libvirtd = {
       enable = mkDefault true;
+      package = mkDefault pkgs.stable.libvirt;
       qemu.vhostUserPackages = with pkgs; [ virtiofsd ];
     };
-    programs.virt-manager.enable = mkDefault true;
+    programs.virt-manager = {
+      enable = mkDefault true;
+      package = mkDefault pkgs.stable.virt-manager;
+    };
     networking.firewall.trustedInterfaces = [ "virbr0" ];
 
   };

@@ -17,6 +17,7 @@ in
     programs = {
       thunderbird = {
         enable = mkDefault true;
+        package = mkDefault pkgs.stable.thunderbird;
         policies.RequestedLocales = mkDefault thunderbird_locale;
         preferences = {
           "widget.use-xdg-desktop-portal.file-picker" = 1;

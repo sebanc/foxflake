@@ -5,6 +5,15 @@ with lib;
 
   config = {
 
+    security = {
+      pam.loginLimits = mkOverride 999 [
+        { domain = "@audio"; type = "-"; item = "memlock"; value = "unlimited"; }
+        { domain = "@audio"; type = "-"; item = "nice";   value = "-5"; }
+        { domain = "@audio"; type = "-"; item = "rtprio"; value = "80"; }
+      ];
+      rtkit.enable = mkDefault true;
+    };
+
     services.pipewire = {
       enable = mkDefault true;
       jack.enable = mkDefault true;
@@ -12,41 +21,6 @@ with lib;
       alsa = {
         enable = mkDefault true;
         support32Bit = mkDefault true;
-      };
-      extraConfig.pipewire."92-defaults" = {
-        "context.modules" = [ {
-          name = "libpipewire-module-rt";
-          args = {
-            "nice.level" = 0;
-            "rt.prio" = -1;
-          };
-          flags = [ "ifexists" "nofail" ];
-        } ];
-        "context.properties" = {
-          "default.clock.allowed-rates" = [ 48000 ];
-          "default.clock.rate" = 48000;
-          "default.clock.quantum" = 1024;
-          "default.clock.min-quantum" = 32;
-          "default.clock.max-quantum" = 2048;
-          "default.clock.quantum-floor" = 4;
-          "default.clock.quantum-limit" = 8192;
-        };
-      };
-      extraConfig.pipewire-pulse."92-defaults" = {
-        "stream.properties" = {
-          "node.latency" = "1024/48000";
-          "resample.quality" = 4;
-        };
-        "pulse.properties" = {
-          "pulse.default.format" = "F32";
-          "pulse.min.req" = "256/48000";
-          "pulse.default.req" = "960/48000";
-          "pulse.min.frag" = "256/48000";
-          "pulse.default.frag" = "96000/48000";
-          "pulse.default.tlength" = "96000/48000";
-          "pulse.min.quantum" = "256/48000";
-          "pulse.idle-timeout" = 0;
-        };
       };
     };
 

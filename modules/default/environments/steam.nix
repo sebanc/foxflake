@@ -28,12 +28,6 @@ with lib;
       default = "";
       example = "1920x1080x60";
     };
-    upscaleFrom = mkOption {
-      description = "The resolution to upscale from in the format <width>x<height>.";
-      type = with types; str;
-      default = "";
-      example = "1280x720";
-    };
   };
 
   config = mkIf (config.foxflake.environment.enable && (config.foxflake.environment.type == "steam" || config.foxflake.environment.type == "steamdeck")) {
@@ -46,7 +40,6 @@ with lib;
       variables = { }
         // lib.optionalAttrs (config.foxflake.environment.steam.display != "") { GAMESCOPE_SESSION_DISPLAY = "${config.foxflake.environment.steam.display}"; }
         // lib.optionalAttrs (config.foxflake.environment.steam.resolution != "") { GAMESCOPE_SESSION_RESOLUTION = "${config.foxflake.environment.steam.resolution}"; }
-        // lib.optionalAttrs (config.foxflake.environment.steam.upscaleFrom != "") { GAMESCOPE_SESSION_UPSCALE = "${config.foxflake.environment.steam.upscaleFrom}"; }
         // lib.optionalAttrs (config.foxflake.gaming.hdr) { GAMESCOPE_SESSION_HDR = 1; }
         // lib.optionalAttrs (config.foxflake.gaming.hdr) { STEAM_GAMESCOPE_HDR_SUPPORTED = 1; }
       ;
@@ -151,11 +144,40 @@ with lib;
         sessionPackages = with pkgs; [ steamos-helpers ];
       };
       inputplumber.enable = mkDefault true;
-      powerstation.enable = mkDefault true;
     };
 
     systemd = {
       coredump.enable = mkDefault false;
+      services."jupiter-biosupdate" = {
+        description = "Fake Jupiter BIOS update service";
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          ExecStart = "${pkgs.coreutils}/bin/true";
+        };
+        restartIfChanged = false;
+      };
+      services."jupiter-controller-update" = {
+        description = "Fake Jupiter controller update service";
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          ExecStart = "${pkgs.coreutils}/bin/true";
+        };
+        restartIfChanged = false;
+      };
+      services."jupiter-fan-control" = {
+        description = "Fake Jupiter fan control service";
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          ExecStart = "${pkgs.coreutils}/bin/true";
+        };
+        restartIfChanged = false;
+      };
       user.services = {
         "steamos-session-default" = {
           description = "Restore SteamOS as default session";
@@ -165,6 +187,13 @@ with lib;
             Type = "oneshot";
             ExecStart = "${pkgs.writeShellScriptBin "steamos-session-default" ''
               #!${pkgs.bash}
+
+              if [ -f ''${HOME}/.local/share/Steam/config/loginusers.vdf ]; then
+                grep -q "BootStrapperInhibitAll" ''${HOME}/.local/share/Steam/steam.cfg && sed -i '/BootStrapperInhibitAll/d' ''${HOME}/.local/share/Steam/steam.cfg
+              else
+                mkdir -p ''${HOME}/.local/share/Steam
+	         echo "BootStrapperInhibitAll=enable" > ''${HOME}/.local/share/Steam/steam.cfg
+              fi
 
               echo -e '[Autologin]\nSession=steam' > /tmp/zz-steamos.conf
             ''}/bin/steamos-session-default";

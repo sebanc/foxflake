@@ -10,7 +10,7 @@ with lib;
 
   config = mkIf (builtins.elem "full" config.foxflake.system.applications || builtins.elem "shutter" config.foxflake.system.applications) {
 
-    environment.systemPackages = with pkgs; [ shutter ];
+    environment.systemPackages = with pkgs.stable; [ shutter ];
 
   };
 

@@ -100,7 +100,7 @@ with lib;
             [General]
             loginMode=restoreSavedSession
             KSMSERVERRC
-              if [ "${toString config.foxflake.environment.autologin}" == "1" ]; then
+              if [ "${toString config.foxflake.environment.autologin}" == "1" ] || [ "${config.foxflake.environment.type}" == "steam" ] || [ "${config.foxflake.environment.type}" == "steamdeck" ]; then
                 cat >"''${HOME}/.config/kwalletrc" <<KWALLETRC
             [Wallet]
             Enabled=false

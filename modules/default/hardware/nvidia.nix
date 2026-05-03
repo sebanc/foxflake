@@ -51,8 +51,8 @@ with lib;
       config = {
         nvidia.acceptLicense = true;
         packageOverrides = pkgs: {
-          blender = pkgs.blender.override { cudaSupport = true; };
-          obs-studio = pkgs.obs-studio.override { cudaSupport = true; };
+          blender = pkgs.stable.blender.override { cudaSupport = true; };
+          obs-studio = pkgs.stable.obs-studio.override { cudaSupport = true; };
         };
       };
       overlays = [(final: prev: {

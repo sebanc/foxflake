@@ -12,6 +12,7 @@ with lib;
 
     services.sunshine = {
       enable = mkDefault true;
+      package = mkDefault pkgs.stable.sunshine;
       autoStart = mkDefault false;
       openFirewall = mkDefault true;
       capSysAdmin = mkDefault true;

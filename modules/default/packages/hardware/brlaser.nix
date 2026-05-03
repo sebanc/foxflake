@@ -10,7 +10,7 @@ with lib;
 
   config = mkIf (builtins.elem "full" config.foxflake.system.applications || builtins.elem "brlaser" config.foxflake.system.applications) {
 
-    services.printing.drivers = with pkgs; [ brlaser ];
+    services.printing.drivers = with pkgs.stable; [ brlaser ];
 
   };
 
