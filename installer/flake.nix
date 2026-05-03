@@ -7,7 +7,7 @@
   };
 
   outputs =
-    { self, foxflake, nixpkgs, ... }:
+    { foxflake, nixpkgs, ... }:
     let
       pkgs = import nixpkgs { config.allowUnfree = true; system = "x86_64-linux"; };
     in
@@ -21,9 +21,9 @@
             "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares-gnome.nix"
             {
               nixpkgs.overlays = [
-                (_self: super: {
-                  calamares-nixos-extensions = super.calamares-nixos-extensions.overrideAttrs (oldAttrs: {
-                    postInstall = oldAttrs.postInstall or "" + ''
+                (final: prev: {
+                  calamares-nixos-extensions = prev.calamares-nixos-extensions.overrideAttrs (oldAttrs: {
+                    postInstall = (oldAttrs.postInstall or "") + ''
                       mkdir -p $out/etc/calamares/branding $out/etc/calamares/modules $out/lib/calamares/modules $out/share/calamares/branding
                       cp -rT ${./calamares-patches/config}                                  $out/etc/calamares/
                       cp -rT ${./calamares-patches/config}                                  $out/share/calamares/
@@ -154,7 +154,7 @@
                     ];
                     postInstall = (oldAttrs.postInstall or "") + ''
                       if [ -f "$out/share/applications/calamares.desktop" ]; then
-                        ${pkgs.gnused}/bin/sed -i 's@pkexec calamares@sudo calamares@g' "$out/share/applications/calamares.desktop"
+                        sed -i 's@pkexec calamares@sudo calamares@g' "$out/share/applications/calamares.desktop"
                       fi
                     '';
                   });
