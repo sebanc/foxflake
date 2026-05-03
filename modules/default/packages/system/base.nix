@@ -27,6 +27,7 @@ with lib;
       psmisc
       unzip
       usbutils
+      wget
       xz
       zip
       zstd

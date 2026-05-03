@@ -47,12 +47,36 @@ with lib;
       __GL_SHADER_DISK_CACHE_SIZE = "12000000000";
     };
 
-    nixpkgs.config.packageOverrides = pkgs: {
-      blender = pkgs.blender.override { cudaSupport = true; };
-      obs-studio = pkgs.obs-studio.override { cudaSupport = true; };
+    nixpkgs = {
+      config = {
+        nvidia.acceptLicense = true;
+        packageOverrides = pkgs: {
+          blender = pkgs.blender.override { cudaSupport = true; };
+          obs-studio = pkgs.obs-studio.override { cudaSupport = true; };
+        };
+      };
+      overlays = [(final: prev: {
+        appimage-run-foxflake = prev.symlinkJoin {
+          buildInputs = with final; [ makeWrapper ];
+          meta.mainProgram = "appimage-run";
+          name = "appimage-run";
+          paths = [ prev.appimage-run-foxflake ];
+          postBuild = ''
+            wrapProgram $out/bin/appimage-run \
+              --run '
+                if [ -e /dev/nvidia0 ] && [ -f /run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json ] && [ ! "''${DISABLE_APPIMAGE_NVIDIA_FIX}" == "1" ]; then
+                  echo "appimage-run: NVIDIA GPU detected, giving it priority. This behavior can be reverted by setting DISABLE_APPIMAGE_NVIDIA_FIX=1."
+                  export VK_DRIVER_FILES=/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json
+                  export __GLX_VENDOR_LIBRARY_NAME=nvidia
+                fi
+              '
+          '';
+        };
+      })];
     };
 
-    programs.nix-ld.libraries = with pkgs; [ linuxPackages.nvidia_x11 ];
+    programs.nix-ld.libraries = with pkgs; [ config.boot.kernelPackages.nvidia_x11 ];
+
   };
 
 }
