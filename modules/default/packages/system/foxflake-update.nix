@@ -8,6 +8,8 @@ with lib;
 
 {
 
+  imports = [ ../../../../packages/foxflake-update ];
+
   config = {
 
     environment.systemPackages = with pkgs; [ foxflake-update ];
