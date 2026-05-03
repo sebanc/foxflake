@@ -5,8 +5,8 @@ let
 in
 {
   nixpkgs.overlays = [
-    (self: super: {
-      foxflake-wallpapers = self.stdenv.mkDerivation {
+    (final: prev: {
+      foxflake-wallpapers = prev.stdenv.mkDerivation {
         name = "foxflake-wallpapers";
         src = ./.;
         installPhase = ''
