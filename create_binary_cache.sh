@@ -31,7 +31,7 @@ if [ "${1}" == "stable" ] || [ "${1}" == "unstable" ]; then
               foxflake.environment.type = "${environment}";
               foxflake.system.bundles = [ "full" ];
               foxflake.system.packages = with pkgs; [ ];
-              (if [ "${nvidia}" == "-nvidia" ]; then echo "foxflake.nvidia.enable = true;"; else echo "foxflake.nvidia.enable = false;"; fi)
+              $(if [ "${nvidia}" == "-nvidia" ]; then echo "foxflake.nvidia.enable = true;"; else echo "foxflake.nvidia.enable = false;"; fi)
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
               fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
             }
@@ -73,7 +73,7 @@ else
               foxflake.environment.type = "${environment}";
               foxflake.system.bundles = [ "full" ];
               foxflake.system.packages = with pkgs; [ ];
-              (if [ "${nvidia}" == "-nvidia" ]; then echo "foxflake.nvidia.enable = true;"; else echo "foxflake.nvidia.enable = false;"; fi)
+              $(if [ "${nvidia}" == "-nvidia" ]; then echo "foxflake.nvidia.enable = true;"; else echo "foxflake.nvidia.enable = false;"; fi)
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
               fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
             }
