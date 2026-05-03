@@ -134,6 +134,7 @@ export XKB_DEFAULT_LAYOUT=${config.foxflake.internationalisation.keyboard.layout
 export XKB_DEFAULT_VARIANT=${config.foxflake.internationalisation.keyboard.variant}
 
 if [ ! -d "''${HOME}/.local/share/Steam" ]; then
+	STEAM_FLAGS="''${STEAM_FLAGS} -skipinitialbootstrap"
 	xvfb-run steam ''${STEAM_FLAGS} -exitsteam | gamescope ''${GAMESCOPE_FLAGS} --backend drm -- zenity --width 400 --height 200 --progress --title="Steam first boot setup" --text="Preparing Steam for initial boot... Please wait, this can take a few minutes." --pulsate --auto-close
 fi
 
