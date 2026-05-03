@@ -38,7 +38,7 @@ with lib;
             for user in $WHEEL_USERS; do
               USER_ID=$(${pkgs.coreutils}/bin/id -u "$user")
               BUS_ADDRESS="/run/user/$USER_ID/bus"
-              if [ -S "$BUS_ADDRESS" ] && [ "${config.foxflake.environment.type}" == "plasma" ]; then
+              if [ -S "$BUS_ADDRESS" ] && ([ "${config.foxflake.environment.type}" == "plasma" ] || [ "${config.foxflake.environment.type}" == "steam" ]); then
                 ${pkgs.sudo}/bin/sudo -u "$user" DBUS_SESSION_BUS_ADDRESS="unix:path=$BUS_ADDRESS" ${pkgs.libnotify}/bin/notify-send --urgency=critical --hint=string:desktop-entry:foxflake-update --icon="foxflake-red-icon" "System Update Failed" "The NixOS upgrade service failed. Check 'journalctl -u nixos-upgrade' for issues related to your custom NixOS configuration."
               elif [ -S "$BUS_ADDRESS" ]; then
                 ${pkgs.sudo}/bin/sudo -u "$user" DBUS_SESSION_BUS_ADDRESS="unix:path=$BUS_ADDRESS" ${pkgs.libnotify}/bin/notify-send --urgency=critical --icon="foxflake-red-icon" "System Update Failed" "The NixOS upgrade service failed. Check 'journalctl -u nixos-upgrade' for issues related to your custom NixOS configuration."

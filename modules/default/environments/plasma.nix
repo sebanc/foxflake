@@ -8,7 +8,7 @@ with lib;
 
 {
 
-  config = mkIf (config.foxflake.environment.enable && config.foxflake.environment.type == "plasma") {
+  config = mkIf (config.foxflake.environment.enable && (config.foxflake.environment.type == "plasma" || config.foxflake.environment.type == "steam" || config.foxflake.environment.type == "steamdeck")) {
 
     services = {
       desktopManager.plasma6.enable = mkDefault true;
@@ -80,6 +80,7 @@ with lib;
             fi
 
             if [ ! -f "''${HOME}/.config/plasmarc" ]; then
+              rm -f "''${HOME}/.config/plasma-org.kde.plasma.desktop-appletsrc"
               cat >"''${HOME}/.config/kdeglobals" <<KDEGLOBALS
             [Icons]
             Theme=${config.foxflake.customization.environment.icon-theme}

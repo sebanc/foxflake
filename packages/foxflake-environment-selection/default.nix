@@ -83,14 +83,20 @@ class MainWindow(QMainWindow):
 
         available_desktops=args.availabledesktops.split('|')
         current_desktop=args.currentdesktop.split('^')
-        html_desktop = ""
-        for desktops in available_desktops:
+        html_desktop = '<table class="desktops-table">'
+        for iter, desktops in enumerate(available_desktops):
             desktop=desktops.split('^')
             if desktop[1] == current_desktop[0]:
                 selection=" checked"
             else:
                 selection=""
-            html_desktop += '<label for="' + desktop[1] + '" style="margin-right: 5px;"><input type="radio" id="' + desktop[1] + '" name="radio" value="' + desktop[1] + '"' + selection + '/> ' + desktop[0] + '</label><br>'
+            if iter % 2 == 0:
+                html_desktop += '<tr><td><label for="' + desktop[1] + '" ><input type="radio" id="' + desktop[1] + '" name="radio" value="' + desktop[1] + '"' + selection + '/> ' + desktop[0] + '</label></td>'
+                if iter == (len(available_desktops) - 1):
+                    html_desktop += '<td></td></tr>'
+            else:
+                html_desktop += '<td><label for="' + desktop[1] + '" ><input type="radio" id="' + desktop[1] + '" name="radio" value="' + desktop[1] + '"' + selection + '/> ' + desktop[0] + '</label></td></tr>'
+        html_desktop += '</table>'
 
         available_applications=args.availableapplications.split('|')
         current_applications=args.currentapplications.split('^')
@@ -120,7 +126,7 @@ class MainWindow(QMainWindow):
                     margin-left: auto;
                     margin-right: auto;
                     height: auto;
-                    max-height: 340px;
+                    max-height: 320px;
                     overflow: auto;
                     width: fit-content;
                     background: {card_color};
@@ -133,6 +139,19 @@ class MainWindow(QMainWindow):
                     width: 100%;
                     text-align: center;
                     margin-bottom: 5px;
+                }}
+                .desktops-table {{
+                    table-layout: fixed;
+                    margin-left: auto;
+                    margin-right: auto;
+                    width: fit-content;
+                    border: none;
+                    border-collapse: collapse;
+                    border-spacing: 0;
+                }}
+                .desktops-table td {{
+                    width: 220px;
+                    padding: 2px;
                 }}
                 button {{
                     background: {button_action_color};
@@ -294,7 +313,9 @@ FOXFLAKE_GUI
 Gnome^gnome|\
 Plasma^plasma|\
 Cosmic^cosmic|\
-Hyprland^hyprland"
+Hyprland^hyprland|\
+Steam^steam|\
+Steam (for handhelds)^steamdeck"
 
 	available_applications="
 Internet^Web browsers, email clients and messaging apps^|\
@@ -423,7 +444,7 @@ Samsung PL^Drivers for printers supporting SPL Samsung Printer Language^samsungp
 
 	exec /run/wrappers/bin/sudo /run/current-system/sw/bin/foxflake-environment-selection "''${new_desktop}" "''${new_applications}"
 
-elif [ ''${#} -eq 2 ] && { [ "''${1}" == "\"cosmic\"" ] || [ "''${1}" == "\"gnome\"" ] || [ "''${1}" == "\"hyprland\"" ] || [ "''${1}" == "\"plasma\"" ]; }; then
+elif [ ''${#} -eq 2 ] && { [ "''${1}" == "\"cosmic\"" ] || [ "''${1}" == "\"gnome\"" ] || [ "''${1}" == "\"hyprland\"" ] || [ "''${1}" == "\"plasma\"" ] || [ "''${1}" == "\"steam\"" ] || [ "''${1}" == "\"steamdeck\"" ]; }; then
 
 	if [ "$(${self.coreutils}/bin/id -u)" -ne 0 ]; then
 		exec /run/wrappers/bin/sudo /run/current-system/sw/bin/foxflake-environment-selection "''${1}" "''${2}"
