@@ -77,6 +77,7 @@ with lib;
         efi.canTouchEfiVariables = mkDefault config.foxflake.boot.efiSupport;
       };
       initrd.secrets = mkDefault config.foxflake.boot.encryptionSecrets;
+      initrd.systemd.enable = mkDefault true;
       tmp.cleanOnBoot = mkDefault true;
       kernelPackages = mkDefault pkgs.linuxPackages;
       plymouth.enable = mkDefault true;
