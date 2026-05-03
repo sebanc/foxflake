@@ -5,7 +5,7 @@ set -e
 git clone -b ${1} https://github.com/sebanc/foxflake.git ./foxflake-${1}
 nix flake update --flake ./foxflake-${1}
 if [ "${1}" == "stable" ] || [ "${1}" == "unstable" ]; then
-	for environment in "cosmic" "gnome" "hyprland" "plasma"; do
+	for environment in "cosmic" "gnome" "hyprland" "plasma" "steam" "steamdeck"; do
 		for nvidia in "" "-nvidia"; do
 			cat >./flake.nix <<MAIN_FLAKE
 {
