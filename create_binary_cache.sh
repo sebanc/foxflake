@@ -12,7 +12,7 @@ if [ "${1}" == "stable" ] || [ "${1}" == "unstable" ]; then
 
   description = "FoxFlake";
   inputs = {
-    foxflake.url = "file://${PWD}/foxflake-${1}";
+    foxflake.url = "git+file://${PWD}/foxflake-${1}";
     nixpkgs.follows = "foxflake/nixpkgs";
   };
   outputs = { foxflake, nixpkgs, ... }:
@@ -55,7 +55,7 @@ else
 
   description = "FoxFlake";
   inputs = {
-    foxflake.url = "file://${PWD}/foxflake-${1}";
+    foxflake.url = "git+file://${PWD}/foxflake-${1}";
     nixpkgs.follows = "foxflake/nixpkgs";
   };
   outputs = { foxflake, nixpkgs, ... }:
