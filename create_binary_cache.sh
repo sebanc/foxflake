@@ -47,8 +47,7 @@ MAIN_FLAKE
 		done
 	done
 else
-	#for environment in "cosmic" "gnome" "hyprland" "plasma" "steam" "steamdeck"; do
-	for environment in "plasma"; do
+	for environment in "cosmic" "gnome" "hyprland" "plasma" "steam" "steamdeck"; do
 		for nvidia in "" "-nvidia"; do
 			cat >./flake.nix <<MAIN_FLAKE
 {
@@ -90,5 +89,5 @@ MAIN_FLAKE
 		done
 	done
 fi
-#cp ./foxflake-${1}/flake.lock /home/runner/work/foxflake/foxflake/foxflake-${1}-flake.lock
+cp ./foxflake-${1}/flake.lock /home/runner/work/foxflake/foxflake/foxflake-${1}-flake.lock
 
