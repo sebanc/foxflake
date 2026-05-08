@@ -90,12 +90,13 @@ let
     };
     mkUser = username: {
       "${username}" =  {
-        extraGroups = [ "audio" ]
-          ++ optionals (builtins.elem "android-studio" config.foxflake.system.applications) [ "kvm" ]
-          ++ optionals (builtins.elem "distrobox" config.foxflake.system.applications || builtins.elem "docker" config.foxflake.system.applications || builtins.elem "winboat" config.foxflake.system.applications) [ "docker" ]
-          ++ optionals (builtins.elem "distrobox" config.foxflake.system.applications || builtins.elem "podman" config.foxflake.system.applications || builtins.elem "winboat" config.foxflake.system.applications) [ "podman" ]
-          ++ optionals (builtins.elem "virt-manager" config.foxflake.system.applications) [ "libvirtd" ]
-          ++ optionals (builtins.elem "virtualbox" config.foxflake.system.applications) [ "vboxusers" ];
+        extraGroups = [ ]
+          ++ optionals (config.foxflake.autoUserGroups) [ "networkmanager" ]
+          ++ optionals (config.foxflake.autoUserGroups && builtins.elem "android-studio" config.foxflake.system.applications) [ "kvm" ]
+          ++ optionals (config.foxflake.autoUserGroups && builtins.elem "distrobox" config.foxflake.system.applications || builtins.elem "docker" config.foxflake.system.applications || builtins.elem "winboat" config.foxflake.system.applications) [ "docker" ]
+          ++ optionals (config.foxflake.autoUserGroups && builtins.elem "distrobox" config.foxflake.system.applications || builtins.elem "podman" config.foxflake.system.applications || builtins.elem "winboat" config.foxflake.system.applications) [ "podman" ]
+          ++ optionals (config.foxflake.autoUserGroups && builtins.elem "virt-manager" config.foxflake.system.applications) [ "libvirtd" ]
+          ++ optionals (config.foxflake.autoUserGroups && builtins.elem "virtualbox" config.foxflake.system.applications) [ "vboxusers" ];
       };
     };
     userConfigurations = foldr (a: b: a // b) { } (map mkUser (attrNames config.foxflake.users));
@@ -128,6 +129,15 @@ in
       description = ''
         Additional user accounts to be created automatically by the system.
         This can also be used to set options for root.
+      '';
+    };
+
+    foxflake.autoUserGroups = mkOption {
+      type = types.bool;
+      default = true;
+      example = "false";
+      description = ''
+        Whether to automatically add users to groups needed by system applications.
       '';
     };
 

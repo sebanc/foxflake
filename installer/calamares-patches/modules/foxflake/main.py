@@ -254,7 +254,7 @@ def run():
     # Setup user
     if gs.value("username") is not None:
         fullname = gs.value("fullname")
-        groups = ["networkmanager", "wheel"]
+        groups = [ "wheel" ]
         cfg += cfgusers
         catenate(variables, "username", gs.value("username"))
         catenate(variables, "fullname", fullname)
