@@ -78,6 +78,8 @@ Examples of configurations include:<br>
 `foxflake.autoUpgrade = false;`<br>
 - Enable HDR in Gaming apps / Proton:<br>
 `foxflake.gaming.hdr = true;`<br>
+- Enable ntsync:<br>
+`boot.kernelModules = [ "ntsync" ];`<br>
 - If you installed the Sunshine application, you can add this line for Sunshine to start automatically:<br>
 `services.sunshine.autoStart = true;`<br>
 - If you installed the OpenRGB application, you can add this line to load the profile "myprofile" on startup:<br>
@@ -89,9 +91,8 @@ services.scx = {
   scheduler = "scx_lavd";
 };
 ```
-<br><br>
 
-### Installing the nvidia driver
+### Installing legacy nvidia drivers
 
 For Nvidia GPUs compatible with the latest open source kernel modules, recommended drivers are automatically enabled during install.<br>
 
@@ -101,8 +102,7 @@ For older nvidia cards, you will need to identify the nvidia package you need fr
   hardware.nvidia.open = false;
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_535; # Replace this with the nvidia driver package you need.
 ```
-<br>
-Note: The SteamOS session will not work correctly with nvidia drivers below version 575.<br><br>
+Note: The Steam sessions will not work correctly with nvidia drivers below version 575.<br><br>
 
 ### Steam sessions
 
@@ -113,7 +113,7 @@ There are 2 types of Steam sessions, one for generic computers and another for h
 If autologin is enabled, the default is to start the Steam session, you can then switch to Plasma using the Steam "Switch to desktop" button. Once in Plasma, you can go back to the Steam session simply by logging out of the Plasma session.<br><br>
 
 You can also customize the Steam session through specific options:<br>
-- Invert the autologin session (boot automatically in Plasma and launch the Steam session if you logout):<br>
+- Invert the autologin session (boot automatically in Plasma and launch the Steam session by logging out):<br>
 `foxflake.environment.steam.primarySession = "plasma";`<br>
 - Define the display to use for the Steam session:<br>
 `foxflake.environment.steam.display = "DP-1";`<br>
@@ -122,18 +122,16 @@ You can also customize the Steam session through specific options:<br>
 - HDR can be enabed in the Steam session with the global option:<br>
 `foxflake.gaming.hdr = true;`<br><br>
 
-If you want to keep your main desktop environment and to have a secondary Steam session, you can do it through a NixOS "specialisation" (a specific boot entry for the Steam session will be added to the bootloader):
+If you want to keep your main desktop environment and to have a secondary Steam environment, you can do it through a NixOS "specialisation" (a specific boot entry for the Steam session will be added to the bootloader):
 ```
 specialisation."Steam".configuration = {
   boot.loader.grub.configurationName = lib.mkForce "Steam";
   foxflake.environment = {
     type = lib.mkForce "steam";
-    steam.primarySession = lib.mkForce "steam";
+    steam.primarySession = lib.mkForce "steam"; # Or "steamdeck" for handhelds version
   };
 };
 ```
-<br><br>
-
 You can also pass specific arguments to gamescope and Steam through the "GAMESCOPE_FLAGS" and "STEAM_FLAGS" environment variables.<br><br>
 
 ### Hyprland notes
