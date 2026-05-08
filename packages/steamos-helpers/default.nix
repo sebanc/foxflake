@@ -126,12 +126,12 @@ export XDG_CURRENT_DESKTOP=KDE
 export XKB_DEFAULT_LAYOUT=${config.foxflake.internationalisation.keyboard.layout}
 export XKB_DEFAULT_VARIANT=${config.foxflake.internationalisation.keyboard.variant}
 
-if [ -f ''${HOME}/.local/share/Steam/config/loginusers.vdf ]; then
-	grep -q "BootStrapperInhibitAll" ''${HOME}/.local/share/Steam/steam.cfg && sed -i '/BootStrapperInhibitAll/d' ''${HOME}/.local/share/Steam/steam.cfg
-else
+if [ ! -d ''${HOME}/.local/share/Steam ]; then
 	mkdir -p ''${HOME}/.local/share/Steam
 	echo "BootStrapperInhibitAll=enable" > ''${HOME}/.local/share/Steam/steam.cfg
 	xvfb-run steam ''${STEAM_FLAGS} -skipinitialbootstrap -exitsteam | gamescope --backend drm --generate-drm-mode fixed -- zenity --width 400 --height 200 --progress --title="Steam first boot setup" --text="Preparing Steam for initial boot... Please wait, this can take a few minutes." --pulsate --auto-close
+elif [ -f ''${HOME}/.local/share/Steam/steam.cfg ] && [ -f ''${HOME}/.local/share/Steam/config/loginusers.vdf ]; then
+	grep -q "BootStrapperInhibitAll" ''${HOME}/.local/share/Steam/steam.cfg && sed -i '/BootStrapperInhibitAll/d' ''${HOME}/.local/share/Steam/steam.cfg
 fi
 
 __NV_PRIME_RENDER_OFFLOAD=1 /run/wrappers/bin/gamescope ''${GAMESCOPE_FLAGS} --backend drm --borderless --default-touch-mode 4 --force-grab-cursor --fullscreen --generate-drm-mode fixed --hide-cursor-delay 3000 --steam --xwayland-count 2 -- bash -c "steam ''${STEAM_FLAGS} -cef-force-gpu -gamepadui -steamos3" > /tmp/gamescope_log.txt 2>&1
