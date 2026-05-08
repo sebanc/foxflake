@@ -188,11 +188,11 @@ with lib;
             ExecStart = "${pkgs.writeShellScriptBin "steamos-session-default" ''
               #!${pkgs.bash}
 
-              if [ -f ''${HOME}/.local/share/Steam/config/loginusers.vdf ]; then
-                grep -q "BootStrapperInhibitAll" ''${HOME}/.local/share/Steam/steam.cfg && sed -i '/BootStrapperInhibitAll/d' ''${HOME}/.local/share/Steam/steam.cfg
-              else
+              if [ ! -d ''${HOME}/.local/share/Steam ]; then
                 mkdir -p ''${HOME}/.local/share/Steam
-	         echo "BootStrapperInhibitAll=enable" > ''${HOME}/.local/share/Steam/steam.cfg
+                echo "BootStrapperInhibitAll=enable" > ''${HOME}/.local/share/Steam/steam.cfg
+              elif [ -f ''${HOME}/.local/share/Steam/steam.cfg ] && [ -f ''${HOME}/.local/share/Steam/config/loginusers.vdf ]; then
+                grep -q "BootStrapperInhibitAll" ''${HOME}/.local/share/Steam/steam.cfg && sed -i '/BootStrapperInhibitAll/d' ''${HOME}/.local/share/Steam/steam.cfg
               fi
 
               echo -e '[Autologin]\nSession=steam' > /tmp/zz-steamos.conf
