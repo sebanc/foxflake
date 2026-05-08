@@ -24,11 +24,7 @@ with lib;
         support32Bit = mkDefault true;
       };
       extraConfig.pipewire."92-low-latency" = mkIf config.foxflake.audio.lowLatency {
-        context.properties = {
-          "nice.level" = -11;
-          "rt.prio" = 95;
-          "rt.time.soft" = 200000;
-          "rt.time.hard" = 200000;
+        "context.properties" = {
           "default.clock.rate" = 48000;
           "default.clock.quantum" = 64;
           "default.clock.min-quantum" = 32;
@@ -36,7 +32,7 @@ with lib;
         };
       };
       extraConfig.pipewire-pulse."92-low-latency" = mkIf config.foxflake.audio.lowLatency {
-        context.properties = {
+        "context.properties" = {
           "pulse.min.req" = "32/48000";
           "pulse.default.req" = "64/48000";
           "pulse.max.req" = "256/48000";
