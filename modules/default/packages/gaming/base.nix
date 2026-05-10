@@ -50,12 +50,12 @@ with lib;
       gamemode.enable = mkDefault true;
       gamescope = {
         enable = mkOverride 999 true;
-        package = mkDefault pkgs.gamescope;
+        package = mkDefault pkgs.stable.gamescope;
         capSysNice = mkDefault true;
       };
     };
 
-    services.udev.packages = with pkgs; [ game-devices-udev-rules ];
+    services.udev.packages = with pkgs.unstable; [ game-devices-udev-rules ];
 
   };
 
