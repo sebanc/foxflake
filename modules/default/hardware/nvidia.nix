@@ -21,7 +21,7 @@ with lib;
     boot.blacklistedKernelModules = [ "nouveau" "nova_core" ];
 
     hardware.nvidia = {
-      package = mkDefault config.boot.kernelPackages.nvidiaPackages.beta;
+      package = mkDefault config.boot.kernelPackages.nvidiaPackages.stable;
       open = mkDefault true;
       modesetting.enable = mkDefault true;
       nvidiaSettings = mkDefault true;
