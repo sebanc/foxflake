@@ -13,6 +13,7 @@ with lib;
     virtualisation.virtualbox.host = {
       enable = mkDefault true;
       enableExtensionPack = mkDefault true;
+      package = mkDefault pkgs.unstable.virtualbox;
     };
 
   };

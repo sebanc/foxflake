@@ -64,7 +64,7 @@ with lib;
       consoleLogLevel = mkDefault 3;
       initrd.secrets = mkDefault config.foxflake.boot.encryptionSecrets;
       initrd.systemd.enable = mkDefault true;
-      kernelPackages = mkDefault pkgs.linuxPackages;
+      kernelPackages = mkDefault pkgs.unstable.linuxPackages;
       kernelParams = [ "quiet" ];
       loader = {
         grub = {
@@ -90,6 +90,7 @@ with lib;
         amd.updateMicrocode = mkDefault true;
       };
       enableAllFirmware = mkDefault true;
+      enableAllHardware = mkDefault true;
     };
 
   };

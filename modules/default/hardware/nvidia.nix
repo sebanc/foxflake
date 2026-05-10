@@ -75,7 +75,7 @@ with lib;
       })];
     };
 
-    programs.nix-ld.libraries = with pkgs; [ config.boot.kernelPackages.nvidia_x11 ];
+    programs.nix-ld.libraries = with pkgs; [ config.hardware.nvidia.package ];
 
   };
 
