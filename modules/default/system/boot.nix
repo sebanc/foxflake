@@ -64,7 +64,7 @@ with lib;
       consoleLogLevel = mkDefault 3;
       initrd.secrets = mkDefault config.foxflake.boot.encryptionSecrets;
       initrd.systemd.enable = mkDefault true;
-      kernelPackages = mkDefault pkgs.unstable.linuxPackages;
+      kernelPackages = mkDefault pkgs.unstable.linuxPackages_latest;
       kernelParams = [ "quiet" ];
       loader = {
         grub = {

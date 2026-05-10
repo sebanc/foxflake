@@ -386,7 +386,6 @@ WinBoat^Allows to run Windows apps on Linux using a containerized approach^winbo
 Bottles^Easily run Windows software on Linux using sandboxed environments^bottles|\
 Waydroid^A container-based solution that allows you to run Android apps^waydroid|\
 GNOME Boxes^A simple graphical application for creating Virtual Machines^gnome-boxes|\
-VirtualBox^A popular hypervisor by Oracle that allows you to run Virtual Machines^virtualbox|\
 Virt-Manager^A Virtual Machines manager that provides an interface for QEMU/libvirt^virt-manager|\
 Docker^The industry-standard for running applications inside containers^docker|\
 Distrobox^A tool that facilitates the use of containers (via Podman or Docker)^distrobox|\
