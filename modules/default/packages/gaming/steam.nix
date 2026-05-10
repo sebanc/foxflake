@@ -27,7 +27,7 @@ with lib;
         libxi
         pango
       ];
-      package = mkDefault pkgs.stable.steam;
+      package = mkDefault pkgs.steam;
       dedicatedServer.openFirewall = mkDefault true;
       remotePlay.openFirewall = mkDefault true;
       localNetworkGameTransfers.openFirewall = mkDefault true;

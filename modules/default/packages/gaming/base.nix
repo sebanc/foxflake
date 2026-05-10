@@ -50,7 +50,7 @@ with lib;
       gamemode.enable = mkDefault true;
       gamescope = {
         enable = mkOverride 999 true;
-        package = mkDefault pkgs.stable.gamescope;
+        package = mkDefault pkgs.gamescope;
         capSysNice = mkDefault true;
       };
     };
