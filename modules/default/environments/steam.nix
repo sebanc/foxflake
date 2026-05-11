@@ -45,35 +45,39 @@ with lib;
       ;
     };
 
-    programs.steam = {
-      extraPackages = with pkgs; [
-        steamos-helpers
-        (pkgs.runCommandLocal "breeze-cursor-default-theme" { } ''
-          mkdir -p $out/share/icons
-          ln -s ${pkgs.kdePackages.breeze}/share/icons/breeze_cursors $out/share/icons/default
-        '')
-      ];
+    programs = {
+      gamescope.package = mkOverride 999 pkgs.gamescope;
+      steam = {
+        extraPackages = with pkgs; [
+          steamos-helpers
+          (pkgs.runCommandLocal "breeze-cursor-default-theme" { } ''
+            mkdir -p $out/share/icons
+            ln -s ${pkgs.kdePackages.breeze}/share/icons/breeze_cursors $out/share/icons/default
+          '')
+        ];
+        package = mkOverride 999 pkgs.steam;
+      };
     };
 
-    nixpkgs.config.packageOverrides = pkgs: {
-      steam = pkgs.steam.override {
+    nixpkgs.config.packageOverrides = _: {
+      steam = (pkgs.stable.steam.override {
         extraBwrapArgs = [ "--bind /tmp /tmp" ];
         buildFHSEnv = args: (pkgs.buildFHSEnv.override {
           bubblewrap = "${config.security.wrapperDir}/..";
         }) args;
-      };
-      steam-unwrapped = pkgs.steam-unwrapped.overrideAttrs (old: {
-        postInstall = (old.postInstall or "") + ''
-          cp ${pkgs.fetchurl {
-            url = "https://steamdeck-packages.steamos.cloud/misc/steam-snapshots/steam_jupiter_stable_bootstrapped_20251031.0.tar.xz";
-            hash = "sha256-A6Y7+eUV4Rwwrv8u0DilxeDBvTFHMBqzL33P+YwhCTs=";
-          }} $out/lib/steam/bootstraplinux_ubuntu12_32.tar.xz
-          if [ "${config.foxflake.environment.type}" == "steamdeck" ]; then
+      }).override {
+        steam-unwrapped = pkgs.stable.steam-unwrapped.overrideAttrs (old: {
+          postInstall = (old.postInstall or "") + ''
+            cp ${pkgs.fetchurl {
+              url = "https://steamdeck-packages.steamos.cloud/misc/steam-snapshots/steam_jupiter_stable_bootstrapped_20251031.0.tar.xz";
+              hash = "sha256-A6Y7+eUV4Rwwrv8u0DilxeDBvTFHMBqzL33P+YwhCTs=";
+            }} $out/lib/steam/bootstraplinux_ubuntu12_32.tar.xz
+          '' + lib.optionalString (config.foxflake.environment.type == "steamdeck") ''
             sed -i 's@Exec=steam@Exec=steam -steamdeck@g' $out/share/applications/steam.desktop
-          fi
-        '';
-      });
-      gamescope = pkgs.gamescope.overrideAttrs(old: rec {
+          '';
+        });
+      };
+      gamescope = pkgs.unstable.gamescope.overrideAttrs (old: rec {
         version = "3.16.23";
         src = pkgs.fetchFromGitHub {
           owner = "ValveSoftware";

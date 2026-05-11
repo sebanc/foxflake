@@ -30,7 +30,7 @@ with lib;
     };
 
     environment = {
-      systemPackages = with pkgs; [
+      systemPackages = with pkgs.unstable; [
         mangohud
         vkbasalt
       ];
@@ -50,7 +50,7 @@ with lib;
       gamemode.enable = mkDefault true;
       gamescope = {
         enable = mkOverride 999 true;
-        package = mkDefault pkgs.gamescope;
+        package = mkDefault pkgs.unstable.gamescope;
         capSysNice = mkDefault true;
       };
     };
