@@ -27,15 +27,10 @@ with lib;
         libxi
         pango
       ];
-      package = mkDefault pkgs.steam;
+      package = mkDefault pkgs.stable.steam;
       dedicatedServer.openFirewall = mkDefault true;
       remotePlay.openFirewall = mkDefault true;
       localNetworkGameTransfers.openFirewall = mkDefault true;
-    };
-    nixpkgs.config.packageOverrides = pkgs: {
-      steam = pkgs.steam.override {
-        extraEnv = { TZ = ":/etc/localtime"; OBS_VKCAPTURE = true; };
-      };
     };
 
   };
