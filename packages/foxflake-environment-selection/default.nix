@@ -368,7 +368,6 @@ Neovim^Text editor engineered for extensibility and usability^neovim|\
 GitKraken^Visual interface for managing Git repositories and code history^gitkraken|\
 GitHub Desktop^GUI for managing Git and GitHub^github|\
 Android Tools^Android SDK platform tools (including adb)^android-tools|\
-Android Studio^The official IDE for Android apps^android-studio|\
 Gaming^Gaming applications^|\
 Steam^Valve’s industry-leading digital storefront and games launcher^steam|\
 Heroic Games Launcher^An open-source launcher for Epic, GOG, and Amazon Games^heroic|\
