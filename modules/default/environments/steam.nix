@@ -72,8 +72,9 @@ with lib;
               url = "https://steamdeck-packages.steamos.cloud/misc/steam-snapshots/steam_jupiter_stable_bootstrapped_20251031.0.tar.xz";
               hash = "sha256-A6Y7+eUV4Rwwrv8u0DilxeDBvTFHMBqzL33P+YwhCTs=";
             }} $out/lib/steam/bootstraplinux_ubuntu12_32.tar.xz
-          '' + lib.optionalString (config.foxflake.environment.type == "steamdeck") ''
-            sed -i 's@Exec=steam@Exec=steam -steamdeck@g' $out/share/applications/steam.desktop
+            if [ "${config.foxflake.environment.type}" == "steamdeck" ]; then
+              sed -i 's@Exec=steam@Exec=steam -steamdeck@g' $out/share/applications/steam.desktop
+            fi
           '';
         });
       };
