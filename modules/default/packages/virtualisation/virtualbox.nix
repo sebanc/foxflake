@@ -10,10 +10,16 @@ with lib;
 
   config = mkIf (builtins.elem "full" config.foxflake.system.applications || builtins.elem "virtualbox" config.foxflake.system.applications) {
 
+    nixpkgs.overlays = [
+      (final: prev: {
+        virtualbox = pkgs.unstable.virtualbox;
+        virtualboxExtpack = pkgs.unstable.virtualboxExtpack;
+      })
+    ];
+
     virtualisation.virtualbox.host = {
-      enable = mkDefault true;
-      enableExtensionPack = mkDefault true;
-      package = mkDefault pkgs.unstable.virtualbox;
+      enable = true;
+      enableExtensionPack = true;
     };
 
   };
