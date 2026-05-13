@@ -102,7 +102,6 @@ For older nvidia cards, you will need to identify the nvidia package you need fr
   hardware.nvidia.open = false;
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_535; # Replace this with the nvidia driver package you need.
 ```
-Note: The Steam sessions will not work correctly with nvidia drivers below version 575.<br><br>
 
 ### Steam sessions
 
@@ -132,7 +131,9 @@ specialisation."Steam".configuration = {
   };
 };
 ```
-You can also pass specific arguments to gamescope and Steam through the "GAMESCOPE_FLAGS" and "STEAM_FLAGS" environment variables.<br><br>
+You can also pass specific arguments to gamescope and Steam through the "GAMESCOPE_FLAGS" and "STEAM_FLAGS" environment variables.<br>
+
+Note: Nvidia support on the Steam sessions is considered experimental and will not work with nvidia drivers below version 575.<br><br>
 
 ### Hyprland notes
 
