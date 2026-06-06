@@ -138,7 +138,7 @@ elif [ -f ''${HOME}/.local/share/Steam/steam.cfg ] && [ -f ''${HOME}/.local/shar
 	grep -q "BootStrapperInhibitAll" ''${HOME}/.local/share/Steam/steam.cfg && sed -i '/BootStrapperInhibitAll/d' ''${HOME}/.local/share/Steam/steam.cfg
 fi
 
-__NV_PRIME_RENDER_OFFLOAD=1 /run/wrappers/bin/gamescope ''${GAMESCOPE_FLAGS} --backend drm --borderless --default-touch-mode 4 --force-grab-cursor --fullscreen --generate-drm-mode fixed --hide-cursor-delay 3000 --steam --xwayland-count 2 -- bash -c "steam ''${STEAM_FLAGS} -cef-force-gpu -gamepadui -steamos3 -testoobeupdater" > /tmp/gamescope_log.txt 2>&1
+__NV_PRIME_RENDER_OFFLOAD=1 gamescope ''${GAMESCOPE_FLAGS} --backend drm --borderless --default-touch-mode 4 --force-grab-cursor --fullscreen --generate-drm-mode fixed --hide-cursor-delay 3000 --steam --xwayland-count 2 -- bash -c "steam ''${STEAM_FLAGS} -cef-force-gpu -gamepadui -steamos3 -testoobeupdater" > /tmp/gamescope_log.txt 2>&1
             '';
           })
           (prev.writeTextFile {

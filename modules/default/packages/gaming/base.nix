@@ -51,7 +51,6 @@ with lib;
       gamescope = {
         enable = mkOverride 999 true;
         package = mkDefault pkgs.unstable.gamescope;
-        capSysNice = mkDefault true;
       };
     };
 

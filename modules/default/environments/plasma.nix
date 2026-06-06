@@ -16,6 +16,10 @@ with lib;
         sddm = {
           enable = mkDefault true;
           theme = mkDefault "breeze";
+          wayland = {
+            enable = mkDefault true;
+            compositor = mkDefault "kwin";
+          };
         };
         defaultSession = mkDefault "plasma";
       };
