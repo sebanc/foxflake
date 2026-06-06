@@ -38,6 +38,7 @@ with lib;
         // lib.optionalAttrs (config.foxflake.gaming.hdr) { DXVK_HDR = 1; }
         // lib.optionalAttrs (config.foxflake.gaming.hdr) { PROTON_ENABLE_HDR = 1; }
         // lib.optionalAttrs (config.foxflake.gaming.hdr) { PROTON_ENABLE_WAYLAND = 1; }
+        // lib.optionalAttrs (config.foxflake.gaming.hdr) { VKD3D_HDR = 1; }
       ;
     };
 
