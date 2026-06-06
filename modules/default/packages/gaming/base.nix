@@ -8,6 +8,10 @@ with lib;
 
 {
 
+  imports = [
+    ../../../../packages/gamescope-foxflake
+  ];
+
   options.foxflake.gaming = {
     hdr = mkOption {
       type = with types; bool;
@@ -51,7 +55,7 @@ with lib;
       gamemode.enable = mkDefault true;
       gamescope = {
         enable = mkOverride 999 true;
-        package = mkDefault pkgs.unstable.gamescope;
+        package = mkDefault pkgs.gamescope-foxflake;
       };
     };
 
