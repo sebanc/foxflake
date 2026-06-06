@@ -78,19 +78,41 @@ with lib;
         });
       };
       gamescope = pkgs.unstable.gamescope.overrideAttrs (old: rec {
-        version = "3.16.23";
+        version = "3.16.24";
         src = pkgs.fetchFromGitHub {
           owner = "ValveSoftware";
           repo = "gamescope";
           rev = version;
           fetchSubmodules = true;
-          hash = "sha256-q9AZTe6fBgJBt5/c3x8PVrnDF+MtRmQ1OWZq9ZsSe/M=";
+          hash = "sha256-+4jEQAUGKOFJkLUJHIz1hVx7kbt+wMhLcbboiz0PC/E=";
         };
-        patches = (old.patches or []) ++ [
+        patches = [
           (pkgs.writeText "steam-bootstrap-fix.patch" ''
+            --- a/src/Utils/Process.cpp
+            +++ b/src/Utils/Process.cpp
+            @@ -392,7 +392,7 @@ namespace gamescope::Process
+                 pid_t SpawnProcessInWatchdog( char **argv, bool bRespawn, std::function<void()> fnPreambleInChild )
+                 {
+                     std::vector<char *> args;
+            -        args.push_back( (char *)"gamescopereaper" );
+            +        args.push_back( (char *)"@gamescopereaper@" );
+                     if ( bRespawn )
+                         args.push_back( (char *)"--respawn" );
+                     args.push_back( (char *)"--" );
+            --- a/src/reshade_effect_manager.cpp
+            +++ b/src/reshade_effect_manager.cpp
+            @@ -34,7 +34,7 @@ static std::string GetLocalUsrDir()
+            
+             static std::string GetUsrDir()
+             {
+            -    return "/usr";
+            +    return "@out@";
+             }
+            
+             static LogScope reshade_log("gamescope_reshade");
             --- a/src/steamcompmgr.cpp      2026-04-12 11:04:10.709969160 +0200
             +++ b/src/steamcompmgr.cpp      2026-04-12 20:20:53.296661240 +0200
-            @@ -3490,6 +3490,16 @@
+            @@ -3654,6 +3654,16 @@
              					}
              				}
              			}
