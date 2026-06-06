@@ -21,7 +21,6 @@ with lib;
       };
       settings = {
         auto-optimise-store = mkDefault true;
-        cores = mkDefault 4;
         download-buffer-size = 524288000;
         substituters = [
           "https://foxflake.cachix.org/"
@@ -52,6 +51,10 @@ with lib;
         interval = mkDefault "weekly";
       };
       fwupd.enable = mkDefault true;
+    };
+
+    systemd.services.nix-daemon.serviceConfig = {
+      CPUQuota = "25%";
     };
 
     zramSwap.enable = mkDefault true;
