@@ -32,6 +32,8 @@ with lib;
 
   config = mkIf (config.foxflake.environment.enable && (config.foxflake.environment.type == "steam" || config.foxflake.environment.type == "steamdeck")) {
 
+    boot.plymouth.enable = mkOverride 999 false;
+
     environment = {
       systemPackages = with pkgs; [
         steamos-helpers
@@ -62,9 +64,6 @@ with lib;
     nixpkgs.config.packageOverrides = _: {
       steam = (pkgs.stable.steam.override {
         extraBwrapArgs = [ "--bind /tmp /tmp" ];
-        buildFHSEnv = args: (pkgs.buildFHSEnv.override {
-          bubblewrap = "${config.security.wrapperDir}/..";
-        }) args;
       }).override {
         steam-unwrapped = pkgs.stable.steam-unwrapped.overrideAttrs (old: {
           postInstall = (old.postInstall or "") + ''
@@ -124,17 +123,6 @@ with lib;
           '')
         ];
       });
-    };
-
-    security = {
-      wrappers = {
-        bwrap = {
-          owner = mkDefault "root";
-          group = mkDefault "root";
-          source = mkDefault "${pkgs.bubblewrap}/bin/bwrap";
-          setuid = mkDefault true;
-        };
-      };
     };
 
     services = {
