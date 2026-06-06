@@ -53,6 +53,7 @@ with lib;
         conflicts = [ "shutdown.target" ];
         serviceConfig = {
           Type = "oneshot";
+          CPUQuota = "25%";
           ExecStart = "${pkgs.writeShellScriptBin "update-system-flatpaks" ''
             #!${pkgs.bash}
             set +e
@@ -77,6 +78,7 @@ with lib;
         conflicts = [ "shutdown.target" ];
         serviceConfig = {
           Type = "oneshot";
+          CPUQuota = "25%";
           ExecStart = "${pkgs.writeShellScriptBin "update-user-flatpaks" ''
             #!${pkgs.bash}
             set +e
