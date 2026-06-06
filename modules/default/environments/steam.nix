@@ -190,15 +190,8 @@ with lib;
         };
       };
       tmpfiles.rules = [
-        "L+ /etc/sddm.conf.d/01-nixos.conf - - - - ${config.environment.etc."sddm.conf".source}"
         "L+ /etc/sddm.conf.d/zz-steamos.conf - - - - /tmp/zz-steamos.conf"
       ];
-    };
-
-    system.activationScripts.sddmConf = {
-      text = ''
-        rm -f /etc/sddm.conf
-      '';
     };
 
   };

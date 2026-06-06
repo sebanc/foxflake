@@ -3,11 +3,11 @@
   description = "FoxFlake stable branch";
 
   inputs = {
-    nixpkgs.url = "git+https://github.com/nixos/nixpkgs?shallow=1&ref=nixos-25.11";
+    nixpkgs.url = "git+https://github.com/nixos/nixpkgs?shallow=1&ref=nixos-26.05";
     nixpkgs-stable.follows = "nixpkgs";
     nixpkgs-unstable.url = "git+https://github.com/nixos/nixpkgs?shallow=1&ref=nixos-unstable";
     home-manager = {
-      url = "git+https://github.com/nix-community/home-manager?shallow=1&ref=release-25.11";
+      url = "git+https://github.com/nix-community/home-manager?shallow=1&ref=release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     plasma-manager = {
