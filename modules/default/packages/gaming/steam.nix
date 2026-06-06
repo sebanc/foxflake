@@ -14,8 +14,9 @@ with lib;
 
     programs.steam = {
       enable = mkDefault true;
-      extraPackages = with pkgs; [
+      extraPackages = with pkgs.stable; [
         harfbuzz
+        hidapi
         libthai
         libx11
         libxext
