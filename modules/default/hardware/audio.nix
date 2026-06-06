@@ -24,6 +24,13 @@ with lib;
         support32Bit = mkDefault true;
       };
       extraConfig.pipewire."92-low-latency" = mkIf config.foxflake.audio.lowLatency {
+        "context.modules" = [{
+          name = "libpipewire-module-rt";
+          args = {
+            "rt.prio" = 20;
+          };
+          flags = [ "ifexists" "nofail" ];
+        }];
         "context.properties" = {
           "default.clock.rate" = 48000;
           "default.clock.min-quantum" = 64;
