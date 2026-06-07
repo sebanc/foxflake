@@ -50,10 +50,6 @@ with lib;
     nixpkgs = {
       config = {
         nvidia.acceptLicense = true;
-        packageOverrides = pkgs: {
-          blender = pkgs.stable.blender.override { cudaSupport = true; };
-          obs-studio = pkgs.stable.obs-studio.override { cudaSupport = true; };
-        };
       };
       overlays = [(final: prev: {
         appimage-run-foxflake = prev.symlinkJoin {

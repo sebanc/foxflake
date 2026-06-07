@@ -13,7 +13,11 @@ with lib;
     programs.obs-studio = {
       enable = mkDefault true;
       enableVirtualCamera = mkDefault true;
-      package = mkDefault pkgs.stable.obs-studio;
+      package =
+        if config.foxflake.nvidia.enable then
+          mkDefault (pkgs.stable.obs-studio.override { cudaSupport = true; })
+        else
+          mkDefault pkgs.stable.obs-studio;
       plugins = with pkgs.stable.obs-studio-plugins; [ advanced-scene-switcher input-overlay obs-backgroundremoval obs-composite-blur obs-gstreamer obs-move-transition obs-multi-rtmp obs-pipewire-audio-capture obs-shaderfilter obs-vaapi obs-vkcapture wlrobs ];
     };
 
