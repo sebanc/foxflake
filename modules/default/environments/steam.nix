@@ -50,6 +50,44 @@ with lib;
     };
 
     programs = {
+      gamescope = {
+        package = mkOverride 999 ((pkgs.stable.gamescope.override { enableWsi = true; }).overrideAttrs (old: {
+          patches = (old.patches or []) ++ [ (pkgs.writeText "foxflake-specific.patch" ''
+            --- a/src/steamcompmgr.cpp      2026-04-12 11:04:10.709969160 +0200
+            +++ b/src/steamcompmgr.cpp      2026-04-12 20:20:53.296661240 +0200
+            @@ -3654,6 +3654,16 @@
+             					}
+             				}
+             			}
+            +
+            +			for ( steamcompmgr_win_t *focusable_window : vecPossibleFocusWindows )
+            +			{
+            +				if ( window_is_steam( focusable_window ) )
+            +				{
+            +					focus = focusable_window;
+            +					localGameFocused = true;
+            +					goto found;
+            +				}
+            +			}
+             		}
+             		else
+             		{
+            --- a/src/Backends/DRMBackend.cpp     2026-04-12 11:04:10.705969190 +0200
+            +++ b/src/Backends/DRMBackend.cpp     2026-04-19 12:58:09.312287112 +0200
+            @@ -69,8 +69,8 @@
+             gamescope::ConVar<bool> cv_drm_debug_disable_ctm( "drm_debug_disable_ctm", false, "CTM chicken bit. (Forces CTM off, does not affect other logic)" );
+             gamescope::ConVar<bool> cv_drm_debug_disable_color_encoding( "drm_debug_disable_color_encoding", false, "YUV Color Encoding chicken bit. (Forces COLOR_ENCODING to DEFAULT, does not affect other logic)" );
+             gamescope::ConVar<bool> cv_drm_debug_disable_color_range( "drm_debug_disable_color_range", false, "YUV Color Range chicken bit. (Forces COLOR_RANGE to DEFAULT, does not affect other logic)" );
+            -gamescope::ConVar<bool> cv_drm_debug_disable_explicit_sync( "drm_debug_disable_explicit_sync", false, "Force disable explicit sync on the DRM backend." );
+            -gamescope::ConVar<bool> cv_drm_debug_disable_in_fence_fd( "drm_debug_disable_in_fence_fd", false, "Force disable IN_FENCE_FD being set to avoid over-synchronization on the DRM backend." );
+            +gamescope::ConVar<bool> cv_drm_debug_disable_explicit_sync( "drm_debug_disable_explicit_sync", true, "Force disable explicit sync on the DRM backend." );
+            +gamescope::ConVar<bool> cv_drm_debug_disable_in_fence_fd( "drm_debug_disable_in_fence_fd", true, "Force disable IN_FENCE_FD being set to avoid over-synchronization on the DRM backend." );
+             
+             gamescope::ConVar<bool> cv_drm_allow_dynamic_modes_for_external_display( "drm_allow_dynamic_modes_for_external_display", false, "Allow dynamic mode/refresh rate switching for external displays." );
+             
+          '')];
+        }));
+      };
       steam = {
         extraPackages = with pkgs; [
           steamos-helpers
@@ -58,26 +96,32 @@ with lib;
             ln -s ${pkgs.kdePackages.breeze}/share/icons/breeze_cursors $out/share/icons/default
           '')
         ];
-        package = mkOverride 999 pkgs.steam;
+        package = mkOverride 999 (pkgs.stable.steam.override {
+          buildFHSEnv = pkgs.stable.buildFHSEnv.override {
+            bubblewrap = "${config.security.wrapperDir}/..";
+          };
+          extraBwrapArgs = [ "--bind /tmp /tmp" ];
+          steam-unwrapped = pkgs.stable.steam-unwrapped.overrideAttrs (old: {
+            postInstall = (old.postInstall or "") + ''
+              cp ${pkgs.fetchurl {
+                url = "https://steamdeck-packages.steamos.cloud/misc/steam-snapshots/steam_jupiter_stable_bootstrapped_20251031.0.tar.xz";
+                hash = "sha256-A6Y7+eUV4Rwwrv8u0DilxeDBvTFHMBqzL33P+YwhCTs=";
+              }} $out/lib/steam/bootstraplinux_ubuntu12_32.tar.xz
+              if [ "${config.foxflake.environment.type}" == "steamdeck" ]; then
+                sed -i 's@Exec=steam@Exec=steam -steamdeck@g' $out/share/applications/steam.desktop
+              fi
+            '';
+          });
+        });
       };
     };
 
-    nixpkgs.config.packageOverrides = _: {
-      steam = (pkgs.stable.steam.override {
-        extraBwrapArgs = [ "--bind /tmp /tmp" ];
-      }).override {
-        steam-unwrapped = pkgs.stable.steam-unwrapped.overrideAttrs (old: {
-          postInstall = (old.postInstall or "") + ''
-            cp ${pkgs.fetchurl {
-              url = "https://steamdeck-packages.steamos.cloud/misc/steam-snapshots/steam_jupiter_stable_bootstrapped_20251031.0.tar.xz";
-              hash = "sha256-A6Y7+eUV4Rwwrv8u0DilxeDBvTFHMBqzL33P+YwhCTs=";
-            }} $out/lib/steam/bootstraplinux_ubuntu12_32.tar.xz
-            if [ "${config.foxflake.environment.type}" == "steamdeck" ]; then
-              sed -i 's@Exec=steam@Exec=steam -steamdeck@g' $out/share/applications/steam.desktop
-            fi
-          '';
-        });
-      };
+    security.wrappers.bwrap = mkDefault {
+      source = "${pkgs.bubblewrap}/bin/bwrap";
+      owner = "root";
+      group = "root";
+      setuid = false;
+      setgid = false;
     };
 
     services = {
