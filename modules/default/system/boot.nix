@@ -65,7 +65,7 @@ with lib;
       initrd.secrets = mkDefault config.foxflake.boot.encryptionSecrets;
       initrd.systemd.enable = mkDefault true;
       kernelPackages = mkDefault pkgs.unstable.linuxPackages_latest;
-      kernelParams = [ "quiet" ];
+      kernelParams = [ "fbcon=nodefer" "quiet" ];
       loader = {
         grub = {
           enable = mkDefault config.foxflake.boot.enable;
