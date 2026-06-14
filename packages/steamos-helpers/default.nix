@@ -131,9 +131,14 @@ export XKB_DEFAULT_LAYOUT=${config.foxflake.internationalisation.keyboard.layout
 export XKB_DEFAULT_VARIANT=${config.foxflake.internationalisation.keyboard.variant}
 
 if [ ! -d ''${HOME}/.local/share/Steam ]; then
+	sudo plymouthd
+	sudo plymouth show-splash
+	sudo plymouth display-message --text="Steam first boot setup... Please wait, this can take a few minutes."
 	mkdir -p ''${HOME}/.local/share/Steam
 	echo "BootStrapperInhibitAll=enable" > ''${HOME}/.local/share/Steam/steam.cfg
-	xvfb-run steam ''${STEAM_FLAGS} -skipinitialbootstrap -exitsteam | gamescope --backend drm --generate-drm-mode fixed -- zenity --width 400 --height 200 --progress --title="Steam first boot setup" --text="Preparing Steam for initial boot... Please wait, this can take a few minutes." --pulsate --auto-close
+	xvfb-run steam ''${STEAM_FLAGS} -skipinitialbootstrap -exitsteam
+	sudo plymouth deactivate
+	sudo plymouth quit --wait
 elif [ -f ''${HOME}/.local/share/Steam/steam.cfg ] && [ -f ''${HOME}/.local/share/Steam/config/loginusers.vdf ]; then
 	grep -q "BootStrapperInhibitAll" ''${HOME}/.local/share/Steam/steam.cfg && sed -i '/BootStrapperInhibitAll/d' ''${HOME}/.local/share/Steam/steam.cfg
 fi
