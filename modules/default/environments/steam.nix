@@ -34,8 +34,6 @@ with lib;
 
   config = mkIf (config.foxflake.environment.enable && (config.foxflake.environment.type == "steam" || config.foxflake.environment.type == "steamdeck")) {
 
-    boot.plymouth.enable = mkOverride 999 false;
-
     environment = {
       systemPackages = with pkgs; [
         steamos-helpers
@@ -55,23 +53,15 @@ with lib;
           patches = (old.patches or []) ++ [ (pkgs.writeText "foxflake-specific.patch" ''
             --- a/src/steamcompmgr.cpp      2026-04-12 11:04:10.709969160 +0200
             +++ b/src/steamcompmgr.cpp      2026-04-12 20:20:53.296661240 +0200
-            @@ -3654,6 +3654,16 @@
-             					}
-             				}
-             			}
-            +
-            +			for ( steamcompmgr_win_t *focusable_window : vecPossibleFocusWindows )
-            +			{
-            +				if ( window_is_steam( focusable_window ) )
-            +				{
-            +					focus = focusable_window;
-            +					localGameFocused = true;
-            +					goto found;
-            +				}
-            +			}
-             		}
-             		else
-             		{
+            @@ -3482,7 +3482,7 @@
+             			{
+             				for ( steamcompmgr_win_t *focusable_window : vecPossibleFocusWindows )
+             				{
+            -					if ( focusable_window->appID == focusable_appid )
+            +					if ( focusable_window->appID == focusable_appid || focusable_window->GetVirtualConnectorKey( eStrategy ) == ulVirtualFocusKey )
+             					{
+             						focus = focusable_window;
+             						localGameFocused = true;
             --- a/src/Backends/DRMBackend.cpp     2026-04-12 11:04:10.705969190 +0200
             +++ b/src/Backends/DRMBackend.cpp     2026-04-19 12:58:09.312287112 +0200
             @@ -69,8 +69,8 @@
@@ -184,6 +174,22 @@ with lib;
 
               echo -e '[Autologin]\nSession=steam' > /tmp/zz-steamos.conf
             ''}/bin/steamos-session-default";
+          };
+          restartIfChanged = false;
+        };
+        "cleanup-session" = {
+          description = "Force kill Kwin to avoid drm conflicts";
+          wantedBy = [ "graphical-session.target" ];
+          partOf = [ "graphical-session.target" ];
+          serviceConfig = {
+            Type = "oneshot";
+            RemainAfterExit = true;
+            ExecStop = "${pkgs.writeShellScriptBin "cleanup-session" ''
+              #!${pkgs.bash}
+
+              ${pkgs.procps}/bin/pkill -KILL kwin
+            ''}/bin/cleanup-session";
+            TimeoutStopSec = "5s";
           };
           restartIfChanged = false;
         };
