@@ -82,6 +82,7 @@ with lib;
       };
       plymouth.enable = mkDefault true;
       tmp.cleanOnBoot = mkDefault true;
+      zfs.forceImportRoot = mkDefault false;
     };
 
     hardware = {

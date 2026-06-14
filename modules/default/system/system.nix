@@ -53,10 +53,6 @@ with lib;
       fwupd.enable = mkDefault true;
     };
 
-    systemd.services.nix-daemon.serviceConfig = {
-      CPUQuota = "25%";
-    };
-
     zramSwap.enable = mkDefault true;
 
   };
