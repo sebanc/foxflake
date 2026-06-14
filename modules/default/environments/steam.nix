@@ -87,9 +87,6 @@ with lib;
           '')
         ];
         package = mkOverride 999 (pkgs.stable.steam.override {
-          buildFHSEnv = pkgs.stable.buildFHSEnv.override {
-            bubblewrap = "${config.security.wrapperDir}/..";
-          };
           extraBwrapArgs = [ "--bind /tmp /tmp" ];
           steam-unwrapped = pkgs.stable.steam-unwrapped.overrideAttrs (old: {
             postInstall = (old.postInstall or "") + ''
@@ -104,14 +101,6 @@ with lib;
           });
         });
       };
-    };
-
-    security.wrappers.bwrap = mkDefault {
-      source = "${pkgs.bubblewrap}/bin/bwrap";
-      owner = "root";
-      group = "root";
-      setuid = false;
-      setgid = false;
     };
 
     services = {
