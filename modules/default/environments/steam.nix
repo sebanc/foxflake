@@ -36,6 +36,7 @@ with lib;
 
     environment = {
       systemPackages = with pkgs; [
+        plymouth
         steamos-helpers
         xvfb-run
       ];
@@ -100,6 +101,31 @@ with lib;
             '';
           });
         });
+      };
+    };
+
+    security = {
+      sudo = {
+        extraRules = [
+          {
+            groups = [ "users" ];
+            commands = [
+              {
+                command = "/run/current-system/sw/bin/plymouth";
+                options = [ "NOPASSWD" ];
+              }
+            ];
+          }
+          {
+            groups = [ "users" ];
+            commands = [
+              {
+                command = "/run/current-system/sw/bin/plymouthd";
+                options = [ "NOPASSWD" ];
+              }
+            ];
+          }
+        ];
       };
     };
 
