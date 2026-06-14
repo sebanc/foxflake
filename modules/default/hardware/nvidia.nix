@@ -35,12 +35,6 @@ with lib;
         nvidia-resume.enable = mkDefault true;
         nvidia-hibernate.enable = mkDefault true;
       };
-      shutdown."nvidia.shutdown" = pkgs.writeScript "nvidia.shutdown" ''
-        #!/bin/sh
-        for MODULE in nvidia_drm nvidia_modeset nvidia_uvm nvidia; do
-          if lsmod | grep "''${MODULE}" &> /dev/null; then rmmod ''${MODULE}; fi
-        done
-      '';
     };
 
     environment.variables = {
