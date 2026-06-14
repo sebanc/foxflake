@@ -27,6 +27,7 @@ with lib;
     };
 
     systemd = {
+      services."nixos-upgrade".serviceConfig = { CPUQuota = "25%"; };
       services."nixos-upgrade".unitConfig.OnFailure = [ "nixos-upgrade-failure-notification.service" ];
       services."nixos-upgrade-failure-notification" = {
         description = "Send a desktop notification to wheel group users on upgrade failure";
