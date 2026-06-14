@@ -40,10 +40,6 @@ with lib;
       '')
     ];
 
-    systemd.tmpfiles.rules = [
-      "d /usr/bin 0755 root root -"
-    ];
-
   };
 
 }
