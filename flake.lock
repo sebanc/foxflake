@@ -7,10 +7,10 @@
         ]
       },
       "locked": {
-        "lastModified": 1781989573,
-        "narHash": "sha256-npfH7Zv7t1akX/ArqCNro4zU4ViPlghLaPnbEfHbCxk=",
+        "lastModified": 1782100299,
+        "narHash": "sha256-XnlTzGjSJIvNQ6RgNHW6Fe9fy0bDHWFqJTgIIk6nPZQ=",
         "ref": "master",
-        "rev": "78e7d8b13ecd7f5256a5c11ce216876164099d9f",
+        "rev": "db97e414d5457538f21bb332b972e13c609cbeba",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/nix-community/home-manager"
