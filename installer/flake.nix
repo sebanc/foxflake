@@ -134,6 +134,7 @@
                   });
                 };
                 virtualisation.hypervGuest.enable = lib.mkForce false;
+                virtualisation.xen.enable = lib.mkForce false;
                 image.baseName = lib.mkForce "foxflake-${config.isoImage.edition}-${pkgs.stdenv.hostPlatform.uname.processor}";
                 isoImage = {
                   appendToMenuLabel = " Installer";
