@@ -83,10 +83,10 @@
         ]
       },
       "locked": {
-        "lastModified": 1783455223,
-        "narHash": "sha256-FnUhS+B9gnLDmy51uAupFq4ewiQPXh5vZbyKhcWz3mU=",
+        "lastModified": 1783534709,
+        "narHash": "sha256-XyWsinAFbRgA+p6oAJ5ejdT43aCmepNpKGkU7UKEMps=",
         "ref": "trunk",
-        "rev": "1663116ddd23ba7150c2deb3c05ddeb30904bb1f",
+        "rev": "a8c78043e8d8601a41c140ce4e2758121bf947e7",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/nix-community/plasma-manager"
