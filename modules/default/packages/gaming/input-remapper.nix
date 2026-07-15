@@ -13,7 +13,6 @@ with lib;
     services.input-remapper = {
       enable = mkDefault true;
       enableUdevRules = mkDefault true;
-      package = mkDefault pkgs.stable.input-remapper;
     };
     security.polkit.extraConfig = ''
       polkit.addRule(function(action, subject) {
