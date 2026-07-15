@@ -12,13 +12,12 @@ with lib;
 
     nixpkgs.overlays = [
       (final: prev: {
-        input-remapper = (prev.input-remapper.override {
-          python3Packages = prev.python313Packages;
-        }).overridePythonAttrs (old: {
-          propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
-            prev.python313Packages.packaging
-            prev.python313Packages.setuptools
-          ];
+        input-remapper = prev.input-remapper.overridePythonAttrs (oldAttrs: {
+          dependencies = map (pkg:
+            if pkg.pname or "" == "setuptools"
+            then final.python3Packages.setuptools_80
+            else pkg
+          ) oldAttrs.dependencies;
         });
       })
     ];
