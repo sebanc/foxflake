@@ -12,10 +12,12 @@ with lib;
 
     nixpkgs.overlays = [
       (final: prev: {
-        input-remapper = prev.input-remapper.overridePythonAttrs (old: {
+        input-remapper = (prev.input-remapper.override {
+          python3Packages = prev.python313Packages;
+        }).overridePythonAttrs (old: {
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
-            prev.python3Packages.packaging
-            prev.python3Packages.setuptools
+            prev.python313Packages.packaging
+            prev.python313Packages.setuptools
           ];
         });
       })
