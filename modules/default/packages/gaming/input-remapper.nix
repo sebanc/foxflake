@@ -10,6 +10,14 @@ with lib;
 
   config = mkIf (builtins.elem "full" config.foxflake.system.applications || builtins.elem "input-remapper" config.foxflake.system.applications) {
 
+    nixpkgs.overlays = [
+      (final: prev: {
+        input-remapper = prev.input-remapper.overridePythonAttrs (old: {
+          propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ prev.python3Packages.packaging ];
+        });
+      })
+    ];
+
     services.input-remapper = {
       enable = mkDefault true;
       enableUdevRules = mkDefault true;
