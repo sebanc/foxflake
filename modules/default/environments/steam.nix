@@ -52,20 +52,12 @@ with lib;
       gamescope = {
         package = mkOverride 999 ((pkgs.stable.gamescope.override { enableWsi = true; }).overrideAttrs (old: {
           patches = (old.patches or []) ++ [ (pkgs.writeText "foxflake-specific.patch" ''
-            --- a/src/steamcompmgr.cpp      2026-04-12 11:04:10.709969160 +0200
-            +++ b/src/steamcompmgr.cpp      2026-04-12 20:20:53.296661240 +0200
-            @@ -3482,7 +3482,7 @@
-             			{
-             				for ( steamcompmgr_win_t *focusable_window : vecPossibleFocusWindows )
-             				{
-            -					if ( focusable_window->appID == focusable_appid )
-            +					if ( focusable_window->appID == focusable_appid || focusable_window->GetVirtualConnectorKey( eStrategy ) == ulVirtualFocusKey )
-             					{
-             						focus = focusable_window;
-             						localGameFocused = true;
-            --- a/src/Backends/DRMBackend.cpp     2026-04-12 11:04:10.705969190 +0200
-            +++ b/src/Backends/DRMBackend.cpp     2026-04-19 12:58:09.312287112 +0200
-            @@ -69,8 +69,8 @@
+            diff -ruN -U 5 a/src/Backends/DRMBackend.cpp b/src/Backends/DRMBackend.cpp
+            --- a/src/Backends/DRMBackend.cpp	2026-07-11 20:08:34.478614512 +0200
+            +++ b/src/Backends/DRMBackend.cpp	2026-07-11 20:02:43.769657246 +0200
+            @@ -67,12 +67,12 @@
+             gamescope::ConVar<bool> cv_drm_debug_disable_output_tf( "drm_debug_disable_output_tf", false, "Force default (identity) output TF, affects other logic. Not a property directly." );
+             gamescope::ConVar<bool> cv_drm_debug_disable_blend_tf( "drm_debug_disable_blend_tf", false, "Blending chicken bit. (Forces BLEND_TF to DEFAULT, does not affect other logic)" );
              gamescope::ConVar<bool> cv_drm_debug_disable_ctm( "drm_debug_disable_ctm", false, "CTM chicken bit. (Forces CTM off, does not affect other logic)" );
              gamescope::ConVar<bool> cv_drm_debug_disable_color_encoding( "drm_debug_disable_color_encoding", false, "YUV Color Encoding chicken bit. (Forces COLOR_ENCODING to DEFAULT, does not affect other logic)" );
              gamescope::ConVar<bool> cv_drm_debug_disable_color_range( "drm_debug_disable_color_range", false, "YUV Color Range chicken bit. (Forces COLOR_RANGE to DEFAULT, does not affect other logic)" );
@@ -76,6 +68,34 @@ with lib;
              
              gamescope::ConVar<bool> cv_drm_allow_dynamic_modes_for_external_display( "drm_allow_dynamic_modes_for_external_display", false, "Allow dynamic mode/refresh rate switching for external displays." );
              
+             int HackyDRMPresent( const FrameInfo_t *pFrameInfo, bool bAsync );
+             
+            diff -ruN -U 5 a/src/steamcompmgr.cpp b/src/steamcompmgr.cpp
+            --- a/src/steamcompmgr.cpp	2026-07-11 20:08:34.484208906 +0200
+            +++ b/src/steamcompmgr.cpp	2026-07-15 07:38:52.170317808 +0200
+            @@ -3475,10 +3475,22 @@
+             						localGameFocused = true;
+             						goto found;
+             					}
+             				}
+             			}
+            +			else
+            +			{
+            +				for ( steamcompmgr_win_t *focusable_window : vecPossibleFocusWindows )
+            +				{
+            +					if ( focusable_window->isSteamLegacyBigPicture )
+            +					{
+            +						focus = focusable_window;
+            +						localGameFocused = true;
+            +						goto found;
+            +					}
+            +				}
+            +			}
+             
+             			for ( auto focusable_appid : ctxFocusControlAppIDs )
+             			{
+             				for ( steamcompmgr_win_t *focusable_window : vecPossibleFocusWindows )
+             				{
           '')];
         }));
       };
@@ -88,7 +108,7 @@ with lib;
           '')
         ];
         package = mkOverride 999 (pkgs.stable.steam.override {
-          extraBwrapArgs = [ "--bind /tmp /tmp" ];
+          extraBwrapArgs = [ "--bind /tmp /tmp" "--tmpfs /tmp/.X11-unix" ];
           steam-unwrapped = pkgs.stable.steam-unwrapped.overrideAttrs (old: {
             postInstall = (old.postInstall or "") + ''
               cp ${pkgs.fetchurl {
@@ -96,7 +116,9 @@ with lib;
                 hash = "sha256-A6Y7+eUV4Rwwrv8u0DilxeDBvTFHMBqzL33P+YwhCTs=";
               }} $out/lib/steam/bootstraplinux_ubuntu12_32.tar.xz
               if [ "${config.foxflake.environment.type}" == "steamdeck" ]; then
-                sed -i 's@Exec=steam@Exec=steam -steamdeck@g' $out/share/applications/steam.desktop
+                sed -i 's@Exec=steam@Exec=steam -steamos3 -steamdeck@g' $out/share/applications/steam.desktop
+              elif [ "${config.foxflake.environment.type}" == "steam" ]; then
+                sed -i 's@Exec=steam@Exec=steam -steamos3@g' $out/share/applications/steam.desktop
               fi
             '';
           });
