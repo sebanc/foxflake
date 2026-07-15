@@ -10,7 +10,15 @@ with lib;
 
   imports = [ ../../../../packages/foxflake-environment-selection ];
 
-  config = mkIf config.foxflake.environment.selection.enable {
+  options.foxflake.environment.selection = {
+    enable = mkOption {
+      description = "Enable environment and applications switching program";
+      type = types.bool;
+      default = true;
+    };
+  };
+
+  config = mkIf (config.foxflake.environment.enable && config.foxflake.environment.selection.enable) {
 
     environment.systemPackages = with pkgs; [ foxflake-environment-selection zenity ];
 

@@ -34,11 +34,6 @@ with lib;
       default = null;
       description = "User chosen for desktop environment autologin";
     };
-    selection.enable = mkOption {
-      description = "Enable environment and applications switching program";
-      type = types.bool;
-      default = true;
-    };
   };
 
   config = mkIf config.foxflake.environment.enable {
