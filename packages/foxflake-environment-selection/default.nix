@@ -8,9 +8,7 @@
         buildCommand = let
           script = prev.writeShellApplication {
             name = name;
-            runtimeInputs = with final; [
-              (unstable.python3.withPackages (module: [ module.pyside6 ]))
-            ];
+            runtimeInputs = with final; [ (stable.python3.withPackages (module: [ module.pyside6 ])) ];
             bashOptions = [ "errexit" "pipefail" ];
             excludeShellChecks = [ "SC2028" ];
             text = ''
@@ -84,18 +82,21 @@ class MainWindow(QMainWindow):
         available_desktops=args.availabledesktops.split('|')
         current_desktop=args.currentdesktop.split('^')
         html_desktop = '<table class="desktops-table">'
-        for iter, desktops in enumerate(available_desktops):
-            desktop=desktops.split('^')
-            if desktop[1] == current_desktop[0]:
-                selection=" checked"
-            else:
-                selection=""
-            if iter % 2 == 0:
-                html_desktop += '<tr><td><label for="' + desktop[1] + '" ><input type="radio" id="' + desktop[1] + '" name="radio" value="' + desktop[1] + '"' + selection + '/> ' + desktop[0] + '</label></td>'
-                if iter == (len(available_desktops) - 1):
-                    html_desktop += '<td></td></tr>'
-            else:
-                html_desktop += '<td><label for="' + desktop[1] + '" ><input type="radio" id="' + desktop[1] + '" name="radio" value="' + desktop[1] + '"' + selection + '/> ' + desktop[0] + '</label></td></tr>'
+        if current_desktop[0] == "custom":
+            html_desktop += '<tr><label for="custom" ><input type="radio" id="custom" name="radio" value="custom" checked/> Custom desktop (declared within your configuration)</label></tr>'
+        else:
+            for iter, desktops in enumerate(available_desktops):
+                desktop=desktops.split('^')
+                if desktop[1] == current_desktop[0]:
+                    selection=" checked"
+                else:
+                    selection=""
+                if iter % 2 == 0:
+                    html_desktop += '<tr><td><label for="' + desktop[1] + '" ><input type="radio" id="' + desktop[1] + '" name="radio" value="' + desktop[1] + '"' + selection + '/> ' + desktop[0] + '</label></td>'
+                    if iter == (len(available_desktops) - 1):
+                        html_desktop += '<td></td></tr>'
+                else:
+                    html_desktop += '<td><label for="' + desktop[1] + '" ><input type="radio" id="' + desktop[1] + '" name="radio" value="' + desktop[1] + '"' + selection + '/> ' + desktop[0] + '</label></td></tr>'
         html_desktop += '</table>'
 
         available_applications=args.availableapplications.split('|')
@@ -420,9 +421,6 @@ Samsung PL^Drivers for printers supporting SPL Samsung Printer Language^samsungp
 
 	set +e
 	current_desktop="$(${final.gnugrep}/bin/grep 'foxflake.environment.type' /etc/nixos/configuration.nix | ${final.gnugrep}/bin/grep -v '^[[:space:]]*#' | ${final.coreutils}/bin/tail -1 | ${final.coreutils}/bin/cut -d '#' -f 1 | ${final.coreutils}/bin/cut -d \" -f 2)"
-	set -e
-
-	set +e
 	current_applications="^$(${final.gnugrep}/bin/grep 'foxflake.system.bundles' /etc/nixos/configuration.nix | ${final.gnugrep}/bin/grep -v '^[[:space:]]*#' | ${final.coreutils}/bin/tail -1 | ${final.coreutils}/bin/cut -d '#' -f 1 | ${final.gnugrep}/bin/grep --only-matching '\[.*]' | ${final.gnused}/bin/sed 's@\[\|]@@g' | ${final.gnused}/bin/sed 's@\"[[:space:]]*\"@^@g' | ${final.gnused}/bin/sed 's@\"\| @@g')^"
 	if [ "''${current_applications}" == "^^" ]; then
 		current_applications="^$(${final.gnugrep}/bin/grep 'foxflake.system.applications' /etc/nixos/configuration.nix | ${final.gnugrep}/bin/grep -v '^[[:space:]]*#' | ${final.coreutils}/bin/tail -1 | ${final.coreutils}/bin/cut -d '#' -f 1 | ${final.gnugrep}/bin/grep --only-matching '\[.*]' | ${final.gnused}/bin/sed 's@\[\|]@@g' | ${final.gnused}/bin/sed 's@\"[[:space:]]*\"@^@g' | ${final.gnused}/bin/sed 's@\"\| @@g')^"
@@ -441,7 +439,7 @@ Samsung PL^Drivers for printers supporting SPL Samsung Printer Language^samsungp
 
 	exec /run/wrappers/bin/sudo /run/current-system/sw/bin/foxflake-environment-selection "''${new_desktop}" "''${new_applications}"
 
-elif [ ''${#} -eq 2 ] && { [ "''${1}" == "\"cosmic\"" ] || [ "''${1}" == "\"gnome\"" ] || [ "''${1}" == "\"hyprland\"" ] || [ "''${1}" == "\"plasma\"" ] || [ "''${1}" == "\"steam\"" ] || [ "''${1}" == "\"steamdeck\"" ]; }; then
+elif [ ''${#} -eq 2 ] && { [ "''${1}" == "\"cosmic\"" ] || [ "''${1}" == "\"gnome\"" ] || [ "''${1}" == "\"hyprland\"" ] || [ "''${1}" == "\"plasma\"" ] || [ "''${1}" == "\"steam\"" ] || [ "''${1}" == "\"steamdeck\"" ] || [ "''${1}" == "\"custom\"" ]; }; then
 
 	if [ "$(${final.coreutils}/bin/id -u)" -ne 0 ]; then
 		exec /run/wrappers/bin/sudo /run/current-system/sw/bin/foxflake-environment-selection "''${1}" "''${2}"
