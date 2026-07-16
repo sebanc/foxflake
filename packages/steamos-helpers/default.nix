@@ -106,7 +106,6 @@ if [ ! -z "''${GAMESCOPE_SESSION_HDR}" ]; then
 fi
 
 if [ "${config.foxflake.environment.type}" == "steamdeck" ]; then
-	GAMESCOPE_FLAGS="''${GAMESCOPE_FLAGS} --mangoapp"
         STEAM_FLAGS="''${STEAM_FLAGS} -steamdeck"
 fi
 
@@ -123,8 +122,6 @@ export INTEL_DEBUG=noccs,norbc
 export QT_IM_MODULE=steam
 export QT_QPA_PLATFORM=xcb
 export QT_QPA_PLATFORM_THEME=kde
-export R600_DEBUG=nodcc
-export STEAM_MULTIPLE_XWAYLANDS=1
 export XCURSOR_SIZE=48
 export XDG_CURRENT_DESKTOP=KDE
 export XKB_DEFAULT_LAYOUT=${config.foxflake.internationalisation.keyboard.layout}
@@ -143,7 +140,7 @@ elif [ -f ''${HOME}/.local/share/Steam/steam.cfg ] && [ -f ''${HOME}/.local/shar
 	grep -q "BootStrapperInhibitAll" ''${HOME}/.local/share/Steam/steam.cfg && sed -i '/BootStrapperInhibitAll/d' ''${HOME}/.local/share/Steam/steam.cfg
 fi
 
-__NV_PRIME_RENDER_OFFLOAD=1 gamescope ''${GAMESCOPE_FLAGS} --backend drm --borderless --default-touch-mode 4 --force-grab-cursor --fullscreen --generate-drm-mode fixed --hide-cursor-delay 3000 --steam --xwayland-count 2 -- bash -c "steam ''${STEAM_FLAGS} -cef-force-gpu -gamepadui -steamos3 -testoobeupdater" > /tmp/gamescope_log.txt 2>&1
+__NV_PRIME_RENDER_OFFLOAD=1 gamescope ''${GAMESCOPE_FLAGS} --backend drm --borderless --default-touch-mode 4 --force-grab-cursor --fullscreen --generate-drm-mode fixed --hide-cursor-delay 3000 --mangoapp --steam --xwayland-count 2 -- bash -c "steam ''${STEAM_FLAGS} -cef-force-gpu -gamepadui -steamos3 -testoobeupdater" > /tmp/gamescope_log.txt 2>&1
             '';
           })
           (prev.writeTextFile {
