@@ -348,6 +348,7 @@ MPV media player^A multimedia player favored for its minimalist interface^mpv|\
 Kodi^Open-source media center for playing videos, music, and digital media^kodi|\
 Darktable^A photo management application designed to streamline post-production^darktable|\
 DigiKam^A photo management application used for organizing and editing photos^digikam|\
+RapidRAW^RapidRAW is a lightweight RAW photo editor and processor^rapidraw|\
 Kdenlive^A powerful non-linear video editor built on the KDE framework^kdenlive|\
 Shotcut^A non-linear video editor that supports a wide range of formats^shotcut|\
 Audacity^A popular multi-track audio editor and recorder^audacity|\
@@ -359,7 +360,9 @@ Krita^A digital painting studio designed for concept artists and illustrators^kr
 Inkscape^A vector graphics editor ideal for creating logos and diagrams^inkscape|\
 OBS Studio^The industry standard for screen recording and live streaming^obs|\
 Blender^A 3D creation suite that allows modeling, animation and editing^blender|\
+FreeCAD^FreeCAD is a 3D parametric modeler for designing real objects^freecad|\
 Reaper^Complete digital audio production application^reaper|\
+LMMS^LMMS is a digital audio workstation for producing music^lmms|\
 Development^Software development applications^|\
 VS Code^Microsoft’s feature-rich code editor^vscode|\
 VS Codium^A telemetry-free version of Microsoft’s feature-rich code editor^vscodium|\
