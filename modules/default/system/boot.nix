@@ -19,6 +19,11 @@ with lib;
       type = types.bool;
       default = true;
     };
+    efiSysMountPoint = mkOption {
+      description = "Where the EFI System Partition is mounted.";
+      type = types.str;
+      default = "/boot";
+    };
     device = mkOption {
       description = ''
         The device on which the GRUB boot loader will be installed.
@@ -78,7 +83,10 @@ with lib;
           else
             mkDefault [ "--modules=all_video boot btrfs cat chain configfile echo ext2 fat font gettext gfxmenu gfxterm gfxterm_background gzio halt help hfsplus iso9660 jpeg keystatus linux loadenv loopback ls lsmmap memdisk minicmd normal ntfs part_apple part_msdos part_gpt password_pbkdf2 png probe reboot regexp search search_fs_uuid search_fs_file search_label sleep smbios squash4 terminal test true video xfs" ];
         };
-        efi.canTouchEfiVariables = mkDefault config.foxflake.boot.efiSupport;
+        efi = {
+          canTouchEfiVariables = mkDefault config.foxflake.boot.efiSupport;
+          efiSysMountPoint = mkDefault config.foxflake.boot.efiSysMountPoint;
+        };
       };
       plymouth.enable = mkDefault true;
       tmp.cleanOnBoot = mkDefault true;
