@@ -9,6 +9,7 @@
     ./kodi.nix
     ./mpv.nix
     ./noisetorch.nix
+    ./rapidraw.nix
     ./shotcut.nix
     ./vlc.nix
   ];
