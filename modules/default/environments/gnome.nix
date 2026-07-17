@@ -123,6 +123,10 @@ with lib;
               always-center-icons = true;
               custom-theme-shrink = true;
             };
+            "org/gnome/software" = {
+              download-updates = false;
+              download-updates-notify = false;
+            };
             "org/gnome/mutter" = {
               check-alive-timeout = gvariant.mkUint32 30000;
               dynamic-workspaces = true;

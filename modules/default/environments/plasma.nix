@@ -110,6 +110,10 @@ with lib;
             Enabled=false
             KWALLETRC
               fi
+              cat >"''${HOME}/.config/PlasmaDiscoverUpdates" <<DISCOVERUPDATES
+            [Global]
+            RequiredNotificationInterval=-1
+            DISCOVERUPDATES
               cat >"''${HOME}/.config/powerdevilrc" <<POWERDEVILRC
             [AC][Performance]
             PowerProfile=performance
