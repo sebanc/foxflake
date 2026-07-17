@@ -15,8 +15,8 @@ with lib;
     nix = {
       gc = {
         automatic = mkDefault true;
-        dates = mkDefault "weekly";
-        options = mkDefault "--delete-older-than 30d";
+        dates = mkDefault "daily";
+        options = mkDefault "--delete-older-than 14d";
         randomizedDelaySec = "45m";
       };
       settings = {
@@ -32,6 +32,7 @@ with lib;
         ];
       };
     };
+    systemd.services.nix-gc.serviceConfig = { CPUQuota = "25%"; };
 
     networking.nftables.enable = mkDefault true;
 
