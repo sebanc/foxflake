@@ -493,7 +493,7 @@ fi
             icon = "foxflake-green-icon";
             exec = "/run/current-system/sw/bin/foxflake-environment-selection";
             terminal = false;
-            categories = ["Utility"];
+            categories = [ "System" ];
           };
         in ''
 mkdir -p $out/bin
