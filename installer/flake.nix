@@ -22,6 +22,13 @@
             {
               nixpkgs.overlays = [
                 (final: prev: {
+                  calamares = prev.calamares.overrideAttrs (oldAttrs: {
+                    postUnpack = (oldAttrs.postUnpack or "") + ''
+                      patch -p1 -d "$sourceRoot" < ${./calamares-patches/patches/checkbootcrypto.patch}
+                    '';
+                  });
+                })
+                (final: prev: {
                   calamares-nixos-extensions = prev.calamares-nixos-extensions.overrideAttrs (oldAttrs: {
                     postInstall = (oldAttrs.postInstall or "") + ''
                       mkdir -p $out/etc/calamares/branding $out/etc/calamares/modules $out/lib/calamares/modules $out/share/calamares/branding
