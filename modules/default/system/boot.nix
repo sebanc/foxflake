@@ -33,7 +33,10 @@ with lib;
         use `boot.loader.grub.devices`.
       '';
       type = with types; str;
-      default = "";
+      default = if config.foxflake.boot.efiSupport then
+        "nodev"
+      else
+        "";
       example = "/dev/disk/by-id/wwn-0x500001234567890a";
     };
     encryption = mkOption {
@@ -67,7 +70,6 @@ with lib;
 
     boot = {
       consoleLogLevel = mkDefault 3;
-      initrd.secrets = mkDefault config.foxflake.boot.encryptionSecrets;
       initrd.systemd.enable = mkDefault true;
       kernelPackages = mkDefault pkgs.unstable.linuxPackages;
       kernelParams = [ "fbcon=nodefer" "quiet" ];
@@ -77,7 +79,6 @@ with lib;
           efiSupport = mkDefault config.foxflake.boot.efiSupport;
           device = mkDefault config.foxflake.boot.device;
           useOSProber = mkDefault true;
-          enableCryptodisk = mkDefault config.foxflake.boot.encryption;
           extraGrubInstallArgs = if config.boot.loader.grub.efiSupport then
             mkDefault [ "--modules=all_video boot btrfs cat chain configfile echo efifwsetup ext2 fat font gettext gfxmenu gfxterm gfxterm_background gzio halt help hfsplus iso9660 jpeg keystatus linux loadenv loopback ls lsefi lsefimmap lsefisystab lssal memdisk minicmd normal ntfs part_apple part_msdos part_gpt password_pbkdf2 png probe reboot regexp search search_fs_uuid search_fs_file search_label sleep smbios squash4 terminal test true video xfs" ]
           else
