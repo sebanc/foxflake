@@ -1,12 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-#
-#   SPDX-FileCopyrightText: 2022 Victor Fuentes <vmfuentes64@gmail.com>
-#   SPDX-FileCopyrightText: 2019 Adriaan de Groot <groot@kde.org>
-#   SPDX-License-Identifier: GPL-3.0-or-later
-#
-#   Calamares is Free Software: see the License-Identifier above.
-# ------------------------------------------------------------------------------
 
 import libcalamares
 import os
@@ -116,7 +108,7 @@ cfgtime = """
 cfgbootefi = """
   # Bootloader configuration
   foxflake.boot.efiSupport = true;
-  foxflake.boot.device = "nodev";
+  foxflake.boot.efiSysMountPoint = "/boot/efi";
 
 """
 
@@ -130,13 +122,6 @@ cfgbootbios = """
 cfgbootnone = """
   # Bootloader configuration
   foxflake.boot.enable = false;
-
-"""
-
-cfgbootgrubcrypt = """
-  # Encryption configuration
-  foxflake.boot.encryption = true;
-  foxflake.boot.encryptionSecrets = { "/boot/crypto_keyfile.bin" = null; };
 
 """
 
@@ -377,122 +362,6 @@ def run():
     else:
         cfg += cfgbootnone
 
-# ================================================================================
-# Setup encrypted swap devices. nixos-generate-config doesn't seem to notice them.
-# ================================================================================
-
-    for part in gs.value("partitions"):
-        if (
-            part["claimed"] is True
-            and (part["fsName"] == "luks" or part["fsName"] == "luks2")
-            and part["device"] is not None
-            and part["fs"] == "linuxswap"
-        ):
-            cfg += """  boot.initrd.luks.devices."{}".device = "/dev/disk/by-uuid/{}";\n""".format(part["luksMapperName"], part["uuid"])
-
-    # Check partitions
-    root_is_encrypted = False
-    boot_is_encrypted = False
-    boot_is_partition = False
-
-    for part in gs.value("partitions"):
-        if part["mountPoint"] == "/":
-            root_is_encrypted = part["fsName"] in ["luks", "luks2"]
-        elif part["mountPoint"] == "/boot":
-            boot_is_partition = True
-            boot_is_encrypted = part["fsName"] in ["luks", "luks2"]
-
-    # Setup keys in /boot/crypto_keyfile if using BIOS and Grub cryptodisk
-    if fw_type != "efi" and (
-        (boot_is_partition and boot_is_encrypted)
-        or (root_is_encrypted and not boot_is_partition)
-    ):
-        cfg += cfgbootgrubcrypt
-        status = _("Setting up LUKS")
-        libcalamares.job.setprogress(0.15)
-        try:
-            libcalamares.utils.host_env_process_output(
-                ["mkdir", "-p", root_mount_point + "/boot"], None
-            )
-            libcalamares.utils.host_env_process_output(
-                ["chmod", "0700", root_mount_point + "/boot"], None
-            )
-            # Create /boot/crypto_keyfile.bin
-            libcalamares.utils.host_env_process_output(
-                [
-                    "dd",
-                    "bs=512",
-                    "count=4",
-                    "if=/dev/random",
-                    "of=" + root_mount_point + "/boot/crypto_keyfile.bin",
-                    "iflag=fullblock",
-                ],
-                None,
-            )
-            libcalamares.utils.host_env_process_output(
-                ["chmod", "600", root_mount_point + "/boot/crypto_keyfile.bin"], None
-            )
-        except subprocess.CalledProcessError:
-            libcalamares.utils.error("Failed to create /boot/crypto_keyfile.bin")
-            return (
-                _("Failed to create /boot/crypto_keyfile.bin"),
-                _("Check if you have enough free space on your partition."),
-            )
-
-        for part in gs.value("partitions"):
-            if (
-                part["claimed"] is True
-                and (part["fsName"] == "luks" or part["fsName"] == "luks2")
-                and part["device"] is not None
-            ):
-                cfg += """  boot.initrd.luks.devices."{}".keyFile = "/boot/crypto_keyfile.bin";\n""".format(
-                    part["luksMapperName"]
-                )
-                try:
-                    # Grub currently only supports pbkdf2 for luks2
-                    libcalamares.utils.host_env_process_output(
-                        [
-                            "cryptsetup",
-                            "luksConvertKey",
-                            "--hash",
-                            "sha256",
-                            "--pbkdf",
-                            "pbkdf2",
-                            part["device"],
-                        ],
-                        None,
-                        part["luksPassphrase"],
-                    )
-                    # Add luks drives to /boot/crypto_keyfile.bin
-                    libcalamares.utils.host_env_process_output(
-                        [
-                            "cryptsetup",
-                            "luksAddKey",
-                            "--hash",
-                            "sha256",
-                            "--pbkdf",
-                            "pbkdf2",
-                            part["device"],
-                            root_mount_point + "/boot/crypto_keyfile.bin",
-                        ],
-                        None,
-                        part["luksPassphrase"],
-                    )
-                except subprocess.CalledProcessError:
-                    libcalamares.utils.error(
-                        "Failed to add {} to /boot/crypto_keyfile.bin".format(
-                            part["luksMapperName"]
-                        )
-                    )
-                    return (
-                        _("cryptsetup failed"),
-                        _(
-                            "Failed to add {} to /boot/crypto_keyfile.bin".format(
-                                part["luksMapperName"]
-                            )
-                        ),
-                    )
-
     # ================================================================================
     # Finalize configuration.
     # ================================================================================
@@ -525,8 +394,8 @@ def run():
     status = _("Generating NixOS configuration")
     libcalamares.job.setprogress(0.25)
 
+    # Generate hardware.nix
     try:
-        # Generate hardware.nix with mounted swap device
         subprocess.check_output(
             ['sudo', 'nixos-generate-config', '--root', root_mount_point],
             stderr=subprocess.STDOUT,
@@ -535,11 +404,30 @@ def run():
         if e.output is not None:
             libcalamares.utils.error(e.output.decode("utf8"))
         return (_("nixos-generate-config failed"), _(e.output.decode("utf8")))
+
+    # Add configuration for encrypted swap that is not generated by nixos-generate-config
+    for part in gs.value("partitions"):
+        if (
+            part["claimed"] is True
+            and (part["fsName"] == "luks" or part["fsName"] == "luks2")
+            and part["device"] is not None
+            and part["fs"] == "linuxswap"
+        ):
+            try:
+                subprocess.check_output(
+                    ['sudo', 'sed', '-i', '-e', '1{N;}', '-e', '$i \  boot.initrd.luks.devices."' + part["luksMapperName"] + '".device = "/dev/disk/by-uuid/' + part["uuid"] + '";\\n', '-e', 'N;P;D', root_mount_point + '/etc/nixos/hardware-configuration.nix'],
+                    stderr=subprocess.STDOUT,
+                )
+            except subprocess.CalledProcessError as e:
+                if e.output is not None:
+                    libcalamares.utils.error(e.output.decode("utf8"))
+                return (_("Fix for encrypred swap partition failed"), _(e.output.decode("utf8")))
  
     # Write the configuration.nix file
     libcalamares.utils.host_env_process_output(['sudo', 'cp', '/dev/stdin', root_mount_point + '/etc/nixos/configuration.nix'], None, cfg)
     subprocess.run(['sudo', 'cp', root_mount_point + '/etc/nixos/configuration.nix', root_mount_point + '/etc/nixos/configuration.backup'], check=True)
     subprocess.run(['sudo', 'cp', '/iso/target-configuration/flake.nix', root_mount_point + '/etc/nixos/flake.nix'], check=True)
+    subprocess.run(['sudo', 'cp', '/iso/target-configuration/flake.nix', root_mount_point + '/etc/nixos/flake.backup'], check=True)
 
     status = _("Installing NixOS")
     libcalamares.job.setprogress(0.3)

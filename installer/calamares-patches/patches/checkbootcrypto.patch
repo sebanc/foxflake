@@ -1,0 +1,101 @@
+--- /dev/null
++++ b/src/modules/partition/core/BootEncryptionCheck.h
+@@ -0,0 +1,11 @@
++#ifndef BOOTENCRYPTIONCHECK_H
++#define BOOTENCRYPTIONCHECK_H
++
++class PartitionCoreModule;
++
++namespace BootEncryptionCheck
++{
++bool isBootPartitionEncrypted( const PartitionCoreModule* core );
++}  // namespace BootEncryptionCheck
++
++#endif  // BOOTENCRYPTIONCHECK_H
+--- /dev/null
++++ b/src/modules/partition/core/BootEncryptionCheck.cpp
+@@ -0,0 +1,31 @@
++#include "BootEncryptionCheck.h"
++
++#include "core/PartitionCoreModule.h"
++#include "partition/FileSystem.h"
++
++#include <kpmcore/core/partition.h>
++
++namespace BootEncryptionCheck
++{
++
++bool
++isBootPartitionEncrypted( const PartitionCoreModule* core )
++{
++    if ( !core )
++    {
++        return false;
++    }
++    if ( Partition* boot_p = core->findPartitionByMountPoint( "/boot" ) )
++    {
++        const auto t = boot_p->fileSystem().type();
++        return t == FileSystem::Luks || t == FileSystem::Luks2;
++    }
++    if ( Partition* root_p = core->findPartitionByMountPoint( "/" ) )
++    {
++        const auto t = root_p->fileSystem().type();
++        return t == FileSystem::Luks || t == FileSystem::Luks2;
++    }
++    return false;
++}
++
++}  // namespace BootEncryptionCheck
+--- a/src/modules/partition/PartitionViewStep.cpp
++++ b/src/modules/partition/PartitionViewStep.cpp
+@@ -17,6 +17,7 @@
+ #include "core/BootLoaderModel.h"
+ #include "core/DeviceModel.h"
+ #include "core/PartitionCoreModule.h"
++#include "core/BootEncryptionCheck.h"
+ #include "gui/ChoicePage.h"
+ #include "gui/PartitionBarsView.h"
+ #include "gui/PartitionLabelsView.h"
+@@ -388,6 +389,21 @@
+         }
+         cDebug() << "Choice applied: " << m_config->installChoice();
+     }
++    else if ( m_manualPartitionPage == m_widget->currentWidget()
++              && BootEncryptionCheck::isBootPartitionEncrypted( m_core ) )
++    {
++        QMessageBox mb( QMessageBox::Critical,
++                         tr( "Encrypted /boot directory detected" ),
++                         tr( "For compatibility reasons, the /boot directory cannot be "
++                            "on an encrypted partition."
++                            "<br/><br/>"
++                            "Please create an unencrypted /boot partition "
++                            "or disable encryption on the rootfs." ),
++                         QMessageBox::Ok,
++                         m_manualPartitionPage );
++        Calamares::fixButtonLabels( &mb );
++        mb.exec();
++    }
+ }
+ 
+ void
+@@ -457,6 +478,10 @@
+         }
+         return false;
+     }
++    if ( m_widget->currentWidget() == m_manualPartitionPage )
++    {
++        return !BootEncryptionCheck::isBootPartitionEncrypted( m_core );
++    }
+     return true;
+ }
+ 
+--- a/src/modules/partition/CMakeLists.txt
++++ b/src/modules/partition/CMakeLists.txt
+@@ -64,6 +64,7 @@
+             core/OsproberEntry.cpp
+             core/PartitionActions.cpp
+             core/PartitionCoreModule.cpp
++            core/BootEncryptionCheck.cpp
+             core/PartitionInfo.cpp
+             core/PartitionLayout.cpp
+             core/PartitionModel.cpp

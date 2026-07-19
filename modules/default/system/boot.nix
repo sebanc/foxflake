@@ -39,31 +39,6 @@ with lib;
         "";
       example = "/dev/disk/by-id/wwn-0x500001234567890a";
     };
-    encryption = mkOption {
-      description = "Decrypt encrypted partition from GRUB";
-      type = with types; bool;
-      default = false;
-    };
-    encryptionSecrets = mkOption {
-      description = ''
-        Secrets to append to the initrd. The attribute name is the
-        path the secret should have inside the initrd, the value
-        is the path it should be copied from (or null for the same
-        path inside and out).
-
-        Note that `nixos-rebuild switch` will generate the initrd
-        also for past generations, so if secrets are moved or deleted
-        you will also have to garbage collect the generations that
-        use those secrets.
-      '';
-      type = types.attrsOf (types.nullOr types.path);
-      default = { };
-      example = literalExpression ''
-        { "/etc/dropbear/dropbear_rsa_host_key" =
-            ./secret-dropbear-key;
-        }
-      '';
-    };
   };
 
   config = mkIf config.foxflake.boot.enable {
