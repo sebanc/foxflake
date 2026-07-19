@@ -21,7 +21,7 @@ with lib;
       };
       settings = {
         auto-optimise-store = mkDefault true;
-        download-buffer-size = 524288000;
+        download-buffer-size = mkDefault 524288000;
         substituters = [
           "https://foxflake.cachix.org/"
           "https://cache.nixos.org/"
