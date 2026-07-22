@@ -8,6 +8,15 @@ with lib;
 
 {
 
+  options.foxflake.build.binaryCache = mkOption {
+    description = ''
+      Do not enable this option, it is only used to bypass important checks
+      while building the binary cache.
+    '';
+    type = types.bool;
+    default = false;
+  };
+
   config = {
 
     documentation.nixos.enable = mkDefault false;
