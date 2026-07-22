@@ -7,6 +7,7 @@
     ./hostname.nix
     ./internationalisation.nix
     ./packages.nix
+    ./secureboot.nix
     ./system.nix
     ./updates.nix
     ./users.nix
