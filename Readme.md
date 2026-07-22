@@ -21,15 +21,23 @@ Environment flexibility:<br>
 - Custom nix-ld and appimage-run configurations ensure extended compatibility with AppImages / scripts.<br><br>
 
 Automation & Reliability:<br>
-- FoxFlake automates daily updates for both system packages and system / user Flatpaks (System updates are staged in the background and applied safely on the next boot).<br>
+- FoxFlake automates daily updates for both system packages and Flatpaks (System updates are staged in the background and applied safely on the next boot).<br>
 - Transitions between NixOS versions are automated, providing a rolling release experience.<br>
 - A custom binary cache is created for all default desktop environments and packages before updates are made available (it avoids NixOS from building packages from source when a binary package is not available).<br>
 - Leveraging the Nix "Generations" mechanism, FoxFlake allows you to instantly revert to previous working states directly from the boot menu.<br><br>
 
 Declarative foundation:<br>
-- All NixOS options remain available and supersede FoxFlake defaults.<br>
+- All NixOS options remain available and naturally override FoxFlake defaults.<br>
 - Only maintain your custom configurations, FoxFlake maintains the core system.<br>
 - Home-manager, plasma-manager, and nix-flatpak configurations are available by default for complete system-to-users setups.<br><br>
+
+<div align="center">
+Gnome:<br><img alt="Gnome" src="./Images/gnome.jpg" width="512" height="320" /><br><br>
+Plasma:<br><img alt="Plasma" src="./Images/plasma.jpg" width="512" height="320" /><br><br>
+Cosmic:<br><img alt="Cosmic" src="./Images/cosmic.jpg" width="512" height="320" /><br><br>
+Hyprland:<br><img alt="Hyprland" src="./Images/hyprland.jpg" width="512" height="320" /><br><br>
+Steam / Steam (for handhelds):<br><img alt="Steam" src="./Images/steam.jpg" width="512" height="320" /><br><br>
+</div>
 
 ## Installation & Usage
 
@@ -37,21 +45,13 @@ Declarative foundation:<br>
 2. Use balenaEtcher, GNOME Disks or KDE ISO Image Writer to create a bootable USB drive (do not use Rufus, it is not compatible at the moment).<br>
 3. Ensure that Secure Boot is disabled in your BIOS, boot from USB and follow the graphical installer (during installation, you will be prompted to select your Desktop Environment and to choose the NixOS native applications you want to install).<br><br>
 
-<div align="center">
-Gnome:<br><img alt="Gnome" src="./Images/gnome.png" width="512" height="320" /><br><br>
-Plasma:<br><img alt="Plasma" src="./Images/plasma.png" width="512" height="320" /><br><br>
-Cosmic:<br><img alt="Cosmic" src="./Images/cosmic.png" width="512" height="320" /><br><br>
-Hyprland:<br><img alt="Hyprland" src="./Images/hyprland.png" width="512" height="320" /><br><br>
-Steam / Steam (for handhelds):<br><img alt="Steam" src="./Images/steam.png" width="512" height="320" /><br><br>
-</div>
-
 ## Complementary instructions
 
 ### Changing desktop environment or native applications after installation
 
 The "FoxFlake Environment Selection" application allows you to review at any point in time the desktop environment and applications choices you made:<br>
 <div align="center">
-<img alt="Foxflake Environment Selection" src="./Images/foxflake-environment-selection.png" width="420" height="320" />
+<img alt="Foxflake Environment Selection" src="./Images/foxflake-environment-selection.jpg" width="420" height="320" />
 </div><br><br>
 
 ### Adding custom configurations
@@ -105,14 +105,14 @@ For older nvidia cards, you will need to identify the nvidia package you need fr
 
 ### Steam sessions
 
-Steam sessions works similarly to SteamOS on the SteamDeck and offer to launch either Steam (through Gamescope) or Plasma.<br><br>
+Steam sessions work similarly to SteamOS on the SteamDeck and offer to launch either Steam (through Gamescope) or Plasma.<br>
 
-There are 2 types of Steam sessions, one for generic computers and another for handhelds such as the SteamDeck. The first uses the standard steam branch while the handhelds specific version comes with the performance overlay and specific tweaks (the handhelds version can also be used on a standard PC but you might encounter graphical artifacts and you would need to add "SteamDeck=0" in your games launch command options to prevent pre-defined SteamDeck settings from being applied).<br><br>
+There are 2 types of Steam sessions, one for generic computers and another for handhelds such as the SteamDeck. The first uses the standard steam branch while the handhelds specific version comes with the performance overlay and specific tweaks (the handhelds version can also be used on a standard PC but you might encounter graphical artifacts and you would need to add "SteamDeck=0" in your games launch command options to prevent pre-defined SteamDeck settings from being applied).<br>
 
 If autologin is enabled, the default is to start the Steam session, you can then switch to Plasma using the Steam "Switch to desktop" button. Once in Plasma, you can go back to the Steam session simply by logging out of the Plasma session.<br><br>
 
 You can also customize the Steam session through specific options:<br>
-- Invert the autologin session (boot automatically in Plasma and launch the Steam session by logging out):<br>
+- Invert the autologin session (boot automatically in Plasma and launch the Steam session by logging out of Plasma):<br>
 `foxflake.environment.steam.primarySession = "plasma";`<br>
 - Define the display to use for the Steam session:<br>
 `foxflake.environment.steam.display = "DP-1";`<br>
@@ -148,7 +148,7 @@ On the next boot, enable secure boot in your BIOS, a blue screen saying "Verific
 
 ### Setting up the Home manager user environment
 
-Home manager is installed by default, to initialize home manager for your user you need to run the command: `nix run home-manager -- init --switch`.<br>
+Home manager is included by default, to initialize an home manager for your user you need to run the command: `nix run home-manager -- init --switch`.<br>
 You can then apply your user home manager configuration updates with the command: `nix run home-manager switch`.<br><br>
 
 ### Building the FoxFlake installer iso image
