@@ -28,9 +28,10 @@ if [ "${1}" == "stable" ] || [ "${1}" == "unstable" ]; then
           modules = [
             foxflake.nixosModules.default
             {
+              foxflake.build.binaryCache = true;
               foxflake.environment.type = "${environment}";
               foxflake.system.bundles = [ "full" ];
-              foxflake.system.packages = with pkgs; [ ];
+              foxflake.system.packages = with pkgs; [ grub2 ];
               $(if [ "${nvidia}" == "-nvidia" ]; then echo "foxflake.nvidia.enable = true;"; else echo "foxflake.nvidia.enable = false;"; fi)
               boot.loader.grub = { enable = true; device = "/dev/sda"; useOSProber = true; };
               fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };

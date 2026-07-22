@@ -42,7 +42,7 @@ jobs:
         with:
           name: foxflake
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-          pushFilter: '(initrd-linux|\.deb$|\.run$|source$|\.tar\.)'
+          pushFilter: '(\.deb$|\.exe$|\.run$|source$|\.tar\.)'
           useDaemon: false
       - name: Build FoxFlake binary cache
         run: |
@@ -123,7 +123,7 @@ jobs:
         with:
           name: foxflake
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-          pushFilter: '(initrd-linux|\.deb$|\.run$|source$|\.tar\.)'
+          pushFilter: '(\.deb$|\.exe$|\.run$|source$|\.tar\.)'
           useDaemon: false
       - name: Build FoxFlake binary cache
         run: |

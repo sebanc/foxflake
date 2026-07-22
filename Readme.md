@@ -16,20 +16,20 @@ It is designed to accommodate two distinct types of users:<br>
 ## Key features
 
 Environment flexibility:<br>
-- Desktop versatility: Seamlessly switch between Gnome, Plasma, Cosmic, Hyprland and Steam environments.<br>
-- Simple package management: Manage your set of NixOS applications via the "FoxFlake Environment Selection" tool and use the desktop environment’s store to install Flatpaks.<br>
-- Extended compatibility with AppImages / scripts: Run most standalone linux programs natively.<br>
-- Complete binary cache: Ensures with its own binary cache that prebuilt packages are available for all included desktop environments and packages configurations (avoids NixOS from building packages from source when a binary package is not available).<br><br>
+- Seamlessly switch between Gnome, Plasma, Cosmic, Hyprland and Steam environments.<br>
+- Manage your native NixOS applications via the "FoxFlake Environment Selection" tool and use the desktop environment’s store to install Flatpaks.<br>
+- Custom nix-ld and appimage-run configurations ensure extended compatibility with AppImages / scripts.<br><br>
 
 Automation & Reliability:<br>
-- Automated lifecycle: The system automatically transitions between NixOS versions, providing a "rolling release" experience.<br>
-- Zero-intervention maintenance: FoxFlake automates daily updates for both system packages and system / user Flatpaks (System updates are staged in the background and applied safely on the next boot).<br>
-- Atomic rollbacks: Leveraging the Nix "Generations" mechanism, FoxFlake allows you to instantly revert to previous working states directly from the boot menu.<br><br>
+- FoxFlake automates daily updates for both system packages and system / user Flatpaks (System updates are staged in the background and applied safely on the next boot).<br>
+- Transitions between NixOS versions are automated, providing a rolling release experience.<br>
+- A custom binary cache is created before updates are made available to ensure that all default desktop environments and packages configurations have prevuilt packages (avoids NixOS from building packages from source when a binary package is not available).<br>
+- Leveraging the Nix "Generations" mechanism, FoxFlake allows you to instantly revert to previous working states directly from the boot menu.<br><br>
 
-Declarative Foundation:<br>
-- Base layer management: Focus on your specific configurations while FoxFlake maintains the core configurations.<br>
-- Unrestricted options: All NixOS options remain available and supersede FoxFlake defaults.<br>
-- Unified declarative stack: Includes home-manager, plasma-manager, and nix-flatpak for complete system-to-users configuration.<br><br>
+Declarative foundation:<br>
+- All NixOS options remain available and supersede FoxFlake defaults.<br>
+- Only maintain your custom configurations, FoxFlake maintains the core system.<br>
+- Home-manager, plasma-manager, and nix-flatpak configurations are available by default for complete system-to-users setups.<br><br>
 
 ## Installation & Usage
 
@@ -126,8 +126,8 @@ If you want to keep your main desktop environment and to have a secondary Steam 
 specialisation."Steam".configuration = {
   boot.loader.grub.configurationName = lib.mkForce "Steam";
   foxflake.environment = {
-    type = lib.mkForce "steam";
-    steam.primarySession = lib.mkForce "steam"; # Or "steamdeck" for handhelds version
+    type = lib.mkForce "steam"; # Or "steamdeck" for handhelds version
+    steam.primarySession = lib.mkForce "steam";
   };
 };
 ```
@@ -139,6 +139,12 @@ Note: Nvidia support on the Steam sessions is considered experimental and will n
 
 A simple Hyprland configuration is provided as a base but you are free to completely change / replace it. You can check and modify Hyprland settings through the configuration file located at the standard path $HOME/.config/hypr/hyprland.conf.<br>
 Note that you are therefore responsible to update the hyprland configuration to accomodate upstream changes.<br><br>
+
+### Secure Boot
+
+Secure Boot support is available as an experimental feature (through GRUB2 + shim signed binaries) and can be enabled after installation by adding the below configuration:<br>
+`foxflake.experimental.secureBoot.enable = true;`<br>
+On the next boot, enable secure boot in your BIOS, a blue screen saying "Verification failed: Access Denied" will appear and you will have to enroll the secure boot key by selecting "OK->Enroll key from disk->EFI Partition->FoxFlake.der->Continue".<br><br>
 
 ### Setting up the Home manager user environment
 
@@ -184,6 +190,6 @@ The generated installer iso image will be located in the "result/iso" folder.<br
 [NixOS]: https://nixos.org
 [Cachix]: https://www.cachix.org
 [NixOS-nvidia]: https://nixos.wiki/wiki/Nvidia
-[GLF-OS]: https://www.gaminglinux.fr/glf-os
+[GLF-OS]: https://glfos.org/
 
 
