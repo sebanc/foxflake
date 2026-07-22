@@ -10,7 +10,7 @@
             name = name;
             runtimeInputs = with final; [ (stable.python3.withPackages (module: [ module.pyside6 ])) ];
             bashOptions = [ "errexit" "pipefail" ];
-            excludeShellChecks = [ "SC2028" ];
+            excludeShellChecks = [ "SC2028" "SC2001" ];
             text = ''
 set -e
 
@@ -25,19 +25,19 @@ if [ ! -f /etc/nixos/configuration.nix ]; then
 
 elif [ ''${#} -eq 0 ]; then
 
-	if ! ${final.coreutils}/bin/id -Gn | ${final.gnugrep}/bin/grep -q "\bwheel\b"; then
-		${final.zenity}/bin/zenity --error --title="FoxFlake environment selection" --text="This application is only available to users with admin privileges."
+	if ! id -Gn | grep -q "\bwheel\b"; then
+		${prev.zenity}/bin/zenity --error --title="FoxFlake Environment Selection" --text="This application is only available to users with admin privileges."
 		exit 1
 	fi
 
 	foxflake_environment_selection_gui="$(mktemp /tmp/${name}-XXXXXXXX)"
-	${final.coreutils}/bin/cat >"''${foxflake_environment_selection_gui}" <<'FOXFLAKE_GUI'
+	cat >"''${foxflake_environment_selection_gui}" <<'FOXFLAKE_GUI'
 import argparse
 import os
 import subprocess
 import sys
 from PySide6.QtCore import Qt, QObject, QTimer, Slot
-from PySide6.QtGui import QPalette, QColor
+from PySide6.QtGui import QPalette, QColor, QIcon
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWebChannel import QWebChannel
@@ -57,7 +57,8 @@ class Bridge(QObject):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("FoxFlake environment selection")
+        self.setWindowIcon(QIcon('${final.foxflake-icons}/share/icons/hicolor/512x512/apps/foxflake-green-icon.svg'))
+        self.setWindowTitle("FoxFlake Environment Selection")
         self.setFixedSize(800, 600)
         self.web_view = QWebEngineView()
         self.profile = QWebEngineProfile.defaultProfile()
@@ -281,7 +282,7 @@ def is_gnome_dark_mode():
     if "gnome" in os.environ.get("XDG_CURRENT_DESKTOP", "").lower():
         try:
             result = subprocess.run(
-                ["${final.glib}/bin/gsettings", "get", "org.gnome.desktop.interface", "color-scheme"],
+                ["${prev.glib}/bin/gsettings", "get", "org.gnome.desktop.interface", "color-scheme"],
                 capture_output=True, text=True
             )
             return "dark" in result.stdout.lower()
@@ -301,6 +302,8 @@ if __name__ == "__main__":
     if "gnome" in os.environ.get("XDG_CURRENT_DESKTOP", "").lower():
         os.environ["QT_QPA_PLATFORM"] = "xcb"
     app = QApplication(sys.argv)
+    app.setApplicationName("FoxFlake Environment Selection")
+    app.setDesktopFileName("foxflake-environment-selection.desktop")
     if is_cosmic_dark_mode() or is_gnome_dark_mode() or is_plasma_dark_mode():
         apply_dark_theme(app)
     else:
@@ -424,64 +427,64 @@ Samsung ULD^Proprietary drivers for Samsung printers^samsunguld|\
 Samsung PL^Drivers for printers supporting SPL Samsung Printer Language^samsungpl"
 
 	set +e
-	current_desktop="$(${final.gnugrep}/bin/grep 'foxflake.environment.type' /etc/nixos/configuration.nix | ${final.gnugrep}/bin/grep -v '^[[:space:]]*#' | ${final.coreutils}/bin/tail -1 | ${final.coreutils}/bin/cut -d '#' -f 1 | ${final.coreutils}/bin/cut -d \" -f 2)"
-	current_applications="^$(${final.gnugrep}/bin/grep 'foxflake.system.bundles' /etc/nixos/configuration.nix | ${final.gnugrep}/bin/grep -v '^[[:space:]]*#' | ${final.coreutils}/bin/tail -1 | ${final.coreutils}/bin/cut -d '#' -f 1 | ${final.gnugrep}/bin/grep --only-matching '\[.*]' | ${final.gnused}/bin/sed 's@\[\|]@@g' | ${final.gnused}/bin/sed 's@\"[[:space:]]*\"@^@g' | ${final.gnused}/bin/sed 's@\"\| @@g')^"
+	current_desktop="$(grep 'foxflake.environment.type' /etc/nixos/configuration.nix | grep -v '^[[:space:]]*#' | tail -1 | cut -d '#' -f 1 | cut -d \" -f 2)"
+	current_applications="^$(grep 'foxflake.system.bundles' /etc/nixos/configuration.nix | grep -v '^[[:space:]]*#' | tail -1 | cut -d '#' -f 1 | grep --only-matching '\[.*]' | sed 's@\[\|]@@g' | sed 's@\"[[:space:]]*\"@^@g' | sed 's@\"\| @@g')^"
 	if [ "''${current_applications}" == "^^" ]; then
-		current_applications="^$(${final.gnugrep}/bin/grep 'foxflake.system.applications' /etc/nixos/configuration.nix | ${final.gnugrep}/bin/grep -v '^[[:space:]]*#' | ${final.coreutils}/bin/tail -1 | ${final.coreutils}/bin/cut -d '#' -f 1 | ${final.gnugrep}/bin/grep --only-matching '\[.*]' | ${final.gnused}/bin/sed 's@\[\|]@@g' | ${final.gnused}/bin/sed 's@\"[[:space:]]*\"@^@g' | ${final.gnused}/bin/sed 's@\"\| @@g')^"
+		current_applications="^$(grep 'foxflake.system.applications' /etc/nixos/configuration.nix | grep -v '^[[:space:]]*#' | tail -1 | cut -d '#' -f 1 | grep --only-matching '\[.*]' | sed 's@\[\|]@@g' | sed 's@\"[[:space:]]*\"@^@g' | sed 's@\"\| @@g')^"
 	fi
-	${final.gnugrep}/bin/grep 'foxflake.system.waydroid' /etc/nixos/configuration.nix | ${final.gnugrep}/bin/grep -v '^[[:space:]]*-' | ${final.coreutils}/bin/tail -1 | ${final.gnugrep}/bin/grep -q 'true' && current_applications="''${current_applications}waydroid^"
-	current_applications="$(echo "''${current_applications}" | ${final.gnused}/bin/sed 's@\^standard^@^firefox^thunderbird^libreoffice^@g')"
-	current_applications="$(echo "''${current_applications}" | ${final.gnused}/bin/sed 's@\^gaming^@^steam^heroic^lutris^@g')"
-	current_applications="$(echo "''${current_applications}" | ${final.gnused}/bin/sed 's@\^studio^@^gimp^inkscape^obs^kdenlive^blender^audacity^@g')"
+	grep 'foxflake.system.waydroid' /etc/nixos/configuration.nix | grep -v '^[[:space:]]*-' | tail -1 | grep -q 'true' && current_applications="''${current_applications}waydroid^"
+	current_applications="$(echo "''${current_applications}" | sed 's@\^standard^@^firefox^thunderbird^libreoffice^@g')"
+	current_applications="$(echo "''${current_applications}" | sed 's@\^gaming^@^steam^heroic^lutris^@g')"
+	current_applications="$(echo "''${current_applications}" | sed 's@\^studio^@^gimp^inkscape^obs^kdenlive^blender^audacity^@g')"
 	set -e
 
 	return_value=$(python "''${foxflake_environment_selection_gui}" -aa "''${available_applications}" -ad "''${available_desktops}" -ca "''${current_applications}" -cd "''${current_desktop}")
 	if [ -z "''${return_value}" ]; then exit 1; fi
 
-	new_desktop="\"$(echo "''${return_value}" | ${final.coreutils}/bin/cut -d '^' -f 1)\""
-	new_applications="[ \"$(echo "''${return_value}" | ${final.coreutils}/bin/cut -d '^' -f 2- | ${final.gnused}/bin/sed 's/.$//' | ${final.gnused}/bin/sed 's@\^@\" \"@g')\" ]"
+	new_desktop="\"$(echo "''${return_value}" | cut -d '^' -f 1)\""
+	new_applications="[ \"$(echo "''${return_value}" | cut -d '^' -f 2- | sed 's/.$//' | sed 's@\^@\" \"@g')\" ]"
 
 	exec /run/wrappers/bin/sudo /run/current-system/sw/bin/foxflake-environment-selection "''${new_desktop}" "''${new_applications}"
 
 elif [ ''${#} -eq 2 ] && { [ "''${1}" == "\"cosmic\"" ] || [ "''${1}" == "\"gnome\"" ] || [ "''${1}" == "\"hyprland\"" ] || [ "''${1}" == "\"plasma\"" ] || [ "''${1}" == "\"steam\"" ] || [ "''${1}" == "\"steamdeck\"" ] || [ "''${1}" == "\"custom\"" ]; }; then
 
-	if [ "$(${final.coreutils}/bin/id -u)" -ne 0 ]; then
+	if [ "$(id -u)" -ne 0 ]; then
 		exec /run/wrappers/bin/sudo /run/current-system/sw/bin/foxflake-environment-selection "''${1}" "''${2}"
 	fi
 
-	if ! ${final.curl}/bin/curl --progress-bar --connect-timeout 60 --retry 10 --retry-delay 1 -L -f https://github.com/sebanc/foxflake > /dev/null 2>&1; then
-		${final.zenity}/bin/zenity --width=640 --title="FoxFlake environment selection" --error --ok-label="Exit" --text "Error: Please ensure you are connected to the internet before running FoxFlake environment selection."
+	if ! ${prev.curl}/bin/curl --progress-bar --connect-timeout 60 --retry 10 --retry-delay 1 -L -f https://github.com/sebanc/foxflake > /dev/null 2>&1; then
+		${prev.zenity}/bin/zenity --width=640 --title="FoxFlake Environment Selection" --error --ok-label="Exit" --text "Error: Please ensure you are connected to the internet before running FoxFlake Environment Selection."
 		exit 1
 	fi
 	
-	current_environment="$(if ${final.gnugrep}/bin/grep -q 'foxflake.environment.type.*;' /etc/nixos/configuration.nix; then ${final.gnugrep}/bin/grep 'foxflake.environment.type.*;' /etc/nixos/configuration.nix | ${final.gnugrep}/bin/grep -o '"[^\"]\+"'; else echo ""; fi)"
+	current_environment="$(if grep -q 'foxflake.environment.type.*;' /etc/nixos/configuration.nix; then grep 'foxflake.environment.type.*;' /etc/nixos/configuration.nix | grep -o '"[^\"]\+"'; else echo ""; fi)"
 	echo "Current environment is ''${current_environment}" > /tmp/${name}.log
 	echo -e "New desktop is ''${1}\nNew applications are ''${2}" >> /tmp/${name}.log
 
-	${final.gnused}/bin/sed -i "s@foxflake.system.bundles@foxflake.system.applications@g" /etc/nixos/configuration.nix
-	if ${final.gnugrep}/bin/grep -q 'foxflake.environment.type.*;' /etc/nixos/configuration.nix && ${final.gnugrep}/bin/grep -q 'foxflake.system.applications.*;' /etc/nixos/configuration.nix; then
+	sed -i "s@foxflake.system.bundles@foxflake.system.applications@g" /etc/nixos/configuration.nix
+	if grep -q 'foxflake.environment.type.*;' /etc/nixos/configuration.nix && grep -q 'foxflake.system.applications.*;' /etc/nixos/configuration.nix; then
 		echo -e "foxflake.environment.type and foxflake.system.applications found in configuration.nix" >> /tmp/${name}.log
-		${final.gnused}/bin/sed -i "/foxflake.system.waydroid/d" /etc/nixos/configuration.nix
-		${final.gnused}/bin/sed -i "s@foxflake.environment.type.*;@foxflake.environment.type = ''${1};@g" /etc/nixos/configuration.nix
-		${final.gnused}/bin/sed -i "s@foxflake.system.applications.*;@foxflake.system.applications = ''${2};@g" /etc/nixos/configuration.nix
+		sed -i "/foxflake.system.waydroid/d" /etc/nixos/configuration.nix
+		sed -i "s@foxflake.environment.type.*;@foxflake.environment.type = ''${1};@g" /etc/nixos/configuration.nix
+		sed -i "s@foxflake.system.applications.*;@foxflake.system.applications = ''${2};@g" /etc/nixos/configuration.nix
 	else
 		echo -e "foxflake.environment.type and foxflake.system.applications not found in configuration.nix" >> /tmp/${name}.log
-		${final.gnused}/bin/sed -i "/foxflake.system.waydroid/d" /etc/nixos/configuration.nix
-		${final.gnused}/bin/sed -i "/foxflake.environment.type/d" /etc/nixos/configuration.nix
-		${final.gnused}/bin/sed -i "/foxflake.system.applications/d" /etc/nixos/configuration.nix
-		${final.gnused}/bin/sed -i "s/^}$/  foxflake.environment.type = ''${1};\n}/g" /etc/nixos/configuration.nix
-		${final.gnused}/bin/sed -i "s/^}$/  foxflake.system.applications = ''${2};\n}/g" /etc/nixos/configuration.nix
+		sed -i "/foxflake.system.waydroid/d" /etc/nixos/configuration.nix
+		sed -i "/foxflake.environment.type/d" /etc/nixos/configuration.nix
+		sed -i "/foxflake.system.applications/d" /etc/nixos/configuration.nix
+		sed -i "s/^}$/  foxflake.environment.type = ''${1};\n}/g" /etc/nixos/configuration.nix
+		sed -i "s/^}$/  foxflake.system.applications = ''${2};\n}/g" /etc/nixos/configuration.nix
 	fi
 
-	${final.foxflake-update}/bin/foxflake-update 2>&1 | ${final.coreutils}/bin/tee -a /tmp/${name}.log >(while read -r line; do echo "''${line}"; echo "# ''${line}\n\n"; done | /run/wrappers/bin/sudo -u "$(${final.coreutils}/bin/id -nu "''${SUDO_UID}")" ${final.zenity}/bin/zenity --height=240 --width=640 --title="FoxFlake environment selection" --text="Rebuilding system, please wait..." --progress --pulsate --no-cancel --auto-close 2>/dev/null) || { /run/wrappers/bin/sudo -u "$(${final.coreutils}/bin/id -nu "''${SUDO_UID}")" ${final.zenity}/bin/zenity --width=640 --title="FoxFlake environment selection" --error --ok-label="Exit" --text "Error: Failed to rebuild the system.\n\nThe log has been saved in the file \"/tmp/${name}.log\"." 2>/dev/null; exit 1; }
+	${prev.foxflake-update}/bin/foxflake-update 2>&1 | tee -a /tmp/${name}.log >(while read -r line; do echo "''${line}"; echo "# ''${line}\n\n"; done | /run/wrappers/bin/sudo -u "$(id -nu "''${SUDO_UID}")" ${prev.zenity}/bin/zenity --height=240 --width=640 --title="FoxFlake Environment Selection" --text="Rebuilding system, please wait..." --progress --pulsate --no-cancel --auto-close 2>/dev/null) || { /run/wrappers/bin/sudo -u "$(id -nu "''${SUDO_UID}")" ${prev.zenity}/bin/zenity --width=640 --title="FoxFlake Environment Selection" --error --ok-label="Exit" --text "Error: Failed to rebuild the system.\n\nThe log has been saved in the file \"/tmp/${name}.log\"." 2>/dev/null; exit 1; }
 
 	if [ "''${current_environment}" != "''${1}" ]; then
 		echo "Cleaning dconf and GTK settings" >> /tmp/${name}.log
-		/run/wrappers/bin/sudo -u "$(${final.coreutils}/bin/id -nu "''${SUDO_UID}")" ${final.dconf}/bin/dconf reset -f /
-		for gtkconfig in /home/*/.gtkrc* /home/*/.config/gtkrc* /home/*/.config/gtk-* /home/*/.config/dconf; do ${final.coreutils}/bin/rm -rf "''${gtkconfig}"; done
+		/run/wrappers/bin/sudo -u "$(id -nu "''${SUDO_UID}")" ${prev.dconf}/bin/dconf reset -f /
+		for gtkconfig in /home/*/.gtkrc* /home/*/.config/gtkrc* /home/*/.config/gtk-* /home/*/.config/dconf; do rm -rf "''${gtkconfig}"; done
 	fi
 
-	/run/wrappers/bin/sudo -u "$(${final.coreutils}/bin/id -nu "''${SUDO_UID}")" ${final.zenity}/bin/zenity --width=640 --title="FoxFlake environment selection" --info --ok-label="Exit" --text "The system has been updated.\n\nChanges will be applied on next boot." 2>/dev/null
+	/run/wrappers/bin/sudo -u "$(id -nu "''${SUDO_UID}")" ${prev.zenity}/bin/zenity --width=640 --title="FoxFlake Environment Selection" --info --ok-label="Exit" --text "The system has been updated.\n\nChanges will be applied on next boot." 2>/dev/null
 
 else
 
@@ -496,6 +499,7 @@ fi
             desktopName = "FoxFlake Environment Selection";
             icon = "foxflake-green-icon";
             exec = "/run/current-system/sw/bin/foxflake-environment-selection";
+            startupWMClass = "FoxFlake Environment Selection";
             terminal = false;
             categories = [ "System" ];
           };
