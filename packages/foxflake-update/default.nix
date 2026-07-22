@@ -12,12 +12,12 @@
           text = ''
 set -e
 
-if [ "$(${final.coreutils}/bin/id -u)" -ne 0 ]; then
-	exec /run/wrappers/bin/sudo "$0"
+if [ "$(id -u)" -ne 0 ]; then
+	exec /run/wrappers/bin/sudo "$0" "$@"
 fi
 
-${final.nix}/bin/nix flake update --flake /etc/nixos
-${final.nixos-rebuild}/bin/nixos-rebuild boot --flake /etc/nixos#foxflake --show-trace
+${prev.nix}/bin/nix flake update --flake /etc/nixos
+${prev.nixos-rebuild}/bin/nixos-rebuild boot --flake /etc/nixos#foxflake --show-trace "$@"
           '';
         };
         desktopEntry = prev.makeDesktopItem {
