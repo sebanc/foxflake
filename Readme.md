@@ -23,7 +23,7 @@ Environment flexibility:<br>
 Automation & Reliability:<br>
 - FoxFlake automates daily updates for both system packages and system / user Flatpaks (System updates are staged in the background and applied safely on the next boot).<br>
 - Transitions between NixOS versions are automated, providing a rolling release experience.<br>
-- A custom binary cache is created before updates are made available to ensure that all default desktop environments and packages configurations have prevuilt packages (avoids NixOS from building packages from source when a binary package is not available).<br>
+- A custom binary cache is created for all default desktop environments and packages before updates are made available (it avoids NixOS from building packages from source when a binary package is not available).<br>
 - Leveraging the Nix "Generations" mechanism, FoxFlake allows you to instantly revert to previous working states directly from the boot menu.<br><br>
 
 Declarative foundation:<br>
