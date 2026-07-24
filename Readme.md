@@ -10,8 +10,8 @@
 FoxFlake is a comprehensive configuration of the NixOS Linux distribution (Flake) that automates management tasks to keep the user experience simple.<br>
 
 It is designed to accommodate two distinct types of users:<br>
-  - Zero-Maintenance Mode: Manage your NixOS apps via the "FoxFlake Environment Selection" application, install flatpaks from the desktop environment's store and let FoxFlake handle the maintenance.<br>
-  - Custom Declarative Configurations: Define your custom configurations in the file /etc/nixos/configuration.nix, the core OS maintenance is taken care of and you are only in charge of maintaining those configurations.<br><br>
+- Zero-Maintenance Mode: Manage your NixOS apps via the "FoxFlake Environment Selection" application, install flatpaks from the desktop environment's store and let FoxFlake handle the maintenance.<br>
+- Custom Declarative Configurations: Define your custom configurations in the file /etc/nixos/configuration.nix, the core OS maintenance is taken care of and you are only in charge of maintaining those configurations.<br><br>
 
 ## Key features
 
@@ -40,6 +40,12 @@ Cosmic:<br><img alt="Cosmic" src="./Images/cosmic.jpg" width="512" height="320" 
 Hyprland:<br><img alt="Hyprland" src="./Images/hyprland.jpg" width="512" height="320" /><br><br>
 Steam / Steam (for handhelds):<br><img alt="Steam" src="./Images/steam.jpg" width="512" height="320" /><br><br>
 </div>
+
+## System requirements
+
+Processor: Quad-core (amd64)<br>
+Memory: 4 GB+ (8GB strongly recommended)<br>
+Storage: 50 GB+ (SSD strongly recommended)<br><br>
 
 ## Installation & Usage
 
@@ -93,6 +99,7 @@ services.scx = {
   scheduler = "scx_lavd";
 };
 ```
+<br>
 
 ### Installing legacy nvidia drivers
 
@@ -104,6 +111,7 @@ For older nvidia cards, you will need to identify the nvidia package you need fr
   hardware.nvidia.open = false;
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_535; # Replace this with the nvidia driver package you need.
 ```
+<br>
 
 ### Steam sessions
 
@@ -120,7 +128,7 @@ You can also customize the Steam session through specific options:<br>
 `foxflake.environment.steam.display = "DP-1";`<br>
 - Set the default resolution to use for the Steam session (in the format width x height x refresh rate):<br>
 `foxflake.environment.steam.resolution = "1920x1080x60";`<br>
-- HDR can be enabed in the Steam session with the global option:<br>
+- HDR can be enabled in the Steam session with the global option:<br>
 `foxflake.gaming.hdr = true;`<br>
 
 If you want to keep your main desktop environment and to have a secondary Steam environment, you can do it through a NixOS "specialisation" (a specific boot entry for the Steam session will be added to the bootloader):
@@ -152,6 +160,17 @@ On the next boot, enable secure boot in your BIOS, a blue screen saying "Verific
 
 Home manager is included by default, to initialize an home manager for your user you need to run the command: `nix run home-manager -- init --switch`.<br>
 You can then apply your user home manager configuration updates with the command: `nix run home-manager switch`.<br><br>
+
+### FoxFlake branches
+
+`main`: Only documentation, license, and github workflows (not a flake branch).<br>
+`stable`: Based mainly on the current nixos stable branch and features the latest LTS kernel by default.<br>
+`unstable`: Based mainly on the nixos unstable branch and features the latest Mainline kernel by default.<br>
+`stable-test`: For testing changes prior to push to `stable` branch.<br>
+`unstable-test`: For testing changes prior to push to `unstable` branch.<br>
+`dev`: For development purpose, pull requests should point to this branch.<br>
+
+You can change the branch you follow (`stable` by default) by editing the file /etc/nixos/flake.nix and then running `foxflake-update`.<br><br>
 
 ### Building the FoxFlake installer iso image
 
