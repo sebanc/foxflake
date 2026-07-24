@@ -7,29 +7,31 @@
 
 <h1 align="center">FoxFlake</h1>
 
-FoxFlake is a comprehensive configuration of the NixOS Linux distribution (Flake) that automates NixOS management tasks to keep the user experience simple.<br><br>
+FoxFlake is a comprehensive configuration of the NixOS Linux distribution (Flake) that automates management tasks to keep the user experience simple.<br>
 
 It is designed to accommodate two distinct types of users:<br>
   - Zero-Maintenance Mode: Manage your NixOS apps via the "FoxFlake Environment Selection" application, install flatpaks from the desktop environment's store and let FoxFlake handle the maintenance.<br>
-  - Custom Declarative Configurations: Define your custom configurations in the file /etc/nixos/configuration.nix, the core OS maintenance is taken care of and you are only in charge of maintaining your specific configurations.<br><br>
+  - Custom Declarative Configurations: Define your custom configurations in the file /etc/nixos/configuration.nix, the core OS maintenance is taken care of and you are only in charge of maintaining those configurations.<br><br>
 
 ## Key features
 
 Environment flexibility:<br>
 - Seamlessly switch between Gnome, Plasma, Cosmic, Hyprland and Steam environments.<br>
 - Manage your native NixOS applications via the "FoxFlake Environment Selection" tool and use the desktop environment’s store to install Flatpaks.<br>
-- Custom nix-ld and appimage-run configurations ensure extended compatibility with AppImages / scripts.<br><br>
+- Custom nix-ld and appimage-run configurations ensure extended compatibility with AppImages / scripts.<br>
 
-Automation & Reliability:<br>
+Automated maintenance:<br>
 - FoxFlake automates daily updates for both system packages and Flatpaks (System updates are staged in the background and applied safely on the next boot).<br>
 - Transitions between NixOS versions are automated, providing a rolling release experience.<br>
 - A custom binary cache is created for all default desktop environments and packages before updates are made available (it avoids NixOS from building packages from source when a binary package is not available).<br>
-- Leveraging the Nix "Generations" mechanism, FoxFlake allows you to instantly revert to previous working states directly from the boot menu.<br><br>
+- Leveraging the Nix "Generations" mechanism, FoxFlake allows you to instantly revert to previous working states directly from the boot menu.<br>
 
 Declarative foundation:<br>
 - All NixOS options remain available and naturally override FoxFlake defaults.<br>
-- Only maintain your custom configurations, FoxFlake maintains the core system.<br>
-- Home-manager, plasma-manager, and nix-flatpak configurations are available by default for complete system-to-users setups.<br><br>
+- Home-manager, plasma-manager, and nix-flatpak configurations are available by default for complete system-to-users setups.<br>
+- Only maintain your custom configurations, the core OS maintenance is taken care of.<br><br>
+
+## Desktop environments
 
 <div align="center">
 Gnome:<br><img alt="Gnome" src="./Images/gnome.jpg" width="512" height="320" /><br><br>
@@ -56,10 +58,10 @@ The "FoxFlake Environment Selection" application allows you to review at any poi
 
 ### Adding custom configurations
 
-FoxFlake allows you to add any NixOS / Home Manager / Plasma Manager configurations.<br>
-Add your configurations to the file /etc/nixos/configuration.nix and update FoxFlake by running `foxflake-update`. Once done, reboot your system for changes to take effect.<br><br>
+FoxFlake allows you to use any NixOS / Home Manager / Plasma Manager configurations.<br>
+Add your configurations to the file /etc/nixos/configuration.nix and update FoxFlake by running `foxflake-update`. Once done, reboot your system for changes to take effect.<br>
 
-Examples of configurations include:<br>
+Examples of configurations:<br>
 - Install specified system packages (use "pkgs.unstable" instead of "pkgs" for nixos unstable channel packages):<br>
 `foxflake.system.packages = with pkgs; [ vim ];`<br>
 - Installs specified system Flatpaks:<br>
@@ -109,7 +111,7 @@ Steam sessions work similarly to SteamOS on the SteamDeck and offer to launch ei
 
 There are 2 types of Steam sessions, one for generic computers and another for handhelds such as the SteamDeck. The first uses the standard steam branch while the handhelds specific version comes with the performance overlay and specific tweaks (the handhelds version can also be used on a standard PC but you might encounter graphical artifacts and you would need to add "SteamDeck=0" in your games launch command options to prevent pre-defined SteamDeck settings from being applied).<br>
 
-If autologin is enabled, the default is to start the Steam session, you can then switch to Plasma using the Steam "Switch to desktop" button. Once in Plasma, you can go back to the Steam session simply by logging out of the Plasma session.<br><br>
+If autologin is enabled, the default is to start the Steam session, you can then switch to Plasma using the Steam "Switch to desktop" button. Once in Plasma, you can go back to the Steam session simply by logging out of the Plasma session.<br>
 
 You can also customize the Steam session through specific options:<br>
 - Invert the autologin session (boot automatically in Plasma and launch the Steam session by logging out of Plasma):<br>
@@ -119,7 +121,7 @@ You can also customize the Steam session through specific options:<br>
 - Set the default resolution to use for the Steam session (in the format width x height x refresh rate):<br>
 `foxflake.environment.steam.resolution = "1920x1080x60";`<br>
 - HDR can be enabed in the Steam session with the global option:<br>
-`foxflake.gaming.hdr = true;`<br><br>
+`foxflake.gaming.hdr = true;`<br>
 
 If you want to keep your main desktop environment and to have a secondary Steam environment, you can do it through a NixOS "specialisation" (a specific boot entry for the Steam session will be added to the bootloader):
 ```
