@@ -16,7 +16,12 @@ in
     programs = {
       firefox = {
         enable = mkDefault true;
-        package = mkDefault pkgs.stable.firefox;
+        package = mkDefault (pkgs.stable.firefox.overrideAttrs (oldAttrs: {
+          makeWrapperArgs = (oldAttrs.makeWrapperArgs or []) ++ [
+            "--suffix" "XDG_DATA_DIRS" ":"
+            "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}:${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}"
+          ];
+        }));
         languagePacks = mkDefault firefox_locale;
         policies.RequestedLocales = mkDefault firefox_locale;
         preferences = {
