@@ -17,7 +17,12 @@ in
     programs = {
       thunderbird = {
         enable = mkDefault true;
-        package = mkDefault pkgs.stable.thunderbird;
+        package = mkDefault (pkgs.stable.thunderbird.overrideAttrs (oldAttrs: {
+          makeWrapperArgs = (oldAttrs.makeWrapperArgs or []) ++ [
+            "--suffix" "XDG_DATA_DIRS" ":"
+            "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}:${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}"
+          ];
+        }));
         policies.RequestedLocales = mkDefault thunderbird_locale;
         preferences = {
           "widget.use-xdg-desktop-portal.file-picker" = 1;
