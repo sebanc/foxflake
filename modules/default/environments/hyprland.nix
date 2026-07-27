@@ -19,11 +19,7 @@ with lib;
           fi
         '';
       });
-    }; 
-
-    programs.bash.promptInit = mkDefault ''
-      PS1="\n\[\033[1;36m\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\$\[\033[0m\] "
-    '';
+    };
 
     environment = {
       pathsToLink = [
@@ -42,20 +38,20 @@ with lib;
         brightnessctl
         catppuccin-sddm-corners
         grim
-        unstable.hyprlock
-        unstable.hyprpaper
-        unstable.kitty
-        unstable.mako
+        hyprlock
+        hyprpaper
+        kitty
+        mako
         nemo-with-extensions
         networkmanagerapplet
-        unstable.nwg-dock-hyprland
-        unstable.nwg-drawer
+        nwg-dock-hyprland
+        nwg-drawer
         pavucontrol
         tela-circle-icon-theme
-        unstable.waybar
+        waybar
         wireplumber
         wl-clipboard
-        unstable.wlogout
+        wlogout
       ];
     };
 
@@ -64,6 +60,9 @@ with lib;
     ];
 
     programs = {
+      bash.promptInit = mkDefault ''
+        PS1="\n\[\033[1;36m\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\$\[\033[0m\] "
+      '';
       dconf = {
         enable = mkDefault true;
         profiles.user.databases = mkDefault [
@@ -92,7 +91,6 @@ with lib;
       };
       hyprland = {
         enable = mkDefault true;
-        package = mkDefault pkgs.unstable.hyprland;
         xwayland.enable = mkDefault true;
       };
       hyprlock.enable = mkDefault true;
@@ -119,16 +117,7 @@ with lib;
         };
         defaultSession = mkDefault "hyprland";
       };
-      hypridle = {
-        enable = mkDefault true;
-        package = mkDefault pkgs.unstable.hypridle;
-      };
-    };
-
-    xdg.portal = {
-      enable = mkDefault true;
-      extraPortals = mkDefault [ pkgs.xdg-desktop-portal-hyprland ];
-      xdgOpenUsePortal = mkDefault true;
+      hypridle.enable = mkDefault true;
     };
 
     systemd.user.services = {
@@ -143,102 +132,127 @@ with lib;
 
             if [ ! -d "''${HOME}/.config/hypr" ]; then
               mkdir -p "''${HOME}/.config/hypr"
-              cat >"''${HOME}/.config/hypr/hyprland.conf" <<'HYPRLAND_CONFIG'
-            exec-once = xdg-user-dirs-gtk-update
-            exec-once = ''${HOME}/.config/hypr/scripts/scale_fix.sh
-            exec-once = hyprctl setcursor ${config.foxflake.customization.environment.cursor-theme} 24
-            exec-once = hypridle
-            exec-once = hyprpaper
-            exec-once = waybar
-            exec-once = nwg-dock-hyprland -x -p "bottom" -lp start -ico start-here -c "nwg-drawer --nocats --nofs -c 5 -mb 10 -mt 10 -ml 10 -mr 10" -i 48 -mt 10 -mb 10 -ml 10 -mr 10
-            exec-once = mako
-            exec-once = blueman-applet
-            exec-once = nm-applet --indicator
-            general {
-              gaps_in = 6
-              gaps_out = 12
-              border_size = 2
-              col.active_border = rgba(ffffffff) rgba(3d3d3dff) 45deg
-              col.inactive_border = rgba(595959aa)
-            }
-            decoration {
-              rounding = 12
-              active_opacity = 1.0
-              inactive_opacity = 0.92
-              dim_inactive = true
-              dim_strength = 0.15
-              shadow {
-                enabled = true
-                range = 8
-                render_power = 3
-                color = rgba(000000ee)
-              }
-              blur {
-                enabled = true
-                size = 6
-                passes = 2
-                new_optimizations = true
-              }
-            }
-            windowrule {
-              name = zenity
-              float = on
-              center = on
-              stay_focused = on
-              match:class = ^(zenity)$
-            }
-            cursor {
-              no_hardware_cursors = true
-            }
-            input {
-              kb_layout = ${config.foxflake.internationalisation.keyboard.layout}
-              kb_variant = ${config.foxflake.internationalisation.keyboard.variant}
-              numlock_by_default = true
-              repeat_rate = 50
-              repeat_delay = 300
-            }
-            bind = SUPER, Return, exec, kitty
-            bind = SUPER, T, exec, kitty
-            bind = SUPER SHIFT, Return, exec, [float] kitty
-            bind = SUPER SHIFT, T, exec, [float] kitty
-            bind = SUPER, code:10, workspace, 1
-            bind = SUPER, code:11, workspace, 2
-            bind = SUPER, code:12, workspace, 3
-            bind = SUPER, code:13, workspace, 4
-            bind = SUPER SHIFT, code:10, movetoworkspace, 1
-            bind = SUPER SHIFT, code:11, movetoworkspace, 2
-            bind = SUPER SHIFT, code:12, movetoworkspace, 3
-            bind = SUPER SHIFT, code:13, movetoworkspace, 4
-            bind = ALT, Tab, cyclenext,
-            bind = ALT, Tab, bringactivetotop,
-            bind = ALT SHIFT, Tab, cyclenext, prev
-            bind = ALT SHIFT, Tab, bringactivetotop,
-            bind = SUPER, Q, killactive,
-            bind = SUPER, F, fullscreen, 0
-            bind = SUPER, M, fullscreen, 1
-            bind = SUPER, P, pseudo,
-            bind = SUPER, D, exec, pkill nwg-drawer || nwg-drawer --nocats --nofs -c 5 -mb 10 -mt 10 -ml 10 -mr 10
-            bind = SUPER, E, exec, nemo --no-desktop
-            bind = SUPER, X, exec, pkill wlogout || wlogout -p layer-shell -b 5 -L 300 -R 300 -T 300 -B 300
-            bind = SUPER SHIFT, SPACE, togglefloating,
-            bindm = SUPER, mouse:273, resizewindow
-            bindm = SUPER, mouse:272, movewindow
-            bind = SUPER, left, movefocus, left
-            bind = SUPER, right, movefocus, right
-            bind = SUPER, up, movefocus, up  
-            bind = SUPER, down, movefocus, down
-            bind = SUPER SHIFT, left, movewindow, left
-            bind = SUPER SHIFT, right, movewindow, right
-            bind = SUPER SHIFT, up, movewindow, up
-            bind = SUPER SHIFT, down, movewindow, down
-            bind = SUPER, L, exec, loginctl lock-session
-            binde = , XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+
-            binde = , XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
-            bind = , XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-            bind = , XF86MonBrightnessUp, exec, brightnessctl set +10%
-            bind = , XF86MonBrightnessDown, exec, brightnessctl set 10%-
-            bind = , Print, exec, grim - | wl-copy
-            HYPRLAND_CONFIG
+              cat >"''${HOME}/.config/hypr/hyprland.lua" <<'HYPRLAND_CONFIG_LUA'
+            local monitor_defined = false
+            local real_hl_monitor = hl.monitor
+            hl.monitor = function(opts)
+              monitor_defined = true
+              return real_hl_monitor(opts)
+            end
+            hl.on("hyprland.start", function()
+              if not monitor_defined then
+                for _, monitor in ipairs(hl.get_monitors()) do
+                  local scale = monitor.height > 1600 and 2 or 1
+                  print(string.format("Setting %s (Height: %d) to scale %d", monitor.name, monitor.height, scale))
+                  hl.monitor({
+                    output   = monitor.name,
+                    mode     = "preferred",
+                    position = "auto",
+                    scale    = scale,
+                  })
+                end
+              end
+              hl.exec_cmd("xdg-user-dirs-gtk-update")
+              hl.exec_cmd("hyprctl setcursor ${config.foxflake.customization.environment.cursor-theme} 24")
+              hl.exec_cmd("hypridle")
+              hl.exec_cmd("hyprpaper")
+              hl.exec_cmd("waybar")
+              hl.exec_cmd("nwg-dock-hyprland -x -p \"bottom\" -lp start -ico start-here -c \"nwg-drawer --nocats --nofs -c 5 -mb 10 -mt 10 -ml 10 -mr 10\" -i 48 -mt 10 -mb 10 -ml 10 -mr 10")
+              hl.exec_cmd("mako")
+              hl.exec_cmd("blueman-applet")
+              hl.exec_cmd("nm-applet --indicator")
+            end)
+            hl.config({
+              general = {
+                gaps_in = 6,
+                gaps_out = 12,
+                border_size = 2,
+                col = {
+                  active_border = { colors = {"rgba(ffffffff)", "rgba(3d3d3dff)"}, angle = 45 },
+                  inactive_border = "rgba(595959aa)",
+                },
+              },
+              decoration = {
+                rounding = 12,
+                active_opacity = 1.0,
+                inactive_opacity = 0.92,
+                dim_inactive = true,
+                dim_strength = 0.15,
+                shadow = {
+                  enabled = true,
+                  range = 8,
+                  render_power = 3,
+                  color = "rgba(000000ee)",
+                },
+                blur = {
+                  enabled = true,
+                  size = 6,
+                  passes = 2,
+                  new_optimizations = true,
+                },
+              },
+              cursor = {
+                no_hardware_cursors = true,
+              },
+              input = {
+                kb_layout = "${config.foxflake.internationalisation.keyboard.layout}",
+                kb_variant = "${config.foxflake.internationalisation.keyboard.variant}",
+                numlock_by_default = true,
+                repeat_rate = 50,
+                repeat_delay = 300,
+              },
+            })
+            hl.bind("SUPER + Return", hl.dsp.exec_cmd("kitty"))
+            hl.bind("SUPER + T", hl.dsp.exec_cmd("kitty"))
+            hl.bind("SUPER + SHIFT + Return", hl.dsp.exec_cmd("[float] kitty"))
+            hl.bind("SUPER + SHIFT + T", hl.dsp.exec_cmd("[float] kitty"))
+            hl.bind("SUPER + code:10", hl.dsp.focus({ workspace = 1 }))
+            hl.bind("SUPER + code:11", hl.dsp.focus({ workspace = 2 }))
+            hl.bind("SUPER + code:12", hl.dsp.focus({ workspace = 3 }))
+            hl.bind("SUPER + code:13", hl.dsp.focus({ workspace = 4 }))
+            hl.bind("SUPER + SHIFT + code:10", hl.dsp.window.move({ workspace = 1 }))
+            hl.bind("SUPER + SHIFT + code:11", hl.dsp.window.move({ workspace = 2 }))
+            hl.bind("SUPER + SHIFT + code:12", hl.dsp.window.move({ workspace = 3 }))
+            hl.bind("SUPER + SHIFT + code:13", hl.dsp.window.move({ workspace = 4 }))
+            hl.bind("ALT + Tab", hl.dsp.window.cycle_next(""))
+            hl.bind("ALT + Tab", hl.dsp.window.bring_to_top())
+            hl.bind("ALT + SHIFT + Tab", hl.dsp.window.cycle_next("prev"))
+            hl.bind("ALT + SHIFT + Tab", hl.dsp.window.bring_to_top())
+            hl.bind("SUPER + Q", hl.dsp.window.close())
+            hl.bind("SUPER + F", hl.dsp.window.fullscreen(0))
+            hl.bind("SUPER + M", hl.dsp.window.fullscreen(1))
+            hl.bind("SUPER + P", hl.dsp.window.pseudo())
+            hl.bind("SUPER + D", hl.dsp.exec_cmd("pkill nwg-drawer || nwg-drawer --nocats --nofs -c 5 -mb 10 -mt 10 -ml 10 -mr 10"))
+            hl.bind("SUPER + E", hl.dsp.exec_cmd("nemo --no-desktop"))
+            hl.bind("SUPER + X", hl.dsp.exec_cmd("pkill wlogout || wlogout -p layer-shell -b 5 -L 300 -R 300 -T 300 -B 300"))
+            hl.bind("SUPER + SHIFT + SPACE", hl.dsp.window.float({ action = "toggle" }))
+            hl.bind("SUPER + mouse:273", hl.dsp.window.resize())
+            hl.bind("SUPER + mouse:272", hl.dsp.window.drag())
+            hl.bind("SUPER + left", hl.dsp.focus({ direction = "left" }))
+            hl.bind("SUPER + right", hl.dsp.focus({ direction = "right" }))
+            hl.bind("SUPER + up", hl.dsp.focus({ direction = "up" }))
+            hl.bind("SUPER + down", hl.dsp.focus({ direction = "down" }))
+            hl.bind("SUPER + SHIFT + left", hl.dsp.window.move({ direction = "left" }))
+            hl.bind("SUPER + SHIFT + right", hl.dsp.window.move({ direction = "right" }))
+            hl.bind("SUPER + SHIFT + up", hl.dsp.window.move({ direction = "up" }))
+            hl.bind("SUPER + SHIFT + down", hl.dsp.window.move({ direction = "down" }))
+            hl.bind("SUPER + L", hl.dsp.exec_cmd("loginctl lock-session"))
+            hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"), { repeating = true })
+            hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), { repeating = true })
+            hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"))
+            hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl set +10%"))
+            hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl set 10%-"))
+            hl.bind("Print", hl.dsp.exec_cmd("grim - | wl-copy"))
+            hl.window_rule({
+              name = "zenity",
+              match = {
+                class = "^(zenity)$",
+              },
+              center = true,
+              float = true,
+              stay_focused = true,
+            })
+            HYPRLAND_CONFIG_LUA
               cat >"''${HOME}/.config/hypr/hypridle.conf" <<'HYPRIDLE_CONFIG'
             general {
               lock_cmd = pidof hyprlock || hyprlock
@@ -309,25 +323,6 @@ with lib;
             splash = false
             ipc = off
             HYPRPAPER_CONFIG
-              mkdir -p "''${HOME}/.config/hypr/scripts"
-              cat >"''${HOME}/.config/hypr/scripts/scale_fix.sh" <<'HYPRLAND_SCALING_FIX'
-            #!/bin/bash
-            if ! grep -q '^monitor' "''${HOME}/.config/hypr/hyprland.conf"; then
-              MONITORS=$(hyprctl monitors -j)
-              echo "$MONITORS" | jq -c '.[]' | while read -r monitor; do
-                NAME=$(echo "$monitor" | jq -r '.name')
-                HEIGHT=$(echo "$monitor" | jq -r '.height')
-                if [ "$HEIGHT" -gt 1600 ]; then
-                  SCALE=2
-                else
-                  SCALE=1
-                fi
-                echo "Setting $NAME (Height: $HEIGHT) to scale $SCALE"
-                hyprctl keyword monitor "$NAME, preferred, auto, $SCALE"
-              done
-            fi
-            HYPRLAND_SCALING_FIX
-              chmod 0755 "''${HOME}/.config/hypr/scripts/scale_fix.sh"
               mkdir -p "''${HOME}/.config/kitty"
               cat >"''${HOME}/.config/kitty/kitty.conf" <<'KITTY_CONFIG'
             background_opacity 0.8
@@ -677,117 +672,16 @@ with lib;
             }
             WLOGOUT_CSS
             fi
-
-            if [ ! -f "''${HOME}/.config/hypr/hyprland.lua" ]; then
-              cat >"''${HOME}/.config/hypr/hyprland.lua" <<'HYPRLAND_CONFIG_LUA'
-            hl.on("hyprland.start", function()
-              hl.exec_cmd("xdg-user-dirs-gtk-update")
-              hl.exec_cmd("''${HOME}/.config/hypr/scripts/scale_fix.sh")
-              hl.exec_cmd("hyprctl setcursor ${config.foxflake.customization.environment.cursor-theme} 24")
-              hl.exec_cmd("hypridle")
-              hl.exec_cmd("hyprpaper")
-              hl.exec_cmd("waybar")
-              hl.exec_cmd("nwg-dock-hyprland -x -p \"bottom\" -lp start -ico start-here -c \"nwg-drawer --nocats --nofs -c 5 -mb 10 -mt 10 -ml 10 -mr 10\" -i 48 -mt 10 -mb 10 -ml 10 -mr 10")
-              hl.exec_cmd("mako")
-              hl.exec_cmd("blueman-applet")
-              hl.exec_cmd("nm-applet --indicator")
-            end)
-            hl.config({
-              general = {
-                gaps_in = 6,
-                gaps_out = 12,
-                border_size = 2,
-                col = {
-                  active_border = { colors = {"rgba(ffffffff)", "rgba(3d3d3dff)"}, angle = 45 },
-                  inactive_border = "rgba(595959aa)",
-                },
-              },
-              decoration = {
-                rounding = 12,
-                active_opacity = 1.0,
-                inactive_opacity = 0.92,
-                dim_inactive = true,
-                dim_strength = 0.15,
-                shadow = {
-                  enabled = true,
-                  range = 8,
-                  render_power = 3,
-                  color = "rgba(000000ee)",
-                },
-                blur = {
-                  enabled = true,
-                  size = 6,
-                  passes = 2,
-                  new_optimizations = true,
-                },
-              },
-              cursor = {
-                no_hardware_cursors = true,
-              },
-              input = {
-                kb_layout = "${config.foxflake.internationalisation.keyboard.layout}",
-                kb_variant = "${config.foxflake.internationalisation.keyboard.variant}",
-                numlock_by_default = true,
-                repeat_rate = 50,
-                repeat_delay = 300,
-              },
-            })
-            hl.bind("SUPER + Return", hl.dsp.exec_cmd("kitty"))
-            hl.bind("SUPER + T", hl.dsp.exec_cmd("kitty"))
-            hl.bind("SUPER + SHIFT + Return", hl.dsp.exec_cmd("[float] kitty"))
-            hl.bind("SUPER + SHIFT + T", hl.dsp.exec_cmd("[float] kitty"))
-            hl.bind("SUPER + code:10", hl.dsp.focus({ workspace = 1 }))
-            hl.bind("SUPER + code:11", hl.dsp.focus({ workspace = 2 }))
-            hl.bind("SUPER + code:12", hl.dsp.focus({ workspace = 3 }))
-            hl.bind("SUPER + code:13", hl.dsp.focus({ workspace = 4 }))
-            hl.bind("SUPER + SHIFT + code:10", hl.dsp.window.move({ workspace = 1 }))
-            hl.bind("SUPER + SHIFT + code:11", hl.dsp.window.move({ workspace = 2 }))
-            hl.bind("SUPER + SHIFT + code:12", hl.dsp.window.move({ workspace = 3 }))
-            hl.bind("SUPER + SHIFT + code:13", hl.dsp.window.move({ workspace = 4 }))
-            hl.bind("ALT + Tab", hl.dsp.window.cycle_next(""))
-            hl.bind("ALT + Tab", hl.dsp.window.bring_to_top())
-            hl.bind("ALT + SHIFT + Tab", hl.dsp.window.cycle_next("prev"))
-            hl.bind("ALT + SHIFT + Tab", hl.dsp.window.bring_to_top())
-            hl.bind("SUPER + Q", hl.dsp.window.close())
-            hl.bind("SUPER + F", hl.dsp.window.fullscreen(0))
-            hl.bind("SUPER + M", hl.dsp.window.fullscreen(1))
-            hl.bind("SUPER + P", hl.dsp.window.pseudo())
-            hl.bind("SUPER + D", hl.dsp.exec_cmd("pkill nwg-drawer || nwg-drawer --nocats --nofs -c 5 -mb 10 -mt 10 -ml 10 -mr 10"))
-            hl.bind("SUPER + E", hl.dsp.exec_cmd("nemo --no-desktop"))
-            hl.bind("SUPER + X", hl.dsp.exec_cmd("pkill wlogout || wlogout -p layer-shell -b 5 -L 300 -R 300 -T 300 -B 300"))
-            hl.bind("SUPER + SHIFT + SPACE", hl.dsp.window.float({ action = "toggle" }))
-            hl.bind("SUPER + mouse:273", hl.dsp.window.resize())
-            hl.bind("SUPER + mouse:272", hl.dsp.window.drag())
-            hl.bind("SUPER + left", hl.dsp.focus({ direction = "left" }))
-            hl.bind("SUPER + right", hl.dsp.focus({ direction = "right" }))
-            hl.bind("SUPER + up", hl.dsp.focus({ direction = "up" }))
-            hl.bind("SUPER + down", hl.dsp.focus({ direction = "down" }))
-            hl.bind("SUPER + SHIFT + left", hl.dsp.window.move({ direction = "left" }))
-            hl.bind("SUPER + SHIFT + right", hl.dsp.window.move({ direction = "right" }))
-            hl.bind("SUPER + SHIFT + up", hl.dsp.window.move({ direction = "up" }))
-            hl.bind("SUPER + SHIFT + down", hl.dsp.window.move({ direction = "down" }))
-            hl.bind("SUPER + L", hl.dsp.exec_cmd("loginctl lock-session"))
-            hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"), { repeating = true })
-            hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), { repeating = true })
-            hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"))
-            hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl set +10%"))
-            hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl set 10%-"))
-            hl.bind("Print", hl.dsp.exec_cmd("grim - | wl-copy"))
-            hl.window_rule({
-              name = "zenity",
-              match = {
-                class = "^(zenity)$",
-              },
-              center = true,
-              float = true,
-              stay_focused = true,
-            })
-            HYPRLAND_CONFIG_LUA
-            fi
           ''}/bin/hyprland-defaults";
         };
         restartIfChanged = false;
       };
+    };
+
+    xdg.portal = {
+      enable = mkDefault true;
+      extraPortals = mkDefault [ pkgs.xdg-desktop-portal-hyprland ];
+      xdgOpenUsePortal = mkDefault true;
     };
 
   };
