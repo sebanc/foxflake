@@ -150,11 +150,29 @@ Note: Nvidia support on the Steam sessions is considered experimental and will n
 A simple Hyprland configuration is provided as a base but you are free to completely change / replace it. You can check and modify Hyprland settings through the configuration file located at the standard path $HOME/.config/hypr/hyprland.conf.<br>
 Note that you are therefore responsible to update the hyprland configuration to accomodate upstream changes.<br><br>
 
+### Custom desktop environment
+
+You can also use a custom desktop environment while keeping access to FoxFlake features.<br><br>
+Edit your /etc/nixos/configuration.nix as follows:<br>
+- Change the value of `foxflake.environment.type` to `custom`.<br>
+- Add the configurations for the display manager and desktop environment you want to use, for example with LightDM slick greeter and Cinnamon:
+```
+services.xserver.displayManager.lightdm.enable = true;
+services.xserver.displayManager.lightdm.greeters.slick.enable = true;
+services.xserver.desktopManager.cinnamon.enable = true;
+```
+- Run `foxflake-update`.<br><br>
+
 ### Secure Boot
 
 Secure Boot support is available as an experimental feature (through GRUB2 + shim signed binaries) and can be enabled after installation by adding the below configuration:<br>
 `foxflake.experimental.secureBoot.enable = true;`<br>
 On the next boot, enable secure boot in your BIOS, a blue screen saying "Verification failed: Access Denied" will appear and you will have to enroll the secure boot key by selecting "OK->Enroll key from disk->EFI Partition->FoxFlake.der->Continue".<br><br>
+
+### Using Ventoy
+
+Download the Ventoy linux tarball from the official website, extract it, navigate to the directory where files have been extracted and then run:<br>
+`sudo ./tool/x86_64/Ventoy2Disk.gtk3`<br><br>
 
 ### Setting up the Home manager user environment
 
