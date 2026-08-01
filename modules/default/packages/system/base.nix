@@ -11,6 +11,7 @@ with lib;
   config = {
 
     environment.systemPackages = with pkgs; [
+      binutils
       btrfs-progs
       bzip2
       dmidecode
@@ -18,13 +19,16 @@ with lib;
       e2fsprogs
       efibootmgr
       exfatprogs
+      file
       git
       gzip
       jq
       ntfs3g
       p7zip
+      patchelf
       pciutils
       psmisc
+      squashfsTools
       unzip
       usbutils
       wget
