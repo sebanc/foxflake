@@ -33,34 +33,29 @@ with lib;
 
     environment = {
       systemPackages = with pkgs; [
-        gnome-themes-extra
-        orchis-theme
-        tela-circle-icon-theme
-        gnome-tweaks
         gnomeExtensions.blur-my-shell
         gnomeExtensions.caffeine
         gnomeExtensions.gsconnect
         gnomeExtensions.appindicator
         gnomeExtensions.dash-to-dock
+        gnome-themes-extra
+        gnome-tweaks
+        tela-circle-icon-theme
         wsdd
       ];
 
       gnome.excludePackages = with pkgs; [
-        tali
-        iagno
-        hitori
         atomix
-        yelp
-        geary
-        xterm
-        totem
         epiphany
-        packagekit
-        gnome-tour
+        geary
         gnome-contacts
-        gnome-user-docs
-        gnome-packagekit
         gnome-font-viewer
+        gnome-tour
+        hitori
+        iagno
+        tali
+        totem
+        yelp
       ];
     };
 
