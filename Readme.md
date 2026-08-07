@@ -7,28 +7,24 @@
 
 <h1 align="center">FoxFlake</h1>
 
-FoxFlake is a comprehensive configuration of the NixOS Linux distribution (Flake) that automates management tasks to keep the user experience simple.<br>
-
-It is designed to accommodate two distinct types of users:<br>
-- Zero-Maintenance Mode: Manage your NixOS apps via the "FoxFlake Environment Selection" application, install flatpaks from the desktop environment's store and let FoxFlake handle the maintenance.<br>
-- Custom Declarative Configurations: Define your custom configurations in the file /etc/nixos/configuration.nix, the core OS maintenance is taken care of and you are only in charge of maintaining those configurations.<br><br>
+FoxFlake is a comprehensive configuration of the NixOS Linux distribution (Flake) that automates maintenance tasks so that you can focus on productivity / gaming.<br><br>
 
 ## Key features
 
-Environment flexibility:<br>
-- Seamlessly switch between Gnome, Plasma, Cosmic, Hyprland and Steam environments.<br>
-- Manage your native NixOS applications via the "FoxFlake Environment Selection" tool and use the desktop environment’s store to install Flatpaks.<br>
+Environment flexibility:  
+- Seamlessly switch between Gnome, Plasma, Cosmic, Hyprland and Steam environments.  
+- Manage your native NixOS applications via the "FoxFlake Environment Selection" tool and use the desktop environment’s store to install Flatpaks.  
 - Custom nix-ld and appimage-run configurations ensure extended compatibility with AppImages / scripts.<br>
 
-Automated maintenance:<br>
-- FoxFlake automates daily updates for both system packages and Flatpaks (System updates are staged in the background and applied safely on the next boot).<br>
-- Transitions between NixOS versions are automated, providing a rolling release experience.<br>
-- A custom binary cache is created for all default desktop environments and packages before updates are made available (it avoids NixOS from building packages from source when a binary package is not available).<br>
+Automated maintenance:  
+- FoxFlake automates daily updates for both system packages and Flatpaks (System updates are staged in the background and applied safely on the next boot).  
+- Transitions between NixOS versions are automated, providing a rolling release experience.  
+- A custom binary cache is created for all default desktop environments and packages before updates are made available (it avoids NixOS from building packages from source when a binary package is not available).  
 - Leveraging the Nix "Generations" mechanism, FoxFlake allows you to instantly revert to previous working states directly from the boot menu.<br>
 
-Declarative foundation:<br>
-- All NixOS options remain available and naturally override FoxFlake defaults.<br>
-- Home-manager, plasma-manager, and nix-flatpak configurations are available by default for complete system-to-users setups.<br>
+Declarative foundation:  
+- All NixOS options remain available and naturally override FoxFlake defaults.  
+- Home-manager, plasma-manager, and nix-flatpak configurations are available by default for complete system-to-users setups.  
 - Only maintain your custom configurations, the core OS maintenance is taken care of.<br><br>
 
 ## Desktop environments
@@ -43,56 +39,56 @@ Steam / Steam (for handhelds):<br><img alt="Steam" src="./Images/steam.jpg" widt
 
 ## System requirements
 
-Processor: Quad-core (amd64)<br>
-Memory: 4 GB+ (8GB strongly recommended)<br>
+Processor: Quad-core (amd64)  
+Memory: 4 GB+ (8GB strongly recommended)  
 Storage: 50 GB+ (SSD strongly recommended)<br><br>
 
 ## Installation & Usage
 
-1. Download the latest ISO from the Releases page.<br>
-2. Use balenaEtcher, GNOME Disks or KDE ISO Image Writer to create a bootable USB drive (do not use Rufus, it is not compatible at the moment).<br>
+1. Download the latest ISO from the Releases page.  
+2. Use balenaEtcher, GNOME Disks or KDE ISO Image Writer to create a bootable USB drive (do not use Rufus, it is not compatible at the moment).  
 3. Ensure that Secure Boot is disabled in your BIOS, boot from USB and follow the graphical installer (during installation, you will be prompted to select your Desktop Environment and to choose the NixOS native applications you want to install).<br><br>
 
 ## Complementary instructions
 
 ### Changing desktop environment or native applications after installation
 
-The "FoxFlake Environment Selection" application allows you to review at any point in time the desktop environment and applications choices you made:<br>
+The "FoxFlake Environment Selection" application allows you to review at any point in time the desktop environment and applications choices you made:  
 <div align="center">
 <img alt="Foxflake Environment Selection" src="./Images/foxflake-environment-selection.jpg" width="420" height="320" />
 </div><br><br>
 
 ### Adding custom configurations
 
-FoxFlake allows you to use any NixOS / Home Manager / Plasma Manager configurations.<br>
+FoxFlake allows you to use any NixOS / Home Manager / Plasma Manager configurations.  
 Add your configurations to the file /etc/nixos/configuration.nix and update FoxFlake by running `foxflake-update`. Once done, reboot your system for changes to take effect.<br>
 
-Examples of configurations:<br>
-- Install specified system packages (use "pkgs.unstable" instead of "pkgs" for nixos unstable channel packages):<br>
-`foxflake.system.packages = with pkgs; [ vim ];`<br>
-- Installs specified system Flatpaks:<br>
-`foxflake.system.flatpaks = [ "org.mozilla.firefox" ];`<br>
-- Install specified packages for a specific user (use "pkgs.unstable" instead of "pkgs" for nixos unstable channel packages):<br>
-`foxflake.users.<username>.packages = with pkgs; [ vim ];`<br>
-- Install specified Flatpaks for a specific user:<br>
-`foxflake.users.<username>.flatpaks = [ "org.mozilla.firefox" ];`<br>
-- Add the user to the group wheel:<br>
-`foxflake.users.<username>.extraGroups = [ "wheel" ];`<br>
-- Modify your hostname:<br>
-`foxflake.networking.hostname = "desktop";`
-- Change the default Display Manager / Desktop Environment wallpaper:<br>
-`foxflake.customization.environment.wallpaper = "/home/common/wallpaper.png";`<br>
-- Disable automatic updates (then update your system manually by running `foxflake-update`):<br>
-`foxflake.autoUpgrade = false;`<br>
-- Enable HDR in Gaming apps / Proton:<br>
-`foxflake.gaming.hdr = true;`<br>
-- Enable ntsync:<br>
-`boot.kernelModules = [ "ntsync" ];`<br>
-- If you installed the Sunshine application, you can add this line for Sunshine to start automatically:<br>
-`services.sunshine.autoStart = true;`<br>
-- If you installed the OpenRGB application, you can add this line to load the profile "myprofile" on startup:<br>
-`services.hardware.openrgb.startupProfile = "myprofile";`<br>
-- Enable an scx scheduler:<br>
+Examples of configurations:  
+- Install specified system packages (use "pkgs.unstable" instead of "pkgs" for nixos unstable channel packages):  
+`foxflake.system.packages = with pkgs; [ vim ];`  
+- Installs specified system Flatpaks:  
+`foxflake.system.flatpaks = [ "org.mozilla.firefox" ];`  
+- Install specified packages for a specific user (use "pkgs.unstable" instead of "pkgs" for nixos unstable channel packages):  
+`foxflake.users.<username>.packages = with pkgs; [ vim ];`  
+- Install specified Flatpaks for a specific user:  
+`foxflake.users.<username>.flatpaks = [ "org.mozilla.firefox" ];`  
+- Add the user to the group wheel:  
+`foxflake.users.<username>.extraGroups = [ "wheel" ];`  
+- Modify your hostname:  
+`foxflake.networking.hostname = "desktop";`  
+- Change the default Display Manager / Desktop Environment wallpaper:  
+`foxflake.customization.environment.wallpaper = "/home/common/wallpaper.png";`  
+- Disable automatic updates (then update your system manually by running `foxflake-update`):  
+`foxflake.autoUpgrade = false;`  
+- Enable HDR in Gaming apps / Proton:  
+`foxflake.gaming.hdr = true;`  
+- Enable ntsync:  
+`boot.kernelModules = [ "ntsync" ];`  
+- If you installed the Sunshine application, you can add this line for Sunshine to start automatically:  
+`services.sunshine.autoStart = true;`  
+- If you installed the OpenRGB application, you can add this line to load the profile "myprofile" on startup:  
+`services.hardware.openrgb.startupProfile = "myprofile";`  
+- Enable an scx scheduler:  
 ```
 services.scx = {
   enable = true;
@@ -103,9 +99,8 @@ services.scx = {
 
 ### Installing legacy nvidia drivers
 
-For Nvidia GPUs compatible with the latest open source kernel modules, recommended drivers are automatically enabled during install.<br>
-
-For older nvidia cards, you will need to identify the nvidia package you need from [NixOS nvidia instructions][NixOS-nvidia] and to add the below lines to your configuration:<br>
+For Nvidia GPUs compatible with the latest open source kernel modules, recommended drivers are automatically enabled during install.  
+For older nvidia cards, you will need to identify the nvidia package you need from [NixOS nvidia instructions][NixOS-nvidia] and to add the below lines to your configuration:  
 ```
   foxflake.nvidia.enable = true;
   hardware.nvidia.open = false;
@@ -117,21 +112,20 @@ For older nvidia cards, you will need to identify the nvidia package you need fr
 
 Steam sessions work similarly to SteamOS on the SteamDeck and offer to launch either Steam (through Gamescope) or Plasma.<br>
 
-There are 2 types of Steam sessions, one for generic computers and another for handhelds such as the SteamDeck. The first uses the standard steam branch while the handhelds specific version comes with the performance overlay and specific tweaks (the handhelds version can also be used on a standard PC but you might encounter graphical artifacts and you would need to add "SteamDeck=0" in your games launch command options to prevent pre-defined SteamDeck settings from being applied).<br>
-
+There are 2 types of Steam sessions, one for generic computers and another for handhelds such as the SteamDeck. The first uses the standard steam branch while the handhelds specific version comes with the performance overlay and specific tweaks (the handhelds version can also be used on a standard PC but you might encounter graphical artifacts and you would need to add "SteamDeck=0" in your games launch command options to prevent pre-defined SteamDeck settings from being applied).  
 If autologin is enabled, the default is to start the Steam session, you can then switch to Plasma using the Steam "Switch to desktop" button. Once in Plasma, you can go back to the Steam session simply by logging out of the Plasma session.<br>
 
-You can also customize the Steam session through specific options:<br>
-- Invert the autologin session (boot automatically in Plasma and launch the Steam session by logging out of Plasma):<br>
-`foxflake.environment.steam.primarySession = "plasma";`<br>
-- Define the display to use for the Steam session:<br>
-`foxflake.environment.steam.display = "DP-1";`<br>
-- Set the default resolution to use for the Steam session (in the format width x height x refresh rate):<br>
-`foxflake.environment.steam.resolution = "1920x1080x60";`<br>
-- HDR can be enabled in the Steam session with the global option:<br>
+You can also customize the Steam session through specific options:  
+- Invert the autologin session (boot automatically in Plasma and launch the Steam session by logging out of Plasma):  
+`foxflake.environment.steam.primarySession = "plasma";`  
+- Define the display to use for the Steam session:  
+`foxflake.environment.steam.display = "DP-1";`  
+- Set the default resolution to use for the Steam session (in the format width x height x refresh rate):  
+`foxflake.environment.steam.resolution = "1920x1080x60";`  
+- HDR can be enabled in the Steam session with the global option:  
 `foxflake.gaming.hdr = true;`<br>
 
-If you want to keep your main desktop environment and to have a secondary Steam environment, you can do it through a NixOS "specialisation" (a specific boot entry for the Steam session will be added to the bootloader):
+If you want to keep your main desktop environment and to have a secondary Steam environment, you can do it through a NixOS "specialisation" (a specific boot entry for the Steam session will be added to the bootloader):  
 ```
 specialisation."Steam".configuration = {
   boot.loader.grub.configurationName = lib.mkForce "Steam";
@@ -143,19 +137,19 @@ specialisation."Steam".configuration = {
 ```
 You can also pass specific arguments to gamescope and Steam through the "GAMESCOPE_FLAGS" and "STEAM_FLAGS" environment variables.<br>
 
-Note: Nvidia support on the Steam sessions is considered experimental and will not work with nvidia drivers below version 575.<br><br>
+Note: Steam sessions will not work with nvidia drivers below version 575.<br><br>
 
 ### Hyprland notes
 
-A simple Hyprland configuration is provided as a base but you are free to completely change / replace it. You can check and modify Hyprland settings through the configuration file located at the standard path $HOME/.config/hypr/hyprland.conf.<br>
+A simple Hyprland configuration is provided as a base but you are free to completely change / replace it. You can check and modify Hyprland settings through the configuration file located at the standard path $HOME/.config/hypr/hyprland.conf.  
 Note that you are therefore responsible to update the hyprland configuration to accomodate upstream changes.<br><br>
 
 ### Custom desktop environment
 
-You can also use a custom desktop environment while keeping access to FoxFlake features.<br><br>
-Edit your /etc/nixos/configuration.nix as follows:<br>
-- Change the value of `foxflake.environment.type` to `custom`.<br>
-- Add the configurations for the display manager and desktop environment you want to use, for example with LightDM slick greeter and Cinnamon:
+You can use a custom desktop environment while keeping access to FoxFlake features.  
+Edit your /etc/nixos/configuration.nix as follows:  
+- Change the value of `foxflake.environment.type` to `custom`.  
+- Add the configurations for the display manager and desktop environment you want to use, for example with LightDM slick greeter and Cinnamon:  
 ```
 services.xserver.displayManager.lightdm.enable = true;
 services.xserver.displayManager.lightdm.greeters.slick.enable = true;
@@ -165,52 +159,54 @@ services.xserver.desktopManager.cinnamon.enable = true;
 
 ### Secure Boot
 
-Secure Boot support is available as an experimental feature (through GRUB2 + shim signed binaries) and can be enabled after installation by adding the below configuration:<br>
-`foxflake.experimental.secureBoot.enable = true;`<br>
+Secure Boot support is available as an experimental feature (through GRUB2 + shim signed binaries) and can be enabled after installation by adding the below configuration:  
+`foxflake.experimental.secureBoot.enable = true;`  
 On the next boot, enable secure boot in your BIOS, a blue screen saying "Verification failed: Access Denied" will appear and you will have to enroll the secure boot key by selecting "OK->Enroll key from disk->EFI Partition->FoxFlake.der->Continue".<br><br>
 
 ### Using Ventoy
 
-Download the Ventoy linux tarball from the official website, extract it, navigate to the directory where files have been extracted and then run:<br>
+Download the Ventoy linux tarball from the official website, extract it, navigate to the directory where files have been extracted and then run:  
 `sudo ./tool/x86_64/Ventoy2Disk.gtk3`<br><br>
 
 ### Setting up the Home manager user environment
 
-Home manager is included by default, to initialize an home manager for your user you need to run the command: `nix run home-manager -- init --switch`.<br>
-You can then apply your user home manager configuration updates with the command: `nix run home-manager switch`.<br><br>
+Home manager is included by default, to initialize an home manager for your user you need to run the command:  
+`nix run home-manager -- init --switch`  
+You can then apply your user home manager configuration updates with the command:  
+`nix run home-manager switch`<br><br>
 
 ### FoxFlake branches
 
-`main`: Only documentation, license, and github workflows (not a flake branch).<br>
-`stable`: Based mainly on the current nixos stable branch and features the latest LTS kernel by default.<br>
-`unstable`: Based mainly on the nixos unstable branch and features the latest Mainline kernel by default.<br>
-`stable-test`: For testing changes prior to push to `stable` branch.<br>
-`unstable-test`: For testing changes prior to push to `unstable` branch.<br>
+`main`: Only documentation, license, and github workflows (not a flake branch).  
+`stable`: Based mainly on the current nixos stable branch and features the latest LTS kernel by default.  
+`unstable`: Based mainly on the nixos unstable branch and features the latest Mainline kernel by default.  
+`stable-test`: For testing changes prior to push to `stable` branch.  
+`unstable-test`: For testing changes prior to push to `unstable` branch.  
 `dev`: For development purpose, pull requests should point to this branch.<br>
 
 You can change the branch you follow (`stable` by default) by editing the file /etc/nixos/flake.nix and then running `foxflake-update`.<br><br>
 
 ### Building the FoxFlake installer iso image
 
-1. Install the nix package manager on your system according to the instructions at: https://nixos.org/download.<br>
+1. Install the nix package manager on your system according to the instructions at: https://nixos.org/download.  
 
-2. Clone this repository:<br>
+2. Clone this repository:  
 `git clone -b stable https://github.com/sebanc/foxflake.git`<br>
 
-3. Enter the "installer" subfolder:<br>
+3. Enter the "installer" subfolder:  
 `cd ./foxflake/installer`<br>
 
-4. Update the installer flake lock:<br>
+4. Update the installer flake lock:  
 `nix --extra-experimental-features "nix-command flakes" flake update --flake .`<br>
 
-5. Launch the build:<br>
+5. Launch the build:  
 `nix --extra-experimental-features "nix-command flakes" build .#installer`<br>
 
 The generated installer iso image will be located in the "result/iso" folder.<br><br>
 
 ## Thanks
-- [NixOS][NixOS] and community modules (home-manager, plasma-manager and nix-flatpak) maintainers.<br>
-- [Cachix][Cachix] for their open source projects free binary cache plan.<br>
+- [NixOS][NixOS] and community modules (home-manager, plasma-manager and nix-flatpak) maintainers.  
+- [Cachix][Cachix] for their open source projects free binary cache plan.  
 - The Gaming Linux France community for the inspiration coming from their [gaming oriented GLF OS][GLF-OS].<br><br>
 
 
