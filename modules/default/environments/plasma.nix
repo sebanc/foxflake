@@ -79,8 +79,14 @@ with lib;
           ExecStart = "${pkgs.writeShellScriptBin "plasma-defaults" ''
             #!${pkgs.bash}
 
+            # Fix for plasma desktop and taskbar icon paths
+            for desktopicon in "$(${pkgs.xdg-user-dirs}/bin/xdg-user-dir DESKTOP)"/*.desktop; do
+              if [ -L "''${desktopicon}" ] && [[ "$(readlink "''${desktopicon}")" =~ ^/nix/store/[^/]*/share/applications(/.*)?$ ]]; then
+                ln -sfn "/run/current-system/sw/share/applications/$(basename "''${desktopicon}")" "''${desktopicon}"
+              fi
+            done
             if [ -f ''${HOME}/.config/plasma-org.kde.plasma.desktop-appletsrc ]; then
-              ${pkgs.gnused}/bin/sed -i 's/file:\/\/\/nix\/store\/[^\/]*\/share\/applications\//applications:/gi' ''${HOME}/.config/plasma-org.kde.plasma.desktop-appletsrc
+              ${pkgs.gnused}/bin/sed -i 's/file:\/\/\/nix\/store\/[^\/]*\/share\//file:\/\/\/run\/current-system\/sw\/share\//gi' ''${HOME}/.config/plasma-org.kde.plasma.desktop-appletsrc
             fi
 
             if [ ! -f "''${HOME}/.config/plasmarc" ]; then
