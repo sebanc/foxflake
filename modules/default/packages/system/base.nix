@@ -19,6 +19,7 @@ with lib;
       e2fsprogs
       efibootmgr
       exfatprogs
+      fastfetch
       file
       git
       gzip
