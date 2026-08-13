@@ -37,9 +37,9 @@ with lib;
     environment = {
       wallpaper = mkOption {
         type = with types; nullOr str;
-        default = if config.foxflake.environment.type == "gnome" then
+        default = if (config.foxflake.environment.type) == "gnome" then
           "/run/current-system/sw/share/backgrounds/foxflake/foxflake-neon-wallpaper.png"
-        else if config.foxflake.environment.type == "plasma" || config.foxflake.environment.type == "steam" || config.foxflake.environment.type == "steamdeck" then
+        else if (config.foxflake.environment.type) == "plasma" || config.foxflake.environment.type == "steam" || config.foxflake.environment.type == "steamdeck" then
           "/run/current-system/sw/share/wallpapers/foxflake-neon-wallpaper/contents/images/3840x2160.png"
         else
           "/run/current-system/sw/share/backgrounds/foxflake/foxflake-neon-wallpaper.jpg";
@@ -50,11 +50,11 @@ with lib;
       };
       theme = mkOption {
         type = with types; nullOr str;
-        default = if config.foxflake.environment.type == "gnome" then
+        default = if (config.foxflake.environment.type) == "gnome" then
           "Adwaita"
-        else if config.foxflake.environment.type == "hyprland" then
+        else if (config.foxflake.environment.type) == "hyprland" then
           "Adwaita-dark"
-        else if config.foxflake.environment.type == "plasma" || config.foxflake.environment.type == "steam" || config.foxflake.environment.type == "steamdeck" then
+        else if (config.foxflake.environment.type == "plasma" || config.foxflake.environment.type == "steam" || config.foxflake.environment.type == "steamdeck") then
           "breeze-light"
         else
           null;
@@ -73,7 +73,7 @@ with lib;
       };
       cursor-theme = mkOption {
         type = with types; nullOr str;
-        default = if config.foxflake.environment.type == "plasma" || config.foxflake.environment.type == "steam" || config.foxflake.environment.type == "steamdeck" then
+        default = if (config.foxflake.environment.type == "plasma" || config.foxflake.environment.type == "steam" || config.foxflake.environment.type == "steamdeck") then
           "Breeze"
         else
           "Adwaita";
@@ -89,7 +89,7 @@ with lib;
 
     boot.loader.grub = {
       splashImage =
-        if config.foxflake.customization.grub.theme != null then
+        if (config.foxflake.customization.grub.theme) != null then
           null
         else
           mkDefault config.foxflake.customization.grub.splashImage;

@@ -10,37 +10,31 @@ with lib;
 
   options.foxflake.system = {
     applications = mkOption {
-      description = "applications selection";
       type = with types; listOf str;
       default = config.foxflake.system.bundles;
+      description = "Applications selection.";
     };
     bundles = mkOption {
-      description = "bundles selection";
       type = with types; listOf str;
       default = [ ];
+      description = "DEPRECATED: Bundles has been replaced by applications.";
     };
     packages = mkOption {
       type = with types; listOf package;
       default = with pkgs; [ ];
       example = literalExpression "with pkgs; [ firefox ]";
-      description = ''
-        The set of packages that should be made available to all users.
-      '';
+      description = "The set of packages that should be made available to all users.";
     };
     flatpaks = mkOption {
       type = with types; listOf str;
       default = [ ];
       example = literalExpression "[ { appId = \"org.mozilla.firefox\"; origin = \"flathub\"; } ]";
-      description = ''
-        The set of packages that should be installed as flatpak.
-      '';
+      description = "The set of packages that should be installed as flatpak.";
     };
     waydroid = mkOption {
       type = with types; bool;
       default = false;
-      description = ''
-        The Waydroid application that allows you to use Android apps on your computer.
-      '';
+      description = "The Waydroid application that allows you to use Android apps on your computer.";
     };
   };
 

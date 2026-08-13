@@ -7,16 +7,16 @@ with lib;
     enable = mkOption {
       type = with types; bool;
       default = false;
-      description = "Enable nvidia support";
+      description = "Enable nvidia support.";
     };
     open = mkOption {
-      description = "Whether to enable the Nvidia open source kernel driver. (Deprecated: All configs now use the open driver by default.)";
       type = with types; bool;
       default = true;
+      description = "DEPRECATED: The open driver is now used by default.";
     };
   };
 
-  config = mkIf config.foxflake.nvidia.enable {
+  config = mkIf (config.foxflake.nvidia.enable) {
 
     boot.blacklistedKernelModules = [ "nouveau" "nova_core" ];
 
@@ -65,7 +65,7 @@ with lib;
       })];
     };
 
-    programs.nix-ld.libraries = with pkgs; [ config.hardware.nvidia.package ] ++ optionals (config.foxflake.graphics.compute.enable) (with pkgs; [ cudaPackages.cudnn cudaPackages.libcublas cudaPackages.libcusolver cudaPackages.libcusparse ]);
+    programs.nix-ld.libraries = with pkgs; [ config.hardware.nvidia.package ] ++ optionals (config.foxflake.graphics.compute) (with pkgs; [ cudaPackages.cudnn cudaPackages.libcublas cudaPackages.libcusolver cudaPackages.libcusparse ]);
 
   };
 

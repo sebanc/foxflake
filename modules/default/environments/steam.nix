@@ -14,21 +14,21 @@ with lib;
 
   options.foxflake.environment.steam = {
     display = mkOption {
-      description = "The main display to use for the Steam session such as DP-1, eDP-1 or HDMI-A-1 ....";
       type = with types; str;
       default = "";
       example = "DP-1";
+      description = "The main display to use for the Steam session (e.g. DP-1, eDP-1, HDMI-A-1 ...).";
     };
     primarySession = mkOption {
-      description = "Default environment if autologin is enabled.";
       type = with types; enum [ "plasma" "steam" ];
       default = "steam";
+      description = "Default environment if autologin is enabled.";
     };
     resolution = mkOption {
-      description = "The main display resolution to use for the Steam session in the format <width>x<height>x<refresh rate>.";
       type = with types; str;
       default = "";
       example = "1920x1080x60";
+      description = "The main display resolution to use for the Steam session in the format <width>x<height>x<refresh rate>.";
     };
   };
 
@@ -165,7 +165,7 @@ with lib;
     services = {
       displayManager = {
         defaultSession = mkOverride 999 "${config.foxflake.environment.steam.primarySession}";
-        sddm.autoLogin.relogin = if config.foxflake.environment.autologin then mkDefault true else mkDefault false;
+        sddm.autoLogin.relogin = if (config.foxflake.environment.autologin) then mkDefault true else mkDefault false;
         sessionPackages = with pkgs; [ steamos-helpers ];
       };
       inputplumber.enable = mkDefault true;

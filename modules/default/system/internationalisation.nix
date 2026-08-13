@@ -6,33 +6,33 @@ with lib;
     timezone = mkOption {
       type = with types; nullOr str;
       default = null;
-      description = "FoxFlake timezone selection";
+      description = "FoxFlake timezone selection.";
     };
     defaultLocale = mkOption {
-      description = "FoxFlake defaultLocale selection";
       type = with types; str;
       default = "en_US.UTF-8";
+      description = "FoxFlake defaultLocale selection.";
     };
     extraLocaleSettings = mkOption {
-      description = "FoxFlake extraLocaleSettings selection";
       type = with types; attrsOf str;
       default = { };
+      description = "FoxFlake extraLocaleSettings selection.";
     };
     keyboard = {
       consoleKeymap = mkOption {
         type = with types; either str path;
         default = "us";
-        description = "FoxFlake console keymap selection";
+        description = "FoxFlake console keymap selection.";
       };
       layout = mkOption {
         type = with types; str;
         default = "us";
-        description = "FoxFlake keyboard layout selection";
+        description = "FoxFlake keyboard layout selection.";
       };
       variant = mkOption {
         type = with types; str;
         default = "";
-        description = "FoxFlake keyboard variant selection";
+        description = "FoxFlake keyboard variant selection.";
       };
     };
   };

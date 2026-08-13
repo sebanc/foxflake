@@ -9,12 +9,12 @@ with lib;
 {
 
   options.foxflake.autoUpgrade = mkOption {
-    description = "Enable FoxFlake automatic updates.";
     type = types.bool;
     default = true;
+    description = "Enable FoxFlake automatic updates.";
   };
 
-  config = mkIf config.foxflake.autoUpgrade {
+  config = mkIf (config.foxflake.autoUpgrade) {
 
     system.autoUpgrade = {
       enable = mkDefault true;

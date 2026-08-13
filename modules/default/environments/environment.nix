@@ -17,26 +17,26 @@ with lib;
     enable = mkOption {
       type = with types; bool;
       default = true;
-      description = "Enable desktop environment";
+      description = "Enable desktop environment.";
     };
     type = mkOption {
-      description = "Desktop environment selection";
       type = with types; enum [ "cosmic" "custom" "gnome" "hyprland" "plasma" "steam" "steamdeck" ];
       default = "gnome";
+      description = "Desktop environment selection.";
     };
     autologin = mkOption {
       type = with types; bool;
       default = !(config.foxflake.environment.autologinUser == null || config.foxflake.environment.autologinUser == "");
-      description = "Enable desktop environment autologin";
+      description = "Enable desktop environment autologin.";
     };
     autologinUser = mkOption {
       type = with types; nullOr str;
       default = null;
-      description = "User chosen for desktop environment autologin";
+      description = "User chosen for desktop environment autologin.";
     };
   };
 
-  config = mkIf config.foxflake.environment.enable {
+  config = mkIf (config.foxflake.environment.enable) {
     
     environment.systemPackages = with pkgs; [ foxflake-icons foxflake-wallpapers iio-sensor-proxy mesa-demos vulkan-tools xdg-user-dirs xdg-user-dirs-gtk ];
 

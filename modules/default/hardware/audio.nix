@@ -4,14 +4,22 @@ with lib;
 {
 
   options.foxflake.audio = {
+    enable = mkOption {
+      type = with types; bool;
+      default = if (config.foxflake.environment.enable) then
+        true
+      else
+        false;
+      description = "Enable FoxFlake audio support.";
+    };
     lowLatency = mkOption {
       type = with types; bool;
       default = false;
-      description = "Enable low latency audio support";
+      description = "Enable low latency audio support.";
     };
   };
 
-  config = {
+  config = mkIf (config.foxflake.audio.enable) {
 
     security.rtkit.enable = mkDefault true;
 
@@ -23,7 +31,7 @@ with lib;
         enable = mkDefault true;
         support32Bit = mkDefault true;
       };
-      extraConfig.pipewire."92-low-latency" = mkIf config.foxflake.audio.lowLatency {
+      extraConfig.pipewire."92-low-latency" = mkIf (config.foxflake.audio.lowLatency) {
         "context.modules" = [{
           name = "libpipewire-module-rt";
           args = {
@@ -38,7 +46,7 @@ with lib;
           "default.clock.max-quantum" = 512;
         };
       };
-      extraConfig.pipewire-pulse."92-low-latency" = mkIf config.foxflake.audio.lowLatency {
+      extraConfig.pipewire-pulse."92-low-latency" = mkIf (config.foxflake.audio.lowLatency) {
         "pulse.properties" = {
           "pulse.min.req" = "64/48000";
           "pulse.default.req" = "128/48000";
@@ -47,7 +55,7 @@ with lib;
           "pulse.max.quantum" = "512/48000";
         };
       };
-      wireplumber.extraConfig."92-low-latency" = mkIf config.foxflake.audio.lowLatency {
+      wireplumber.extraConfig."92-low-latency" = mkIf (config.foxflake.audio.lowLatency) {
         "monitor.alsa.rules" = [{
           matches = [
             { "node.name" = "~alsa_output.*"; }
