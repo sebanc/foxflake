@@ -19,11 +19,11 @@ with lib;
           appimage-exec = prev.writeShellApplication {
             name = "appimage-exec.sh";
             bashOptions = [ "errexit" "pipefail" ];
-            runtimeInputs = with prev; [ binutils dwarfs gnutar hexdump pv squashfsTools ];
+            runtimeInputs = with prev; [ binutils dwarfs gnutar pv squashfsTools ];
             text = builtins.replaceStrings
               [ ''unsquashfs -q -d "$out" -o "$offset" "$src"'' ]
               [ ''
-                dwarfs=$(hexdump -s "$offset" -n 6 -v -e '1/1 "%_c"' "$src")
+                dwarfs="$(dd if="$src" bs=1 skip="$offset" count=6 2>/dev/null | tr -d "\0")"
                 if [ "$dwarfs" == "DWARFS" ]; then
                   echo "Detected DwarFS payload, using dwarfsextract"
                   mkdir -p "$out"
