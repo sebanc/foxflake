@@ -55,7 +55,7 @@ with lib;
         else if config.foxflake.environment.type == "hyprland" then
           "Adwaita-dark"
         else if config.foxflake.environment.type == "plasma" || config.foxflake.environment.type == "steam" || config.foxflake.environment.type == "steamdeck" then
-          "default"
+          "breeze-light"
         else
           null;
         example = "Adwaita";
