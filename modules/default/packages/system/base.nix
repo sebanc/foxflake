@@ -8,7 +8,15 @@ with lib;
 
 {
 
-  config = {
+  options.foxflake.system.defaultPackages = {
+    enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Install FoxFlake default set of packages.";
+    };
+  };
+
+  config = mkIf (config.foxflake.system.defaultPackages.enable) {
 
     environment.systemPackages = with pkgs; [
       binutils

@@ -14,7 +14,7 @@ with lib;
       enable = mkDefault true;
       enableVirtualCamera = mkDefault true;
       package =
-        if config.foxflake.nvidia.enable then
+        if (config.foxflake.nvidia.enable) then
           mkDefault (pkgs.stable.obs-studio.override { cudaSupport = true; })
         else
           mkDefault pkgs.stable.obs-studio;

@@ -10,6 +10,8 @@ with lib;
 
   options.foxflake.networking = {
     hostname = mkOption {
+      type = types.strMatching "^$|^[[:alnum:]]([[:alnum:]_-]{0,61}[[:alnum:]])?$";
+      default = config.system.nixos.distroId;
       description = ''
         The name of the machine. Leave it empty if you want to obtain it from a
         DHCP server (if using DHCP). The hostname must be a valid DNS label (see
@@ -26,8 +28,6 @@ with lib;
 
         WARNING: Do not use underscores (_) or you may run into unexpected issues.
       '';
-      type = types.strMatching "^$|^[[:alnum:]]([[:alnum:]_-]{0,61}[[:alnum:]])?$";
-      default = config.system.nixos.distroId;
     };
   };
 

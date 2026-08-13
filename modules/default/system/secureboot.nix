@@ -9,9 +9,9 @@ with lib;
 {
 
   options.foxflake.experimental.secureBoot.enable = mkOption {
-    description = "Whether to enable Secure Boot (with shim-signed)";
     type = types.bool;
     default = false;
+    description = "Whether to enable Secure Boot with shim-signed.";
   };
 
   config = mkIf (config.foxflake.experimental.secureBoot.enable || config.foxflake.build.binaryCache) {

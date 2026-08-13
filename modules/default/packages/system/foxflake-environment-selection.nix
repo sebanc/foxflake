@@ -12,9 +12,9 @@ with lib;
 
   options.foxflake.environment.selection = {
     enable = mkOption {
-      description = "Enable environment and applications switching program";
       type = types.bool;
       default = true;
+      description = "Enable environment and applications switching program.";
     };
   };
 

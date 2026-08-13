@@ -3,15 +3,23 @@ with lib;
 
 {
 
-  options.foxflake.graphics.compute = {
+  options.foxflake.graphics = {
     enable = mkOption {
-      description = "Add GPU acceleration drivers needed for math and deep learning.";
+      type = with types; bool;
+      default = if (config.foxflake.environment.enable) then
+        true
+      else
+        false;
+      description = "Enable FoxFlake graphics support.";
+    };
+    compute = mkOption {
       type = with types; bool;
       default = false;
+      description = "Add GPU acceleration drivers needed for math and deep learning.";
     };
   };
 
-  config = {
+  config = mkIf (config.foxflake.graphics.enable) {
 
     hardware.graphics = {
       enable = mkDefault true;
@@ -29,7 +37,7 @@ with lib;
     systemd.tmpfiles.rules = [
       "L+ /opt/rocm - - - - ${pkgs.symlinkJoin {
         name = "rocm-combined";
-        paths = with pkgs; [ rocmPackages.clr rocmPackages.hiprt ] ++ optionals (config.foxflake.graphics.compute.enable) (with pkgs; [ rocmPackages.hipblas rocmPackages.rocblas ]);
+        paths = with pkgs; [ rocmPackages.clr rocmPackages.hiprt ] ++ optionals (config.foxflake.graphics.compute) (with pkgs; [ rocmPackages.hipblas rocmPackages.rocblas ]);
       }}"
     ];
 
