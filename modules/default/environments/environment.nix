@@ -38,7 +38,7 @@ with lib;
 
   config = mkIf config.foxflake.environment.enable {
     
-    environment.systemPackages = with pkgs; [ iio-sensor-proxy xdg-user-dirs xdg-user-dirs-gtk foxflake-icons foxflake-wallpapers ];
+    environment.systemPackages = with pkgs; [ foxflake-icons foxflake-wallpapers iio-sensor-proxy mesa-demos vulkan-tools xdg-user-dirs xdg-user-dirs-gtk ];
 
     hardware.bluetooth.enable = mkDefault true;
     hardware.sensor.iio.enable = mkDefault true;
