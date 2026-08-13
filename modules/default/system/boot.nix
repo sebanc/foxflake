@@ -10,7 +10,7 @@ with lib;
   
   options.foxflake.boot = {
     enable = mkOption {
-      description = "Enable FoxFlake Boot configurations";
+      description = "Enable FoxFlake Boot configurations.";
       type = with types; bool;
       default = true;
     };
