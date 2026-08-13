@@ -28,7 +28,16 @@ with lib;
         libxi
         pango
       ];
-      package = mkDefault pkgs.stable.steam;
+      package = mkDefault (pkgs.stable.steam.override {
+        extraProfile = ''
+          RESOLV_CONF="${pkgs.writeText "steam-resolv.conf" ''
+            nameserver 9.9.9.9
+            nameserver 4.4.4.4
+            nameserver 8.8.8.8
+          ''}"
+          cp -f "$RESOLV_CONF" /etc/resolv.conf || echo "warning: failed to override resolv.conf" >&2
+        '';
+      });
       dedicatedServer.openFirewall = mkDefault true;
       remotePlay.openFirewall = mkDefault true;
       localNetworkGameTransfers.openFirewall = mkDefault true;

@@ -108,7 +108,18 @@ with lib;
           '')
         ];
         package = mkOverride 999 (pkgs.stable.steam.override {
-          extraBwrapArgs = [ "--bind /tmp /tmp" "--tmpfs /tmp/.X11-unix" ];
+          extraBwrapArgs = [
+            "--bind" "/tmp" "/tmp"
+            "--tmpfs" "/tmp/.X11-unix"
+          ];
+          extraProfile = ''
+            RESOLV_CONF="${pkgs.writeText "steam-resolv.conf" ''
+              nameserver 9.9.9.9
+              nameserver 4.4.4.4
+              nameserver 8.8.8.8
+            ''}"
+            cp -f "$RESOLV_CONF" /etc/resolv.conf || echo "warning: failed to override resolv.conf" >&2
+          '';
           steam-unwrapped = pkgs.stable.steam-unwrapped.overrideAttrs (old: {
             postInstall = (old.postInstall or "") + ''
               cp ${pkgs.fetchurl {
