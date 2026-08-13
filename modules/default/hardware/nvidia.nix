@@ -65,7 +65,7 @@ with lib;
       })];
     };
 
-    programs.nix-ld.libraries = with pkgs; [ config.hardware.nvidia.package ];
+    programs.nix-ld.libraries = with pkgs; [ config.hardware.nvidia.package ] ++ optionals (config.foxflake.graphics.compute.enable) (with pkgs; [ cudaPackages.cudnn cudaPackages.libcublas cudaPackages.libcusolver cudaPackages.libcusparse ]);
 
   };
 
