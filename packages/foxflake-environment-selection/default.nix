@@ -348,6 +348,7 @@ Calibre^A powerful all-in-one e-book manager for library organization and conver
 Multimedia^Multimedia applications^|\
 VLC media player^A versatile multimedia that support most audio/video formats^vlc|\
 MPV media player^A multimedia player favored for its minimalist interface^mpv|\
+Stremio^A media center app that organizes and streams video content^stremio|\
 Kodi^Open-source media center for playing videos, music, and digital media^kodi|\
 Darktable^A photo management application designed to streamline post-production^darktable|\
 DigiKam^A photo management application used for organizing and editing photos^digikam|\
