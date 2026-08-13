@@ -11,6 +11,7 @@
     ./noisetorch.nix
     ./rapidraw.nix
     ./shotcut.nix
+    ./stremio.nix
     ./vlc.nix
   ];
 
