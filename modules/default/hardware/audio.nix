@@ -32,13 +32,6 @@ with lib;
         support32Bit = mkDefault true;
       };
       extraConfig.pipewire."92-low-latency" = mkIf (config.foxflake.audio.lowLatency) {
-        "context.modules" = [{
-          name = "libpipewire-module-rt";
-          args = {
-            "rt.prio" = 20;
-          };
-          flags = [ "ifexists" "nofail" ];
-        }];
         "context.properties" = {
           "default.clock.rate" = 48000;
           "default.clock.min-quantum" = 64;
@@ -64,6 +57,16 @@ with lib;
           actions.update-props = {
             "api.alsa.period-size"   = 128;
             "api.alsa.headroom"      = 2;
+          };
+        }];
+      };
+      wireplumber.extraConfig."92-disable-hdmi-suspend" = {
+        "monitor.alsa.rules" = [{
+          matches = [
+            { "node.name" = "~alsa_output.*hdmi.*"; }
+          ];
+          actions.update-props = {
+            "session.suspend-timeout-seconds" = 0;
           };
         }];
       };
