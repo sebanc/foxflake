@@ -6,6 +6,7 @@
     ./docker.nix
     ./gnome-boxes.nix
     ./podman.nix
+    ./qemu.nix
     ./virt-manager.nix
     ./waydroid.nix
     ./winboat.nix

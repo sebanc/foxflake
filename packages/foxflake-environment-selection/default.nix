@@ -340,6 +340,8 @@ Element^Secure, decentralized messenger and team collaboration client for Matrix
 Office^Office software^|\
 LibreOffice^The standard open-source Linux alternative to Microsoft Office^libreoffice|\
 OnlyOffice^A sleek office suite focused on high compatibility with Microsoft Office^onlyoffice|\
+Gedit^GNOME simple and lightweight text editor^gedit|\
+Kate^KDE feature-rich and open-source text editor^kate|\
 FocusWriter^Distraction-free writing environment with a hideable interface^focuswriter|\
 Document Scanner^A utility providing a simple interface for scanning documents^simple-scan|\
 Shutter^A feature-rich Linux screenshot tool with built-in editing and effects^shutter|\
@@ -394,6 +396,7 @@ Bottles^Easily run Windows software on Linux using sandboxed environments^bottle
 Waydroid^A container-based solution that allows you to run Android apps^waydroid|\
 GNOME Boxes^A simple graphical application for creating Virtual Machines^gnome-boxes|\
 Virt-Manager^A Virtual Machines manager that provides an interface for QEMU/libvirt^virt-manager|\
+QEMU^An open-source machine emulator and virtualizer for Linux systems^qemu|\
 Docker^The industry-standard for running applications inside containers^docker|\
 Distrobox^A tool that facilitates the use of containers (via Podman or Docker)^distrobox|\
 Podman^A powerful, daemonless, and security-focused container engine^podman|\
@@ -424,7 +427,9 @@ Epson IPD^Printer drivers for Epson devices^escpr|\
 HP LIP^Print, scan and fax HP drivers for Linux^hplip|\
 Lexmark CUPS^Printer drivers for Lexmark devices^lexmarkps|\
 Samsung ULD^Proprietary drivers for Samsung printers^samsunguld|\
-Samsung PL^Drivers for printers supporting SPL Samsung Printer Language^samsungpl"
+Samsung PL^Drivers for printers supporting SPL Samsung Printer Language^samsungpl|\
+Custom^Custom software^|\
+Linuxloops^Install Linux distributions on disks or in bootable disk images^linuxloops"
 
 	set +e
 	current_desktop="$(grep 'foxflake.environment.type' /etc/nixos/configuration.nix | grep -v '^[[:space:]]*#' | tail -1 | cut -d '#' -f 1 | cut -d \" -f 2)"
