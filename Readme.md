@@ -12,20 +12,19 @@ FoxFlake is a comprehensive configuration of the NixOS Linux distribution (Flake
 ## Key features
 
 Environment flexibility:  
-- Seamlessly switch between Gnome, Plasma, Cosmic, Hyprland and Steam environments.  
-- Manage your native NixOS applications via the "FoxFlake Environment Selection" tool and use the desktop environment’s store to install Flatpaks.  
+- Choose between included Gnome, Plasma, Cosmic, Hyprland and Steam environments or define your custom one.  
+- Manage your native NixOS applications via the "FoxFlake Environment Selection" tool.  
 - Custom nix-ld and appimage-run configurations ensure extended compatibility with AppImages / scripts.<br>
 
 Automated maintenance:  
 - FoxFlake automates daily updates for both system packages and Flatpaks (System updates are staged in the background and applied safely on the next boot).  
 - Transitions between NixOS versions are automated, providing a rolling release experience.  
-- A custom binary cache is created for all default desktop environments and packages before updates are made available (it avoids NixOS from building packages from source when a binary package is not available).  
-- Leveraging the Nix "Generations" mechanism, FoxFlake allows you to instantly revert to previous working states directly from the boot menu.<br>
+- A custom binary cache is created for all included desktop environments and packages before updates are made available (avoids NixOS from building packages from source when a binary package is not available).  
 
-Declarative foundation:  
+NixOS foundation:  
 - All NixOS options remain available and naturally override FoxFlake defaults.  
 - Home-manager, plasma-manager, and nix-flatpak configurations are available by default for complete system-to-users setups.  
-- Only maintain your custom configurations, the core OS maintenance is taken care of.<br><br>
+- Leveraging the Nix "Generations" mechanism, FoxFlake allows you to instantly revert to previous working states directly from the boot menu.<br>
 
 ## Desktop environments
 
@@ -56,7 +55,7 @@ Storage: 50 GB+ (SSD strongly recommended)<br><br>
 The "FoxFlake Environment Selection" application allows you to review at any point in time the desktop environment and applications choices you made:  
 <div align="center">
 <img alt="Foxflake Environment Selection" src="./Images/foxflake-environment-selection.jpg" width="420" height="320" />
-</div><br><br>
+</div><br>
 
 ### Adding custom configurations
 
@@ -80,6 +79,8 @@ Examples of configurations:
 `foxflake.customization.environment.wallpaper = "/home/common/wallpaper.png";`  
 - Disable automatic updates (then update your system manually by running `foxflake-update`):  
 `foxflake.autoUpgrade = false;`  
+- Enable GPU computation support (BLAS for AMD or CUDA for Nvidia):  
+`foxflake.graphics.compute = true;`  
 - Enable HDR in Gaming apps / Proton:  
 `foxflake.gaming.hdr = true;`  
 - Enable ntsync:  
@@ -163,6 +164,21 @@ Secure Boot support is available as an experimental feature (through GRUB2 + shi
 `foxflake.experimental.secureBoot.enable = true;`  
 On the next boot, enable secure boot in your BIOS, a blue screen saying "Verification failed: Access Denied" will appear and you will have to enroll the secure boot key by selecting "OK->Enroll key from disk->EFI Partition->FoxFlake.der->Continue".<br><br>
 
+### Linuxloops integration
+
+[Linuxloops][Linuxloops] can be installed through the FoxFlake environment selection application. The import of GRUB configurations used for booting disk images can be automated by creating the file /etc/nixos/linuxloops-autoimport.nix with the below content and importing it from your main configuration:  
+```
+{ config, pkgs, lib, ... }:
+{
+  imports = lib.optionals (builtins.pathExists ./linuxloops) (
+    map (name: ./linuxloops + "/${name}") (lib.attrNames (lib.filterAttrs
+      (name: type: type == "regular" && lib.hasSuffix ".nix" name) (builtins.readDir ./linuxloops)
+    ))
+  );
+}
+```
+<br>
+
 ### Using Ventoy
 
 Download the Ventoy linux tarball from the official website, extract it, navigate to the directory where files have been extracted and then run:  
@@ -222,6 +238,7 @@ The generated installer iso image will be located in the "result/iso" folder.<br
 <!-- Internal Links -->
 
 <!-- Outbound Links -->
+[Linuxloops]: https://github.com/sebanc/linuxloops
 [NixOS]: https://nixos.org
 [Cachix]: https://www.cachix.org
 [NixOS-nvidia]: https://nixos.wiki/wiki/Nvidia
