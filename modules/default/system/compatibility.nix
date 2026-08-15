@@ -27,7 +27,7 @@ with lib;
           appimage-exec = prev.writeShellApplication {
             name = "appimage-exec.sh";
             bashOptions = [ "errexit" "pipefail" ];
-            runtimeInputs = with prev; [ binutils dwarfs gnutar pv squashfsTools ];
+            runtimeInputs = with prev; [ binutils gnutar pv squashfsTools ] ++ [ final.stable.dwarfs ];
             text = builtins.replaceStrings
               [ ''unsquashfs -q -d "$out" -o "$offset" "$src"'' ]
               [ ''
