@@ -10,8 +10,6 @@
           bashOptions = [ "errexit" "pipefail" ];
           excludeShellChecks = [ "SC2028" ];
           text = ''
-set -e
-
 if [ "$(id -u)" -ne 0 ]; then
 	exec /run/wrappers/bin/sudo "$0" "$@"
 fi
@@ -23,12 +21,10 @@ ${prev.nixos-rebuild}/bin/nixos-rebuild boot --flake /etc/nixos#foxflake --show-
         desktopEntry = prev.makeDesktopItem {
           name = name;
           desktopName = "FoxFlake Update";
-          icon = "foxflake-red-icon";
+          icon = "foxflake-grey-icon";
           exec = "/run/current-system/sw/bin/foxflake-update";
           terminal = true;
-          extraConfig = {
-            NoDisplay = "true";
-          };
+          categories = [ "System" ];
         };
         in ''
 mkdir -p $out/bin
@@ -36,7 +32,6 @@ cp ${script}/bin/${name} $out/bin
 mkdir -p $out/share/applications
 cp ${desktopEntry}/share/applications/${name}.desktop $out/share/applications/${name}.desktop
         '';
-        dontBuild = true;
       };
     })
   ];
