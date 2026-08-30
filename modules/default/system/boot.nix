@@ -59,7 +59,7 @@ with lib;
     boot = {
       consoleLogLevel = mkDefault 3;
       initrd.systemd.enable = mkDefault true;
-      kernelPackages = mkDefault pkgs.unstable.linuxPackages_latest;
+      kernelPackages = mkDefault pkgs.unstable.linuxPackages_xanmod_latest;
       kernelParams = [ "fbcon=nodefer" "quiet" ];
       loader = {
         grub = {
