@@ -8,7 +8,7 @@
         buildCommand = let
           script = prev.writeShellApplication {
             name = name;
-            runtimeInputs = with final; [ (stable.python3.withPackages (module: [ module.pyside6 ])) ];
+            runtimeInputs = with final; [ curl dconf glib foxflake-update zenity (stable.python3.withPackages (module: [ module.pyside6 ])) ];
             bashOptions = [ "errexit" "pipefail" ];
             excludeShellChecks = [ "SC2028" "SC2001" ];
             text = ''
@@ -26,7 +26,7 @@ if [ ! -f /etc/nixos/configuration.nix ]; then
 elif [ ''${#} -eq 0 ]; then
 
 	if ! id -Gn | grep -q "\bwheel\b"; then
-		${prev.zenity}/bin/zenity --error --title="FoxFlake Environment Selection" --text="This application is only available to users with admin privileges."
+		zenity --error --title="FoxFlake Environment Selection" --text="This application is only available to users with admin privileges."
 		exit 1
 	fi
 
@@ -282,7 +282,7 @@ def is_gnome_dark_mode():
     if "gnome" in os.environ.get("XDG_CURRENT_DESKTOP", "").lower():
         try:
             result = subprocess.run(
-                ["${prev.glib}/bin/gsettings", "get", "org.gnome.desktop.interface", "color-scheme"],
+                ["gsettings", "get", "org.gnome.desktop.interface", "color-scheme"],
                 capture_output=True, text=True
             )
             return "dark" in result.stdout.lower()
@@ -457,8 +457,8 @@ elif [ ''${#} -eq 2 ] && { [ "''${1}" == "\"cosmic\"" ] || [ "''${1}" == "\"gnom
 		exec /run/wrappers/bin/sudo /run/current-system/sw/bin/foxflake-environment-selection "''${1}" "''${2}"
 	fi
 
-	if ! ${prev.curl}/bin/curl --progress-bar --connect-timeout 60 --retry 10 --retry-delay 1 -L -f https://github.com/sebanc/foxflake > /dev/null 2>&1; then
-		${prev.zenity}/bin/zenity --width=640 --title="FoxFlake Environment Selection" --error --ok-label="Exit" --text "Error: Please ensure you are connected to the internet before running FoxFlake Environment Selection."
+	if ! curl --progress-bar --connect-timeout 60 --retry 10 --retry-delay 1 -L -f https://github.com/sebanc/foxflake > /dev/null 2>&1; then
+		zenity --width=640 --title="FoxFlake Environment Selection" --error --ok-label="Exit" --text "Error: Please ensure you are connected to the internet before running FoxFlake Environment Selection."
 		exit 1
 	fi
 	
@@ -481,15 +481,15 @@ elif [ ''${#} -eq 2 ] && { [ "''${1}" == "\"cosmic\"" ] || [ "''${1}" == "\"gnom
 		sed -i "s/^}$/  foxflake.system.applications = ''${2};\n}/g" /etc/nixos/configuration.nix
 	fi
 
-	${prev.foxflake-update}/bin/foxflake-update 2>&1 | tee -a /tmp/${name}.log >(while read -r line; do echo "''${line}"; echo "# ''${line}\n\n"; done | /run/wrappers/bin/sudo -u "$(id -nu "''${SUDO_UID}")" ${prev.zenity}/bin/zenity --height=240 --width=640 --title="FoxFlake Environment Selection" --text="Rebuilding system, please wait..." --progress --pulsate --no-cancel --auto-close 2>/dev/null) || { /run/wrappers/bin/sudo -u "$(id -nu "''${SUDO_UID}")" ${prev.zenity}/bin/zenity --width=640 --title="FoxFlake Environment Selection" --error --ok-label="Exit" --text "Error: Failed to rebuild the system.\n\nThe log has been saved in the file \"/tmp/${name}.log\"." 2>/dev/null; exit 1; }
+	foxflake-update 2>&1 | tee -a /tmp/${name}.log >(while read -r line; do echo "''${line}"; echo "# ''${line}\n\n"; done | /run/wrappers/bin/sudo -u "$(id -nu "''${SUDO_UID}")" zenity --height=240 --width=640 --title="FoxFlake Environment Selection" --text="Rebuilding system, please wait..." --progress --pulsate --no-cancel --auto-close 2>/dev/null) || { /run/wrappers/bin/sudo -u "$(id -nu "''${SUDO_UID}")" zenity --width=640 --title="FoxFlake Environment Selection" --error --ok-label="Exit" --text "Error: Failed to rebuild the system.\n\nThe log has been saved in the file \"/tmp/${name}.log\"." 2>/dev/null; exit 1; }
 
 	if [ "''${current_environment}" != "''${1}" ]; then
 		echo "Cleaning dconf and GTK settings" >> /tmp/${name}.log
-		/run/wrappers/bin/sudo -u "$(id -nu "''${SUDO_UID}")" ${prev.dconf}/bin/dconf reset -f /
+		/run/wrappers/bin/sudo -u "$(id -nu "''${SUDO_UID}")" dconf reset -f /
 		for gtkconfig in /home/*/.gtkrc* /home/*/.config/gtkrc* /home/*/.config/gtk-* /home/*/.config/dconf; do rm -rf "''${gtkconfig}"; done
 	fi
 
-	/run/wrappers/bin/sudo -u "$(id -nu "''${SUDO_UID}")" ${prev.zenity}/bin/zenity --width=640 --title="FoxFlake Environment Selection" --info --ok-label="Exit" --text "The system has been updated.\n\nChanges will be applied on next boot." 2>/dev/null
+	/run/wrappers/bin/sudo -u "$(id -nu "''${SUDO_UID}")" zenity --width=640 --title="FoxFlake Environment Selection" --info --ok-label="Exit" --text "The system has been updated.\n\nChanges will be applied on next boot." 2>/dev/null
 
 else
 
