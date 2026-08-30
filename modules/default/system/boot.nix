@@ -43,6 +43,19 @@ with lib;
 
   config = mkIf (config.foxflake.boot.enable) {
 
+    nixpkgs.overlays = [
+      (final: prev: {
+        os-prober = prev.os-prober.overrideAttrs (oldAttrs: {
+          postFixup = (oldAttrs.postFixup or "") + ''
+            substituteInPlace $out/share/common.sh \
+              --replace-fail \
+              'fstype=$(lsblk --nodeps --noheading --output FSTYPE -- "$1" || true)' \
+              'fstype=$(lsblk --nodeps --noheading --output FSTYPE -- "$1" 2>/dev/null || true)'
+          '';
+        });
+      })
+    ];
+
     boot = {
       consoleLogLevel = mkDefault 3;
       initrd.systemd.enable = mkDefault true;
