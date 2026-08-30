@@ -29,6 +29,8 @@ with lib;
       exfatprogs
       fastfetch
       file
+      findutils
+      gawk
       git
       gzip
       jq
@@ -36,8 +38,10 @@ with lib;
       p7zip
       patchelf
       pciutils
+      procps
       psmisc
       squashfsTools
+      sysstat
       unzip
       usbutils
       wget
