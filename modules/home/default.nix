@@ -1,7 +1,8 @@
 {
 
   imports = [
-    ./input-remapper.nix
+    ./packages
+    ./system
   ];
 
 }
