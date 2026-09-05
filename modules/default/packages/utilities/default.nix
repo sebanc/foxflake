@@ -3,6 +3,7 @@
   imports = [
     ./1password.nix
     ./anydesk.nix
+    ./freerdp.nix
     ./gparted.nix
     ./keepassxc.nix
     ./remmina.nix
