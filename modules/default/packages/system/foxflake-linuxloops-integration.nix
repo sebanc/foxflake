@@ -35,7 +35,7 @@ in
           buildCommand = let
             script = prev.writeShellApplication {
               name = name;
-              runtimeInputs = with prev; [ zenity ];
+              runtimeInputs = with final; [ zenity ];
               bashOptions = [ "errexit" "pipefail" ];
               text = ''
                 sudo -n ${LinuxloopsLauncher}/bin/linuxloops-launcher "$@" || zenity --height=200 --width=640 --title="LinuxLoops launcher" --error --text="Linuxloops is only available to admin users (wheel group).\n" 2>/dev/null

@@ -12,8 +12,8 @@ with lib;
 
     environment.systemPackages = [
       (pkgs.stable.winboat.override {
-        electron_40 = pkgs.stable.electron_40.overrideAttrs (old: {
-          meta = old.meta // { knownVulnerabilities = [ ]; insecure = false; };
+        electron_40 = pkgs.stable.electron_40.overrideAttrs (oldAttrs: {
+          meta = oldAttrs.meta // { knownVulnerabilities = [ ]; insecure = false; };
         });
       })
     ];
