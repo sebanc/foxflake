@@ -64,7 +64,25 @@ with lib;
     };
 
     systemd.user.services = {
-      xdg-user-dirs-update = {
+      "desktop-icons-fix" = {
+        description = "Fix desktop icons path";
+        wantedBy = [ "default.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = "${pkgs.writeShellScriptBin "desktop-icons-fix" ''
+            #!${pkgs.bash}
+
+            # Fix for desktop icons links
+            for desktopicon in "$(${pkgs.xdg-user-dirs}/bin/xdg-user-dir DESKTOP)"/*.desktop; do
+              if [ -L "''${desktopicon}" ] && [[ "$(readlink "''${desktopicon}")" =~ ^/nix/store/[^/]*/share/applications(/.*)?$ ]]; then
+                ln -sfn "/run/current-system/sw/share/applications/$(basename "''${desktopicon}")" "''${desktopicon}"
+              fi
+            done
+          ''}/bin/desktop-icons-fix";
+        };
+        restartIfChanged = false;
+      };
+      "xdg-user-dirs-update" = {
         description = "Update XDG user directories";
         wantedBy = [ "default.target" ];
         serviceConfig = {
@@ -73,7 +91,7 @@ with lib;
         };
         restartIfChanged = false;
       };
-      xdg-user-dirs-gtk-update = {
+      "xdg-user-dirs-gtk-update" = {
         description = "Update XDG user directories (GTK)";
         wantedBy = [ "graphical-session.target" ];
         after = [ "xdg-user-dirs-update.service" ];

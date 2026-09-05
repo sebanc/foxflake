@@ -228,6 +228,7 @@ with lib;
                 done
               ''}/bin/steamos-shortcuts-fix";
             };
+            restartIfChanged = false;
           };
           "steamos-session-default" = {
             description = "Restore SteamOS as default session";
