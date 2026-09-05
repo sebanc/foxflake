@@ -31,10 +31,25 @@ with lib;
 
     systemd = {
       services = {
-        nvidia-suspend.enable = mkDefault true;
-        nvidia-resume.enable = mkDefault true;
-        nvidia-hibernate.enable = mkDefault true;
+        "nvidia-suspend".enable = mkDefault true;
+        "nvidia-resume".enable = mkDefault true;
+        "nvidia-hibernate".enable = mkDefault true;
       };
+      shutdown."nvidia-shutdown" = pkgs.writeShellScript "nvidia-shutdown.sh" ''
+        # Dynamically unbind all VT consoles bound to a driver
+        for vtcon in /sys/class/vtconsole/vtcon*; do
+          if [ -f "$vtcon/bind" ] && [ "$(${pkgs.coreutils}/bin/cat "$vtcon/bind")" -eq 1 ]; then
+            echo 0 > "$vtcon/bind" 2>/dev/null || true
+          fi
+        done
+
+        # Recursively unload modules
+        for MODULE in nvidia_drm nvidia_modeset nvidia_uvm nvidia; do
+          if ${pkgs.kmod}/bin/lsmod | ${pkgs.gnugrep}/bin/grep "$MODULE" > /dev/null 2>&1; then
+            ${pkgs.kmod}/bin/rmmod "$MODULE"
+          fi
+        done
+      '';
     };
 
     environment.variables = {
