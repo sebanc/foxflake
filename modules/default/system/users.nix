@@ -102,7 +102,7 @@ let
     userConfigurations = foldr (a: b: a // b) { } (map mkUser (attrNames config.foxflake.users));
     mkHome = username: {
       "${username}" =  {
-        imports = [ (import ../../home/flatpak.nix { user = "${username}"; }) ];
+        imports = [ (import ../../home/system/flatpak.nix { user = "${username}"; }) ];
         home.stateVersion = mkDefault config.foxflake.stateVersion;
       };
     };
