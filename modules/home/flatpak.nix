@@ -17,10 +17,7 @@ with lib;
         }
       ];
       packages = mkDefault osConfig.foxflake.users."${user}".flatpaks;
-      update.auto = {
-        enable = mkDefault true;
-        onCalendar = mkDefault "daily";
-      };
+      update.auto.enable = mkDefault false;
     };
 
   };

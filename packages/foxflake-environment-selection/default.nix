@@ -505,9 +505,9 @@ fi
             desktopName = "FoxFlake Environment Selection";
             icon = "foxflake-green-icon";
             exec = "/run/current-system/sw/bin/foxflake-environment-selection";
-            startupWMClass = "FoxFlake Environment Selection";
             terminal = false;
             categories = [ "System" ];
+            startupWMClass = "FoxFlake Environment Selection";
           };
         in ''
 mkdir -p $out/bin
