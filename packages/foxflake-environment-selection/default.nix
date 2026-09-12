@@ -406,6 +406,7 @@ GParted^Graphical utility for disk partitioning and file system management^gpart
 1Password^Secure cross-platform password manager^1password|\
 KeePassXC^Graphical utility for disk partitioning and file system management^keepassxc|\
 Remmina^Versatile client for RDP, VNC, and SSH connections^remmina|\
+FreeRDP^Open-source Remote Desktop Protocol (RDP) client^freerdp|\
 RustDesk^Open-source, self-hosted remote desktop software^rustdesk|\
 AnyDesk^Proprietary, high-speed remote desktop sharing^anydesk|\
 TeamViewer^Industry-standard tool for remote support and collaboration^teamviewer|\
