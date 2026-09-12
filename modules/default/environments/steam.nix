@@ -173,78 +173,104 @@ with lib;
 
     systemd = {
       coredump.enable = mkDefault false;
-      services."jupiter-biosupdate" = {
-        description = "Fake Jupiter BIOS update service";
-        wantedBy = [ "multi-user.target" ];
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-          ExecStart = "${pkgs.coreutils}/bin/true";
-        };
-        restartIfChanged = false;
-      };
-      services."jupiter-controller-update" = {
-        description = "Fake Jupiter controller update service";
-        wantedBy = [ "multi-user.target" ];
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-          ExecStart = "${pkgs.coreutils}/bin/true";
-        };
-        restartIfChanged = false;
-      };
-      services."jupiter-fan-control" = {
-        description = "Fake Jupiter fan control service";
-        wantedBy = [ "multi-user.target" ];
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-          ExecStart = "${pkgs.coreutils}/bin/true";
-        };
-        restartIfChanged = false;
-      };
-      user.services = {
-        "steamos-session-default" = {
-          description = "Restore SteamOS as default session";
-          before = [ "plasma-plasmashell.service" ];
-          wantedBy = [ "plasma-core.target" ];
-          serviceConfig = {
-            Type = "oneshot";
-            ExecStart = "${pkgs.writeShellScriptBin "steamos-session-default" ''
-              #!${pkgs.bash}
-
-              if [ ! -d ''${HOME}/.local/share/Steam ]; then
-                mkdir -p ''${HOME}/.local/share/Steam
-                echo "BootStrapperInhibitAll=enable" > ''${HOME}/.local/share/Steam/steam.cfg
-              elif [ -f ''${HOME}/.local/share/Steam/steam.cfg ] && [ -f ''${HOME}/.local/share/Steam/config/loginusers.vdf ]; then
-                grep -q "BootStrapperInhibitAll" ''${HOME}/.local/share/Steam/steam.cfg && sed -i '/BootStrapperInhibitAll/d' ''${HOME}/.local/share/Steam/steam.cfg
-              fi
-
-              echo -e '[Autologin]\nSession=steam' > /tmp/zz-steamos.conf
-            ''}/bin/steamos-session-default";
-          };
-          restartIfChanged = false;
-        };
-        "cleanup-session" = {
-          description = "Force kill Kwin to avoid drm conflicts";
-          wantedBy = [ "graphical-session.target" ];
-          partOf = [ "graphical-session.target" ];
+      services = {
+        "jupiter-biosupdate" = {
+          description = "Fake Jupiter BIOS update service";
+          wantedBy = [ "multi-user.target" ];
           serviceConfig = {
             Type = "oneshot";
             RemainAfterExit = true;
-            ExecStop = "${pkgs.writeShellScriptBin "cleanup-session" ''
-              #!${pkgs.bash}
-
-              ${pkgs.procps}/bin/pkill -KILL kwin
-            ''}/bin/cleanup-session";
-            TimeoutStopSec = "5s";
+            ExecStart = "${pkgs.coreutils}/bin/true";
+          };
+          restartIfChanged = false;
+        };
+        "jupiter-controller-update" = {
+          description = "Fake Jupiter controller update service";
+          wantedBy = [ "multi-user.target" ];
+          serviceConfig = {
+            Type = "oneshot";
+            RemainAfterExit = true;
+            ExecStart = "${pkgs.coreutils}/bin/true";
+          };
+          restartIfChanged = false;
+        };
+        "jupiter-fan-control" = {
+          description = "Fake Jupiter fan control service";
+          wantedBy = [ "multi-user.target" ];
+          serviceConfig = {
+            Type = "oneshot";
+            RemainAfterExit = true;
+            ExecStart = "${pkgs.coreutils}/bin/true";
           };
           restartIfChanged = false;
         };
       };
-      tmpfiles.rules = [
-        "L+ /etc/sddm.conf.d/zz-steamos.conf - - - - /tmp/zz-steamos.conf"
-      ];
+      user = {
+        services = {
+          "steamos-shortcuts-fix" = {
+            description = "Watch for Steam .desktop shortcuts and add -steamos3 argument";
+            wantedBy = [ "default.target" ];
+            after = [ "xdg-user-dirs-update.service" ];
+            serviceConfig = {
+              Type = "simple";
+              Restart = "on-failure";
+              RestartSec = 5;
+              ExecStart = "${pkgs.writeShellScriptBin "steamos-shortcuts-fix" ''
+                set -eu
+                mkdir -p "$HOME/.local/share/applications" "$(${pkgs.xdg-user-dirs}/bin/xdg-user-dir DESKTOP)"
+                exec ${pkgs.inotify-tools}/bin/inotifywait -m -q -e close_write --format '%w%f' "''${HOME}/.local/share/applications" "$(${pkgs.xdg-user-dirs}/bin/xdg-user-dir DESKTOP)" | while read -r shortcut; do
+                  case "''${shortcut}" in
+                    */*.desktop)
+                      echo "Fixing shortcut ''${shortcut}"
+                      ${pkgs.gnused}/bin/sed -i 's@steam steam://@steam -steamos3 steam://@g' "''${shortcut}"
+                    ;;
+                  esac
+                done
+              ''}/bin/steamos-shortcuts-fix";
+            };
+          };
+          "steamos-session-default" = {
+            description = "Restore SteamOS as default session";
+            before = [ "plasma-plasmashell.service" ];
+            wantedBy = [ "plasma-core.target" ];
+            serviceConfig = {
+              Type = "oneshot";
+              ExecStart = "${pkgs.writeShellScriptBin "steamos-session-default" ''
+                #!${pkgs.bash}
+
+                if [ ! -d ''${HOME}/.local/share/Steam ]; then
+                  mkdir -p ''${HOME}/.local/share/Steam
+                  echo "BootStrapperInhibitAll=enable" > ''${HOME}/.local/share/Steam/steam.cfg
+                elif [ -f ''${HOME}/.local/share/Steam/steam.cfg ] && [ -f ''${HOME}/.local/share/Steam/config/loginusers.vdf ]; then
+                  grep -q "BootStrapperInhibitAll" ''${HOME}/.local/share/Steam/steam.cfg && sed -i '/BootStrapperInhibitAll/d' ''${HOME}/.local/share/Steam/steam.cfg
+                fi
+
+                echo -e '[Autologin]\nSession=steam' > /tmp/zz-steamos.conf
+              ''}/bin/steamos-session-default";
+            };
+            restartIfChanged = false;
+          };
+          "cleanup-session" = {
+            description = "Force kill Kwin to avoid drm conflicts";
+            wantedBy = [ "graphical-session.target" ];
+            partOf = [ "graphical-session.target" ];
+            serviceConfig = {
+              Type = "oneshot";
+              RemainAfterExit = true;
+              ExecStop = "${pkgs.writeShellScriptBin "cleanup-session" ''
+                #!${pkgs.bash}
+
+                ${pkgs.procps}/bin/pkill -KILL kwin
+              ''}/bin/cleanup-session";
+              TimeoutStopSec = "5s";
+            };
+            restartIfChanged = false;
+          };
+        };
+        tmpfiles.rules = [
+          "L+ /etc/sddm.conf.d/zz-steamos.conf - - - - /tmp/zz-steamos.conf"
+        ];
+      };
     };
 
   };
