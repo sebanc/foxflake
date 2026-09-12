@@ -50,8 +50,8 @@ with lib;
 
     programs = {
       gamescope = {
-        package = mkOverride 999 ((pkgs.stable.gamescope.override { enableWsi = true; }).overrideAttrs (old: {
-          patches = (old.patches or []) ++ [ (pkgs.writeText "foxflake-specific.patch" ''
+        package = mkOverride 999 ((pkgs.stable.gamescope.override { enableWsi = true; }).overrideAttrs (oldAttrs: {
+          patches = (oldAttrs.patches or []) ++ [ (pkgs.writeText "foxflake-specific.patch" ''
             diff -ruN -U 5 a/src/Backends/DRMBackend.cpp b/src/Backends/DRMBackend.cpp
             --- a/src/Backends/DRMBackend.cpp	2026-07-11 20:08:34.478614512 +0200
             +++ b/src/Backends/DRMBackend.cpp	2026-07-11 20:02:43.769657246 +0200
@@ -120,8 +120,8 @@ with lib;
             ''}"
             cp -f "$RESOLV_CONF" /etc/resolv.conf || echo "warning: failed to override resolv.conf" >&2
           '';
-          steam-unwrapped = pkgs.stable.steam-unwrapped.overrideAttrs (old: {
-            postInstall = (old.postInstall or "") + ''
+          steam-unwrapped = pkgs.stable.steam-unwrapped.overrideAttrs (oldAttrs: {
+            postInstall = (oldAttrs.postInstall or "") + ''
               cp ${pkgs.fetchurl {
                 url = "https://steamdeck-packages.steamos.cloud/misc/steam-snapshots/steam_jupiter_stable_bootstrapped_20251031.0.tar.xz";
                 hash = "sha256-A6Y7+eUV4Rwwrv8u0DilxeDBvTFHMBqzL33P+YwhCTs=";

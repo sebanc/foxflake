@@ -41,8 +41,8 @@ with lib;
             cp -r shim-signed/usr/lib/shim "$out/share/"
           '';
         };
-        grub2 = prev.grub2.overrideAttrs (old: {
-          postInstall = (old.postInstall or "") + ''
+        grub2 = prev.grub2.overrideAttrs (oldAttrs: {
+          postInstall = (oldAttrs.postInstall or "") + ''
             mv $out/sbin/grub-install $out/sbin/grub-install-real
             cat > $out/sbin/grub-install <<GRUBINSTALL
             #!/bin/sh
