@@ -29,15 +29,21 @@ with lib;
       exfatprogs
       fastfetch
       file
+      findutils
+      gawk
       git
       gzip
       jq
+      lm_sensors
+      lsof
       ntfs3g
       p7zip
       patchelf
       pciutils
+      procps
       psmisc
       squashfsTools
+      sysstat
       unzip
       usbutils
       wget
