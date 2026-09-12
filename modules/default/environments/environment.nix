@@ -76,6 +76,7 @@ with lib;
       xdg-user-dirs-gtk-update = {
         description = "Update XDG user directories (GTK)";
         wantedBy = [ "graphical-session.target" ];
+        after = [ "xdg-user-dirs-update.service" ];
         serviceConfig = {
           Type = "oneshot";
           ExecStart = "${pkgs.xdg-user-dirs-gtk}/bin/xdg-user-dirs-gtk-update";
