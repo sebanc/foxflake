@@ -7,10 +7,10 @@
         ]
       },
       "locked": {
-        "lastModified": 1789267719,
-        "narHash": "sha256-FIlwGdFjtpGYyL8g/RZZvIxshT9gdwJfcMjHRWHrc4U=",
+        "lastModified": 1789352311,
+        "narHash": "sha256-E9hlcRNSRQ1vb+UicOusX/ucroGlBAz/pYhCBorLOn4=",
         "ref": "master",
-        "rev": "10d0acd7f81e3c035b452daa39ac7d1673880729",
+        "rev": "cfcda3f99334c8459fa4cd46cce87502e0b48f0a",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/nix-community/home-manager"
@@ -24,10 +24,10 @@
     },
     "nix-flatpak": {
       "locked": {
-        "lastModified": 1783368811,
-        "narHash": "sha256-0H8jDwR4Kegb3heaTrH1ftbgKfZVDT8JE+46uXxDy/Q=",
+        "lastModified": 1789296110,
+        "narHash": "sha256-8wVBx1J5hR1DzUyzlrm2DkMXx7RJbATh3+R+qBBILlI=",
         "ref": "main",
-        "rev": "20d42f0ee98c9fe9f85e8d1de474f1409ed10d05",
+        "rev": "0f392e302963bce69787c495aa95ef1d50dda889",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/gmodena/nix-flatpak"
