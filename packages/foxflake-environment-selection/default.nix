@@ -332,6 +332,7 @@ Chromium^The open-source version of Google’s Chrome web browser^chromium|\
 Thunderbird^Mozilla’s free and open-source email client^thunderbird|\
 Evolution^Email client and personal information management tool^evolution|\
 Discord^A popular proprietary platform for voice, video, and text communication^discord|\
+Vesktop^A custom Discord app with built-in Vencord and improved Linux support^vesktop|\
 Zoom^Video conferencing tool for meetings, webinars, and online collaboration^zoom|\
 Slack^Collaborative team messaging platform with channels and app integrations^slack|\
 Telegram^Fast, secure cloud-based instant messaging app with heavy encryption^telegram|\
@@ -413,7 +414,8 @@ TeamViewer^Industry-standard tool for remote support and collaboration^teamviewe
 Wireshark^Network analysis tool for capturing and inspecting data packets^wireshark|\
 Hardware^Hardware management^|\
 OpenTabletDriver^Open source and cross-platform tablet driver^opentabletdriver|\
-OpenRGB^A tool to control RGB lighting across motherboards, RAM, GPUs...^openrgb|\
+OpenRGB^An open-source tool to control RGB lighting across motherboards, RAM, GPUs...^openrgb|\
+OpenRazer^An open-source Linux driver to control Razer hardware and RGB lighting^openrazer|\
 LACT^A modern GTK tool for AMD GPU overclocking, undervolting, and monitoring^lact|\
 CoreCtrl^A tool to control hardware performance, fan curves, and power profiles^corectrl|\
 CoolerControl^A GUI for managing cooling devices^coolercontrol|\
