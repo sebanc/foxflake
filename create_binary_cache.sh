@@ -44,7 +44,11 @@ if [ "${1}" == "stable" ] || [ "${1}" == "unstable" ]; then
 }
 MAIN_FLAKE
 			git add flake.nix
-			nix build --no-link --max-jobs auto .#nixosConfigurations.foxflake-${1}-${environment}${nvidia}.config.system.build.toplevel
+			for i in {1..5}; do
+				nix build --no-link --max-jobs auto .#nixosConfigurations.foxflake-${1}-${environment}${nvidia}.config.system.build.toplevel && break
+				if [ ${i} -eq 5 ]; then exit 1; fi
+				sleep 15
+			done
 		done
 	done
 else
@@ -86,7 +90,11 @@ else
 }
 MAIN_FLAKE
 			git add flake.nix
-			nix build --no-link --max-jobs auto .#nixosConfigurations.foxflake-${1}-${environment}${nvidia}.config.system.build.toplevel
+			for i in {1..5}; do
+				nix build --no-link --max-jobs auto .#nixosConfigurations.foxflake-${1}-${environment}${nvidia}.config.system.build.toplevel && break
+				if [ ${i} -eq 5 ]; then exit 1; fi
+				sleep 15
+			done
 		done
 	done
 fi
