@@ -13,6 +13,7 @@
     ./lact.nix
     ./lexmarkps.nix
     ./logitechff.nix
+    ./openrazer.nix
     ./openrgb.nix
     ./opentabletdriver.nix
     ./samsungpl.nix
