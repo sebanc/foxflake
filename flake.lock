@@ -24,10 +24,10 @@
     },
     "nix-flatpak": {
       "locked": {
-        "lastModified": 1789496567,
-        "narHash": "sha256-f9ze1ph2u0lk/Hm7/w/OvC0ESL1z0LbQ5UDgcOwQzLM=",
+        "lastModified": 1790428548,
+        "narHash": "sha256-OsZ/I7v3ArCrk0XOUvkiU1dFtGtE1qZTHRGjvBXIKUU=",
         "ref": "main",
-        "rev": "07e8980c2fe421c93c0749f6246db34422827f67",
+        "rev": "f1f045fc8b35ff59f88982c1752d3f3a42ca6a61",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/gmodena/nix-flatpak"
@@ -58,10 +58,10 @@
     },
     "nixpkgs-stable": {
       "locked": {
-        "lastModified": 1790340521,
-        "narHash": "sha256-cRrWlIjVRJ6BHDr9caUdXsZ3owzWIKYHpNmGPHBInIU=",
+        "lastModified": 1790450978,
+        "narHash": "sha256-/eLCD/X9kaWJqPR47+fDozEC87Hjmm3i8gJbYmDAD7g=",
         "ref": "nixos-26.05",
-        "rev": "f5c082a40f7571c266e74e80ae2e68aadd8a9fc7",
+        "rev": "5e2305d577ca00acbba631b05cb1094d172b29f3",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/nixos/nixpkgs"
