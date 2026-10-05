@@ -62,6 +62,19 @@ with lib;
           [General]
           background="${config.foxflake.customization.environment.wallpaper}"
         '')
+        (pkgs.writeTextFile {
+          name = "xdg-desktop-portal-fix";
+          destination = "/etc/xdg/autostart/xdg-desktop-portal-fix.desktop";
+          text = ''
+            [Desktop Entry]
+            Type=Application
+            Name=XDG desktop portal fix
+            Exec=sh -c "systemctl --user restart xdg-desktop-portal"
+            OnlyShowIn=KDE;
+            NoDisplay=true
+            X-KDE-autostart-phase=1
+          '';
+        })
       ];
     };
     programs = {
