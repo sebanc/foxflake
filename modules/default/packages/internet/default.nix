@@ -14,6 +14,7 @@
     ./telegram.nix
     ./thunderbird.nix
     ./tor.nix
+    ./vesktop.nix
     ./zoom.nix
   ];
 
