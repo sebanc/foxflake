@@ -92,9 +92,9 @@ let
       "${username}" =  {
         extraGroups = [ ]
           ++ optionals (config.foxflake.autoUserGroups) [ "lp" "networkmanager" "scanner" ]
-          ++ optionals (config.foxflake.autoUserGroups && builtins.elem "android-studio" config.foxflake.system.applications) [ "kvm" ]
           ++ optionals (config.foxflake.autoUserGroups && builtins.elem "distrobox" config.foxflake.system.applications || builtins.elem "docker" config.foxflake.system.applications || builtins.elem "winboat" config.foxflake.system.applications) [ "docker" ]
           ++ optionals (config.foxflake.autoUserGroups && builtins.elem "distrobox" config.foxflake.system.applications || builtins.elem "podman" config.foxflake.system.applications || builtins.elem "winboat" config.foxflake.system.applications) [ "podman" ]
+          ++ optionals (config.foxflake.autoUserGroups && builtins.elem "openrazer" config.foxflake.system.applications) [ "openrazer" ]
           ++ optionals (config.foxflake.autoUserGroups && builtins.elem "virt-manager" config.foxflake.system.applications) [ "libvirtd" ]
           ++ optionals (config.foxflake.autoUserGroups && builtins.elem "virtualbox" config.foxflake.system.applications) [ "vboxusers" ];
       };
