@@ -25,7 +25,6 @@ with lib;
       enable = mkDefault true;
       enable32Bit = mkDefault true;
       extraPackages = with pkgs; [
-        intel-compute-runtime
         intel-media-driver
         intel-vaapi-driver
         libva
