@@ -47,6 +47,7 @@ with lib;
         pkgs.kdePackages.kalk
         pkgs.kdePackages.qtwebengine
         (pkgs.unstable.tela-circle-icon-theme.overrideAttrs (oldAttrs: {
+          dontCheckForBrokenSymlinks = true;
           postInstall = (oldAttrs.postInstall or "") + ''
             if [ -f "$out/share/icons/Tela-circle/scalable/apps/start-here-kde-plasma.svg" ]; then
               rm -f "$out/share/icons/Tela-circle/32/status/start-here.svg" "$out/share/icons/Tela-circle/32/status/start-here-kde-plasma.svg" "$out/share/icons/Tela-circle/32/status/start-here-kde-plasma-symbolic.svg" "$out/share/icons/Tela-circle/32/status/start-here-kde-symbolic.svg" "$out/share/icons/Tela-circle/32/status/start-here-symbolic.svg"

@@ -47,11 +47,13 @@ with lib;
         nwg-dock-hyprland
         nwg-drawer
         pavucontrol
-        tela-circle-icon-theme
         waybar
         wireplumber
         wl-clipboard
         wlogout
+        (pkgs.unstable.tela-circle-icon-theme.overrideAttrs (oldAttrs: {
+          dontCheckForBrokenSymlinks = true;
+        }))
       ];
     };
 
