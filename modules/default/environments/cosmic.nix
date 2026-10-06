@@ -12,7 +12,11 @@ with lib;
 
     environment = {
       sessionVariables.NIXOS_OZONE_WL = mkDefault "1";
-      systemPackages = [ pkgs.unstable.tela-circle-icon-theme ];
+      systemPackages = [
+        (pkgs.unstable.tela-circle-icon-theme.overrideAttrs (oldAttrs: {
+          dontCheckForBrokenSymlinks = true;
+        }))
+      ];
     };
 
     services = {

@@ -40,8 +40,10 @@ with lib;
         gnomeExtensions.dash-to-dock
         gnome-themes-extra
         gnome-tweaks
-        tela-circle-icon-theme
         wsdd
+        (pkgs.unstable.tela-circle-icon-theme.overrideAttrs (oldAttrs: {
+          dontCheckForBrokenSymlinks = true;
+        }))
       ];
 
       gnome.excludePackages = with pkgs; [
