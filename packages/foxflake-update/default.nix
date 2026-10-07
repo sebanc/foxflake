@@ -22,10 +22,11 @@ nixos-rebuild boot --flake /etc/nixos#foxflake --show-trace "$@"
         desktopEntry = prev.makeDesktopItem {
           name = name;
           desktopName = "FoxFlake Update";
-          icon = "foxflake-grey-icon";
+          icon = "foxflake-red-icon";
           exec = "/run/current-system/sw/bin/foxflake-update";
           terminal = true;
           categories = [ "System" ];
+          noDisplay = true;
         };
         in ''
 mkdir -p $out/bin
