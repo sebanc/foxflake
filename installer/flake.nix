@@ -53,6 +53,7 @@
                   environment.selection.enable = false;
                   networking.hostname = "foxflake-installer";
                 };
+                environment.gnome.excludePackages = [ pkgs.showtime ];
                 programs.dconf = {
                   enable = true;
                   profiles.user.databases = [
