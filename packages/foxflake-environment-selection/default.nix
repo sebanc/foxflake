@@ -314,8 +314,8 @@ if __name__ == "__main__":
 FOXFLAKE_GUI
 
 	available_desktops="
-Gnome^gnome|\
 Plasma^plasma|\
+Gnome^gnome|\
 Cosmic^cosmic|\
 Hyprland^hyprland|\
 Steam^steam|\
