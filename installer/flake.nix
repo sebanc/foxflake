@@ -18,13 +18,18 @@
           system = "x86_64-linux";
           modules = [
             foxflake.nixosModules.default
-            "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares-gnome.nix"
+            "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares-plasma6.nix"
             {
               nixpkgs.overlays = [
                 (final: prev: {
                   calamares = prev.calamares.overrideAttrs (oldAttrs: {
                     postUnpack = (oldAttrs.postUnpack or "") + ''
                       patch -p1 -d "$sourceRoot" < ${./calamares-patches/patches/checkbootcrypto.patch}
+                    '';
+                    postInstall = (oldAttrs.postInstall or "") + ''
+                      if [ -f "$out/share/applications/calamares.desktop" ]; then
+                        sed -i 's@pkexec calamares@sudo calamares@g' "$out/share/applications/calamares.desktop"
+                      fi
                     '';
                   });
                 })
@@ -49,102 +54,57 @@
               {
                 foxflake = {
                   autoUpgrade = false;
-                  environment.type = "gnome";
+                  environment.type = "plasma";
                   environment.selection.enable = false;
                   networking.hostname = "foxflake-installer";
                 };
-                environment.gnome.excludePackages = [ pkgs.showtime ];
-                programs.dconf = {
-                  enable = true;
-                  profiles.user.databases = [
-                    {
-                      settings = {
-                        "org/gnome/desktop/wm/preferences" = {
-                          button-layout = "appmenu:minimize,maximize,close";
-                          theme = "${config.foxflake.customization.environment.theme}";
-                          focus-mode = "click";
-                          visual-bell = false;
-                        };
-                        "org/gnome/desktop/interface" = {
-                          cursor-theme = "${config.foxflake.customization.environment.cursor-theme}";
-                          gtk-theme = "${config.foxflake.customization.environment.theme}";
-                          icon-theme = "${config.foxflake.customization.environment.icon-theme}";
-                        };
-                        "org/gnome/desktop/background" = {
-                          color-shading-type = "solid";
-                          picture-options = "zoom";
-                          picture-uri = "file://${config.foxflake.customization.environment.wallpaper}";
-                          picture-uri-dark = "file://${config.foxflake.customization.environment.wallpaper}";
-                        };
-                        "org/gnome/desktop/peripherals/touchpad" = {
-                          click-method = "areas";
-                          tap-to-click = true;
-                          two-finger-scrolling-enabled = true;
-                        };
-                        "org/gnome/desktop/peripherals/keyboard" = {
-                          numlock-state = true;
-                        };
-                        "org/gnome/shell" = {
-                          disable-user-extensions = false;
-                          enabled-extensions = [
-                            "appindicatorsupport@rgcjonas.gmail.com"
-                            "blur-my-shell@aunetx"
-                            "caffeine@patapon.info"
-                            "dash-to-dock@micxgx.gmail.com"
-                            "gsconnect@andyholmes.github.io"
-                          ];
-                          favorite-apps = [
-                            "firefox.desktop"
-                            "librewolf.desktop"
-                            "google-chrome.desktop"
-                            "chromium-browser.desktop"
-                            "brave-browser.desktop"
-                            "org.gnome.Nautilus.desktop"
-                            "org.gnome.Software.desktop"
-                          ];
-                        };
-                        "org/gnome/shell/extensions/dash-to-dock" = {
-                          background-opacity = 0.0;
-                          dock-position = "BOTTOM";
-                          running-indicator-style = "DOTS";
-                          isolate-monitor = false;
-                          multi-monitor = true;
-                          show-mounts-network = true;
-                          always-center-icons = true;
-                          custom-theme-shrink = true;
-                        };
-                        "org/gnome/software" = {
-                          download-updates = false;
-                          download-updates-notify = false;
-                        };
-                        "org/gnome/mutter" = {
-                          check-alive-timeout = lib.gvariant.mkUint32 30000;
-                          dynamic-workspaces = true;
-                          edge-tiling = true;
-                        };
-                      };
-                    }
-                  ];
+                environment.etc = {
+                  "xdg/kscreenlockerrc".text = ''
+                    [Daemon]
+                    Autolock=false
+                    LockOnResume=false
+                  '';
+                  "xdg/powerdevilrc".text = ''
+                    [AC][Display]
+                    DimDisplayWhenIdle=false
+                    TurnOffDisplayWhenIdle=false
+
+                    [AC][SuspendAndShutdown]
+                    AutoSuspendAction=0
+
+                    [Battery][Display]
+                    DimDisplayWhenIdle=false
+                    TurnOffDisplayWhenIdle=false
+
+                    [Battery][SuspendAndShutdown]
+                    AutoSuspendAction=0
+
+                    [LowBattery][Display]
+                    DimDisplayWhenIdle=false
+                    TurnOffDisplayWhenIdle=false
+
+                    [LowBattery][SuspendAndShutdown]
+                    AutoSuspendAction=0
+                  '';
                 };
-                services.fwupd.enable = false;
-                system.nixos.label = "";
-                specialisation = {
-                  nvidia_open = {
-                    configuration = {
-                      isoImage.appendToMenuLabel = lib.mkForce " Installer (with Nvidia open source kernel driver)";
-                      foxflake.nvidia.enable = true;
-                    };
+                programs.bash.loginShellInit = ''
+                  if [ "$XDG_VTNR" = 1 ] && [ -z "$WAYLAND_DISPLAY" ]; then
+                    exec startplasma-wayland
+                  fi
+                '';
+                services = {
+                  fwupd.enable = false;
+                  getty.autologinUser = "nixos";
+                  displayManager = {
+                    sddm.enable = lib.mkForce false;
+                    plasma-login-manager.enable = lib.mkForce false;
                   };
                 };
-                nixpkgs.config.packageOverrides = pkgs: {
-                  calamares = pkgs.calamares.overrideAttrs (oldAttrs: {
-                    postInstall = (oldAttrs.postInstall or "") + ''
-                      if [ -f "$out/share/applications/calamares.desktop" ]; then
-                        sed -i 's@pkexec calamares@sudo calamares@g' "$out/share/applications/calamares.desktop"
-                      fi
-                    '';
-                  });
+                system = {
+                  activationScripts.installerDesktop = lib.mkForce "";
+                  nixos.label = lib.mkForce "";
                 };
+                systemd.tmpfiles.settings."10-installer-desktop" = lib.mkForce { };
                 virtualisation.hypervGuest.enable = lib.mkForce false;
                 virtualisation.xen.enable = lib.mkForce false;
                 image.baseName = lib.mkForce "foxflake-${config.isoImage.edition}-${pkgs.stdenv.hostPlatform.uname.processor}";
