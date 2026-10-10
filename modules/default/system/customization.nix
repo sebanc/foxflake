@@ -50,10 +50,8 @@ with lib;
       };
       theme = mkOption {
         type = with types; nullOr str;
-        default = if (config.foxflake.environment.type) == "gnome" then
+        default = if (config.foxflake.environment.type == "gnome" || config.foxflake.environment.type == "hyprland") then
           "Adwaita"
-        else if (config.foxflake.environment.type) == "hyprland" then
-          "Adwaita-dark"
         else if (config.foxflake.environment.type == "plasma" || config.foxflake.environment.type == "steam" || config.foxflake.environment.type == "steamdeck") then
           "breeze-light"
         else
