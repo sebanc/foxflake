@@ -15,6 +15,7 @@ with lib;
       displayManager = {
         sddm = {
           enable = mkDefault true;
+          autoNumlock = mkDefault true;
           theme = mkDefault "breeze";
           wayland = {
             enable = mkDefault true;
