@@ -8,13 +8,13 @@ with lib;
 
 {
 
-  options.foxflake.autoUpgrade = mkOption {
+  options.foxflake.autoUpdate = mkOption {
     type = types.bool;
     default = true;
     description = "Enable FoxFlake automatic updates.";
   };
 
-  config = mkIf (config.foxflake.autoUpgrade) {
+  config = mkIf (config.foxflake.autoUpdate) {
 
     nixpkgs.overlays = [
       (final: prev: {

@@ -53,7 +53,7 @@
               { config, lib, ... }:
               {
                 foxflake = {
-                  autoUpgrade = false;
+                  autoUpdate = false;
                   environment.type = "plasma";
                   environment.selection.enable = false;
                   networking.hostname = "foxflake-installer";
