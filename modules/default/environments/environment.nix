@@ -46,13 +46,15 @@ with lib;
       enable = mkDefault true;
       plugins = with pkgs; [ networkmanager-openvpn ];
     };
-    services.resolved.enable = mkDefault true;
 
     services = {
       displayManager.autoLogin = {
         enable = mkDefault config.foxflake.environment.autologin;
         user = mkDefault config.foxflake.environment.autologinUser;
       };
+      power-profiles-daemon.enable = mkDefault true;
+      resolved.enable = mkDefault true;
+      upower.enable = mkDefault true;
       xserver = {
         enable = mkDefault true;
         excludePackages = mkDefault [ pkgs.xterm ];
