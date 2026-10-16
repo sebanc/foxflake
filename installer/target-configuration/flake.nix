@@ -3,7 +3,7 @@
   description = "FoxFlake";
 
   inputs = {
-    foxflake.url = "git+https://github.com/sebanc/foxflake?shallow=1&ref=stable";
+    foxflake.url = "git+https://github.com/sebanc/foxflake?shallow=1&ref=stable-test";
     nixpkgs.follows = "foxflake/nixpkgs";
   };
 
