@@ -53,16 +53,13 @@ with lib;
               'fstype=$(lsblk --nodeps --noheading --output FSTYPE -- "$1" 2>/dev/null || true)'
           '';
         });
-        linuxPackagesFor = kernel: (prev.linuxPackagesFor kernel).extend (kfinal: kprev: {
-          kernelModuleMakeFlags = map (f: builtins.replaceStrings [ "$(space)" ] [ " " ] f) kprev.kernelModuleMakeFlags;
-        });
       })
     ];
 
     boot = {
       consoleLogLevel = mkDefault 3;
       initrd.systemd.enable = mkDefault true;
-      kernelPackages = mkDefault pkgs.unstable.linuxPackages_xanmod;
+      kernelPackages = mkDefault pkgs.linuxPackages_xanmod;
       kernelParams = [ "fbcon=nodefer" "quiet" ];
       loader = {
         grub = {
