@@ -15,7 +15,6 @@ jobs:
   create-foxflake-stable-binary-cache:
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
       matrix:
         branch: [ "stable", "stable-test" ]
     steps:
@@ -46,6 +45,7 @@ jobs:
           pushFilter: '(\.deb$|\.exe$|\.run$|source$|\.tar\.)'
           useDaemon: false
       - name: Build FoxFlake binary cache
+        continue-on-error: true
         run: |
           sudo fallocate -l 16G /nixswap
           sudo chmod 600 /nixswap
@@ -97,7 +97,6 @@ jobs:
   create-foxflake-unstable-binary-cache:
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
       matrix:
         branch: [ "unstable", "unstable-test", "dev" ]
     steps:
@@ -128,6 +127,7 @@ jobs:
           pushFilter: '(\.deb$|\.exe$|\.run$|source$|\.tar\.)'
           useDaemon: false
       - name: Build FoxFlake binary cache
+        continue-on-error: true
         run: |
           sudo fallocate -l 16G /nixswap
           sudo chmod 600 /nixswap
