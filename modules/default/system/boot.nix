@@ -53,6 +53,9 @@ with lib;
               'fstype=$(lsblk --nodeps --noheading --output FSTYPE -- "$1" 2>/dev/null || true)'
           '';
         });
+        linuxPackagesFor = kernel: (prev.linuxPackagesFor kernel).extend (kfinal: kprev: {
+          kernelModuleMakeFlags = map (f: builtins.replaceStrings [ "$(space)" ] [ " " ] f) kprev.kernelModuleMakeFlags;
+        });
       })
     ];
 
