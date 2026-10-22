@@ -15,6 +15,7 @@ jobs:
   create-foxflake-stable-binary-cache:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         branch: [ "stable", "stable-test" ]
     steps:
@@ -96,6 +97,7 @@ jobs:
   create-foxflake-unstable-binary-cache:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         branch: [ "unstable", "unstable-test", "dev" ]
     steps:

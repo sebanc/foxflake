@@ -12,7 +12,7 @@ FoxFlake is a comprehensive configuration of the NixOS Linux distribution (Flake
 ## Key features
 
 Environment flexibility:  
-- Choose between included Gnome, Plasma, Cosmic, Hyprland and Steam environments or define your custom one.  
+- Choose between included Plasma, Gnome, Cosmic, Hyprland and Steam environments or define your custom one.  
 - Manage your native NixOS applications via the "FoxFlake Environment Selection" tool.  
 - Custom nix-ld and appimage-run configurations ensure extended compatibility with AppImages / scripts.<br>
 
@@ -29,10 +29,10 @@ NixOS foundation:
 ## Desktop environments
 
 <div align="center">
-Gnome:<br><img alt="Gnome" src="./Images/gnome.jpg" width="512" height="320" /><br><br>
-Plasma:<br><img alt="Plasma" src="./Images/plasma.jpg" width="512" height="320" /><br><br>
-Cosmic:<br><img alt="Cosmic" src="./Images/cosmic.jpg" width="512" height="320" /><br><br>
-Hyprland:<br><img alt="Hyprland" src="./Images/hyprland.jpg" width="512" height="320" /><br><br>
+Plasma:<br><img alt="Plasma" src="./Images/plasma.png" width="512" height="320" /><br><br>
+Gnome:<br><img alt="Gnome" src="./Images/gnome.png" width="512" height="320" /><br><br>
+Cosmic:<br><img alt="Cosmic" src="./Images/cosmic.png" width="512" height="320" /><br><br>
+Hyprland (Noctalia):<br><img alt="Hyprland" src="./Images/hyprland.png" width="512" height="320" /><br><br>
 Steam / Steam (for handhelds):<br><img alt="Steam" src="./Images/steam.jpg" width="512" height="320" /><br><br>
 </div>
 
@@ -77,8 +77,8 @@ Examples of configurations:
 `foxflake.networking.hostname = "desktop";`  
 - Change the default Display Manager / Desktop Environment wallpaper:  
 `foxflake.customization.environment.wallpaper = "/home/common/wallpaper.png";`  
-- Disable automatic updates (then update your system manually by running `foxflake-update`):  
-`foxflake.autoUpgrade = false;`  
+- Disable automatic updates (manage your system updates manually by running `foxflake-update`):  
+`foxflake.autoUpdate = false;`  
 - Enable GPU computation support (BLAS for AMD or CUDA for Nvidia):  
 `foxflake.graphics.compute = true;`  
 - Enable HDR in Gaming apps / Proton:  
@@ -142,8 +142,8 @@ Note: Steam sessions will not work with nvidia drivers below version 575.<br><br
 
 ### Hyprland notes
 
-A simple Hyprland configuration is provided as a base but you are free to completely change / replace it. You can check and modify Hyprland settings through the configuration file located at the standard path $HOME/.config/hypr/hyprland.conf.  
-Note that you are therefore responsible to update the hyprland configuration to accomodate upstream changes.<br><br>
+A simple Hyprland Noctalia configuration is provided as a base but you are free to completely change / replace it.  
+Note that you are therefore responsible to update the Hyprland / Noctalia configurations to accomodate upstream changes.<br><br>
 
 ### Custom desktop environment
 
