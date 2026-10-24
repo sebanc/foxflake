@@ -45,7 +45,6 @@ jobs:
           pushFilter: '(\.deb$|\.exe$|\.run$|source$|\.tar\.)'
           useDaemon: false
       - name: Build FoxFlake binary cache
-        continue-on-error: true
         run: |
           sudo fallocate -l 16G /nixswap
           sudo chmod 600 /nixswap
@@ -127,7 +126,6 @@ jobs:
           pushFilter: '(\.deb$|\.exe$|\.run$|source$|\.tar\.)'
           useDaemon: false
       - name: Build FoxFlake binary cache
-        continue-on-error: true
         run: |
           sudo fallocate -l 16G /nixswap
           sudo chmod 600 /nixswap

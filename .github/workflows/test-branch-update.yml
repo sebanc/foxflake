@@ -1,0 +1,41 @@
+name: Test FoxFlake branches update
+on:
+  workflow_dispatch:
+concurrency:
+  group: environment-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  test-branch-update:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        branch: [ "stable", "stable-test", "unstable", "unstable-test", "dev" ]
+    steps:
+      - name: Reclaim disk space
+        uses: wimpysworld/nothing-but-nix@main
+        with:
+          hatchet-protocol: 'cleave'
+          witness-carnage: true
+          root-safe-haven: '20480'
+      - name: Display disk space
+        run: |
+          echo "Free space:"
+          df -h
+      - name: Checkout branch
+        uses: actions/checkout@v6
+        with:
+          ref: main
+      - name: Install nix
+        uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+      - name: Build FoxFlake binary cache
+        run: |
+          sudo fallocate -l 16G /nixswap
+          sudo chmod 600 /nixswap
+          sudo mkswap /nixswap
+          sudo swapon /nixswap
+          sudo swapon --show
+          ./create_binary_cache.sh ${{ matrix.branch }}
