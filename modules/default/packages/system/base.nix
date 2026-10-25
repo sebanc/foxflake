@@ -20,7 +20,7 @@ with lib;
 
     environment.systemPackages = with pkgs; [
       bc
-      binutils
+      binutils-unwrapped
       bison
       btrfs-progs
       bzip2
@@ -36,11 +36,12 @@ with lib;
       findutils
       flex
       gawk
+      gcc-unwrapped
       git
       gnumake
       gzip
       jq
-      llvmPackages.clang
+      llvmPackages.clang-unwrapped
       llvmPackages.llvm
       llvmPackages.lld
       lm_sensors
@@ -49,6 +50,7 @@ with lib;
       ntfs3g
       openssl
       p7zip
+      pahole
       patchelf
       pciutils
       procps
@@ -58,10 +60,10 @@ with lib;
       rustc
       rustfmt
       squashfsTools
-      stdenv.cc
       sysstat
       unzip
       usbutils
+      vim
       wget
       xz
       zip
