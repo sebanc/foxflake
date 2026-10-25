@@ -58,7 +58,6 @@ with lib;
 
     boot = {
       consoleLogLevel = mkDefault 3;
-      initrd.systemd.enable = mkDefault true;
       kernelPackages = mkDefault pkgs.linuxPackages_xanmod_latest;
       kernelParams = [ "fbcon=nodefer" "quiet" ];
       loader = {
