@@ -25,6 +25,7 @@ with lib;
       btrfs-progs
       bzip2
       cargo
+      clangNative
       dmidecode
       dnsmasq
       e2fsprogs
@@ -36,11 +37,11 @@ with lib;
       findutils
       flex
       gawk
+      gcc
       git
       gnumake
       gzip
       jq
-      llvmPackages.clang
       llvmPackages.llvm
       llvmPackages.lld
       lm_sensors
@@ -49,6 +50,7 @@ with lib;
       ntfs3g
       openssl
       p7zip
+      pahole
       patchelf
       pciutils
       procps
@@ -58,10 +60,10 @@ with lib;
       rustc
       rustfmt
       squashfsTools
-      stdenv.cc
       sysstat
       unzip
       usbutils
+      vim
       wget
       xz
       zip
