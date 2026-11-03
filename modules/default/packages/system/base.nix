@@ -61,7 +61,6 @@ with lib;
       rust-bindgen
       rustc
       rustfmt
-      rustup
       squashfsTools
       sysstat
       unzip
