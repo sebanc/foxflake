@@ -421,8 +421,6 @@ CoreCtrl^A tool to control hardware performance, fan curves, and power profiles^
 CoolerControl^A GUI for managing cooling devices^coolercontrol|\
 XONE^Xbox One and Xbox Series X/S gamepad driver^xone|\
 XPAD neo^Linux driver for Xbox One wireless controllers^xpadneo|\
-Fanatec FF^Linux driver for Fanatec driving wheels^fanatecff|\
-Logitech FF^Linux driver for Logitech driving wheels^logitechff|\
 Gutenprint^A collection of free-software printer drivers^gutenprint|\
 Brother LPD^Drivers supporting certain Brother Laser printers^brlaser|\
 Brother GenML1^Proprietary drivers supporting more Brother printers^brgenml1|\
