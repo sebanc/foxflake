@@ -28,6 +28,13 @@ with lib;
             echo "-Wno-unused-command-line-argument" >> $out/nix-support/cc-cflags
           '';
         };
+        bzip2-compat = prev.runCommand "bzip2-compat" { nativeBuildInputs = [ final.patchelf ]; } ''
+          mkdir -p "$out"/lib
+          cp -L ${final.bzip2.out}/lib/libbz2.so.1.0 "$out"/lib/libbz2-compat.so.1.0
+          chmod +w "$out"/lib/libbz2-compat.so.1.0
+          patchelf --set-soname libbz2.so.1.0 "$out"/lib/libbz2-compat.so.1.0
+          ln -s libbz2-compat.so.1.0 "$out"/lib/libbz2.so.1.0
+        '';
         buildFHSEnv = args: prev.buildFHSEnv (
           args // {
             extraBuildCommands = (args.extraBuildCommands or "") + ''
@@ -48,11 +55,15 @@ with lib;
               'exec "''${cmd[@]}"' \
               'if [ ! -z "$APPIMAGE_USE_NIX_LD" ] && [ "$APPIMAGE_USE_NIX_LD" -eq 1 ]; then
                  echo "APPIMAGE_USE_NIX_LD is set to 1, using Nix-ld instead of appimage-run FHSEnv"
+                 export GIO_EXTRA_MODULES=""$NIX_LD_LIBRARY_PATH"/gio/modules"
+                 export GST_PLUGIN_SYSTEM_PATH_1_0=""$NIX_LD_LIBRARY_PATH"/gstreamer-1.0"
                  export LD_LIBRARY_PATH=""$NIX_LD_LIBRARY_PATH":"$LD_LIBRARY_PATH""
+                 export LD_PRELOAD=""$NIX_LD_LIBRARY_PATH"/libthai.so.0:"$LD_PRELOAD""
                  export SSL_CERT_FILE="/etc/ssl/certs/ca-bundle.crt"
                  export XDG_DATA_DIRS="${prev.gsettings-desktop-schemas}/share/gsettings-schemas/${prev.gsettings-desktop-schemas.name}:${prev.gtk3}/share/gsettings-schemas/${prev.gtk3.name}"
                  exec ${prev.appimageTools.appimage-exec}/bin/appimage-exec.sh "$@"
                fi
+               export GIO_EXTRA_MODULES=/usr/lib/gio/modules
                exec "''${cmd[@]}"'
           chmod +x "$out"/bin/appimage-run
         '';
@@ -88,7 +99,7 @@ with lib;
 
     programs.nix-ld = {
       enable = mkDefault true;
-      libraries = with pkgs; [ alsa-lib alsa-plugins at-spi2-atk at-spi2-core atk binutils brotli bzip2 cairo cargo clangNative cups curlFull dbus dbus-glib desktop-file-utils dotnet-runtime e2fsprogs elfutils expat ffmpeg file flac fontconfig freeglut freetype fribidi fuse fuse3 gcc gdk-pixbuf git glew glib glib-networking gmp gnutls gobject-introspection gradle graphene gsettings-desktop-schemas gst_all_1.gstreamer gst_all_1.gst-plugins-base gst_all_1.gst-plugins-bad gst_all_1.gst-plugins-ugly gtk3 gtk3.dev gtk4 gtk4.dev harfbuzz hpl icu jdk json-glib libadwaita libappindicator-gtk3 libayatana-appindicator libbsd libcaca libcanberra libcap libdbusmenu libdeflate libdrm libelf libepoxy libffi libgcc libgbm libgpg-error libgcrypt libGL libGLU libice libidn2 libjpeg libmanette libnotify libogg libpciaccess libpng libpsl libpulseaudio librsvg libsamplerate libsecret libsm libsoup_3 libthai libtheora libtiff libunwind libuuid libv4l libva libvdpau libvorbis libvpx libx11 libxcb libxcb-cursor libxcb-errors libxcb-image libxcb-keysyms libxcb-render-util libxcb-util libxcb-wm libxcomposite libxcrypt libxcrypt-legacy libxcursor libxdamage libxext libxfixes libxft libxi libxinerama libxkbcommon libxml2 libxmu libxrandr libxrender libxscrnsaver libxshmfence libxt libxtst libxxf86vm libyaml llvmPackages.libclang llvmPackages.llvm llvmPackages.lld mesa mono mtdev ncurses nghttp2.lib nspr nss ocl-icd openal openssl p11-kit pango patchelf pcscliteWithPolkit pkcs11helper pipewire pixman procps readline rocmPackages.clr rocmPackages.hiprt rtmpdump rust-bindgen rustc rustfmt sane-backends SDL_image SDL_mixer SDL_ttf SDL2_image SDL2_mixer SDL2_ttf shared-mime-info skia speex sqlite sudo systemd tbb udev vulkan-loader wayland webkitgtk_4_1 webkitgtk_6_0 xz zlib zstd ]
+      libraries = with pkgs; [ alsa-lib alsa-plugins at-spi2-atk at-spi2-core atk binutils brotli bzip2-compat cairo cargo clangNative cups curlFull dbus dbus-glib desktop-file-utils dotnet-runtime e2fsprogs elfutils expat ffmpeg file flac fontconfig freeglut freetype fribidi fuse fuse3 gcc gdk-pixbuf git glew glib glib-networking gmp gnutls gobject-introspection gradle graphene gsettings-desktop-schemas gst_all_1.gstreamer gst_all_1.gst-plugins-base gst_all_1.gst-plugins-bad gst_all_1.gst-plugins-good gst_all_1.gst-plugins-ugly gtk3 gtk3.dev gtk4 gtk4.dev harfbuzz hpl icu jdk json-glib lerc libadwaita libappindicator-gtk3 libayatana-appindicator libbsd libcaca libcanberra libcap libdbusmenu libdeflate libdrm libelf libepoxy libffi libgcc libgbm libgpg-error libgcrypt libGL libGLU libice libidn2 libjpeg libmanette libmspack libnotify libogg libopus libpciaccess libpng libpsl libpulseaudio librsvg libsamplerate libsecret libsm libsoup_3 libthai libtheora libtiff libunwind libuuid libv4l libva libvdpau libvorbis libvpx libx11 libxcb libxcb-cursor libxcb-errors libxcb-image libxcb-keysyms libxcb-render-util libxcb-util libxcb-wm libxcomposite libxcrypt libxcrypt-legacy libxcursor libxdamage libxext libxfixes libxft libxi libxinerama libxkbcommon libxml2 libxmu libxrandr libxrender libxscrnsaver libxshmfence libxt libxtst libxxf86vm libyaml llvmPackages.libclang llvmPackages.llvm llvmPackages.lld mesa mono mtdev ncurses nghttp2.lib nspr nss ocl-icd openal openssl p11-kit pango patchelf pcscliteWithPolkit pkcs11helper pipewire pixman procps readline rocmPackages.clr rocmPackages.hiprt rtmpdump rust-bindgen rustc rustfmt sane-backends SDL_image SDL_mixer SDL_ttf SDL2_image SDL2_mixer SDL2_ttf shared-mime-info skia speex speexdsp sqlite srtp sudo systemd tbb udev vulkan-loader wayland webkitgtk_4_1 webkitgtk_6_0 x264 xz zlib zstd ]
         ++ optionals (config.foxflake.graphics.compute) (with pkgs; [ rocmPackages.hipblas rocmPackages.rocblas ])
         ++ optionals (config.foxflake.nvidia.enable) (with pkgs; [ config.hardware.nvidia.package ])
         ++ optionals (config.foxflake.nvidia.enable && config.foxflake.graphics.compute) (with pkgs; [ cudaPackages.cudnn cudaPackages.libcublas cudaPackages.libcusolver cudaPackages.libcusparse ]);
