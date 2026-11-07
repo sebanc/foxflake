@@ -26,6 +26,13 @@ with lib;
 
     boot.blacklistedKernelModules = [ "nouveau" "nova_core" ];
 
+    environment = {
+      variables = {
+        __GL_SHADER_DISK_CACHE_SIZE = "12000000000";
+        WEBKIT_DISABLE_DMABUF_RENDERER = "1";
+      };
+    };
+
     hardware.nvidia = {
       package = mkDefault config.boot.kernelPackages.nvidiaPackages.new_feature;
       open = mkDefault true;
@@ -56,12 +63,6 @@ with lib;
           fi
         done
       '';
-    };
-
-    environment = {
-      variables = {
-        __GL_SHADER_DISK_CACHE_SIZE = "12000000000";
-      };
     };
 
   };
