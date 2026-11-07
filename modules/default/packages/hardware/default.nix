@@ -7,12 +7,10 @@
     ./coolercontrol.nix
     ./corectrl.nix
     ./escpr.nix
-    ./fanatecff.nix
     ./gutenprint.nix
     ./hplip.nix
     ./lact.nix
     ./lexmarkps.nix
-    ./logitechff.nix
     ./openrazer.nix
     ./openrgb.nix
     ./opentabletdriver.nix
