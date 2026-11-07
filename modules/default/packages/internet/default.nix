@@ -1,7 +1,6 @@
 {
 
   imports = [
-    ./brave.nix
     ./chrome.nix
     ./chromium.nix
     ./discord.nix

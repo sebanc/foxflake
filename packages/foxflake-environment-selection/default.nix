@@ -325,7 +325,6 @@ Steam (for handhelds)^steamdeck"
 Internet^Web browsers, email clients and messaging apps^|\
 Firefox^An open-source browser managed by Mozilla that prioritizes user privacy^firefox|\
 Librewolf^A fork of Firefox that provides the highest level of privacy/security^librewolf|\
-Brave^A privacy-focused browser that automatically blocks ads and trackers^brave|\
 Tor Browser^Open-source browser providing anonymity via the Tor network^tor|\
 Chrome^Google’s proprietary web browser known for its speed^chrome|\
 Chromium^The open-source version of Google’s Chrome web browser^chromium|\
